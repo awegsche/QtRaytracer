@@ -22,3 +22,6 @@ FORMS    += mainwindow.ui
 #DISTFILES += \
 #    Maths.pri
 include(Maths.pri)
+include(GeometricObjects.pri)
+include(Materials.pri)
+

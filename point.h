@@ -2,14 +2,15 @@
 #define POINT_H
 #include "constants.h"
 
+class Vector;
+
 class Point
 {
 public:
-    real x;
-    real y;
+    real X;
+    real Y;
 public:
     Point();
-
     Point(real x, real y);
 
     Point operator+ (const Point& p, const Vector& v);
