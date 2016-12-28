@@ -5,8 +5,8 @@ Vector::Vector()
 
 }
 
-Vector::Vector(real x, real y)
-    : X(x), Y(y)
+Vector::Vector(real x, real y, real z)
+    : X(x), Y(y), Z(z)
 {
 
 }

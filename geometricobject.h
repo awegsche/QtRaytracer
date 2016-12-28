@@ -11,7 +11,7 @@ class GeometricObject
 public:
     GeometricObject();
 
-    virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr);
+    virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr) const = 0;
 
 
 };

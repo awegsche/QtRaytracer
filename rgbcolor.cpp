@@ -1,6 +1,7 @@
 #include "rgbcolor.h"
 
 RGBColor::RGBColor()
+    :r(.0f), g(.0f), b(.0f)
 {
 
 }
