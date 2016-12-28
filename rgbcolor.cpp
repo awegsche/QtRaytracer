@@ -6,7 +6,7 @@ RGBColor::RGBColor()
 
 }
 
-RGBColor::RGBColor(float red, float green, floart blue)
+RGBColor::RGBColor(float red, float green, float blue)
     : r(red), g(green), b(blue) {
 
 }

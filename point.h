@@ -9,12 +9,14 @@ class Point
 public:
     real X;
     real Y;
+    real Z;
 public:
     Point();
-    Point(real x, real y);
-
-    Point operator+ (const Point& p, const Vector& v);
+    Point(real x, real y, real z);
 
 };
+
+const Point operator+(const Point& p, const Vector& v);
+const Vector operator-(const Point& a, const Point& b);
 
 #endif // POINT_H

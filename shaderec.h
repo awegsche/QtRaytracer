@@ -2,12 +2,10 @@
 #define SHADEREC_H
 
 #include "constants.h"
-
-class Point;
-class Vector;
-class Normal;
-class RGBColor;
-class World;
+#include "point.h"
+#include "normal.h"
+#include "rgbcolor.h"
+#include "world.h"
 
 
 class ShadeRec
@@ -17,10 +15,10 @@ public:
     Point  local_hit_point;
     Normal normal;
     RGBColor color;
-    World& w;
+    World *w;
 
 
-    ShadeRec(World& world);
+    ShadeRec(World *world);
 };
 
 #endif // SHADEREC_H

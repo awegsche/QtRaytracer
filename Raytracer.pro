@@ -24,4 +24,6 @@ FORMS    += mainwindow.ui
 include(Maths.pri)
 include(GeometricObjects.pri)
 include(Materials.pri)
+include(World.pri)
+include(Tracers.pri)
 

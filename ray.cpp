@@ -11,7 +11,7 @@ Ray::Ray(const Point &origin, const Vector &dir)
 }
 
 Ray::Ray(const Ray &ray)
-    : o(ray.o), v(ray.d) {
+    : o(ray.o), d(ray.d) {
 
 }
 
