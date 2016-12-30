@@ -2,7 +2,10 @@
 #define RAYCAST_H
 
 #include "tracer.h"
+<<<<<<< HEAD
 class World;
+=======
+>>>>>>> 5eababce84a924f7b3f281471cc8115b09966a0d
 
 class RayCast : public Tracer
 {

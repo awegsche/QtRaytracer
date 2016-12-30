@@ -1,4 +1,5 @@
 #include "ambient.h"
+
 #include "rgbcolor.h"
 #include "vector.h"
 
@@ -7,6 +8,7 @@ Ambient::Ambient()
 {
 
 }
+
 
 Ambient::Ambient(float brightness, float r, float g, float b)
     : ls(brightness), color(r, g, b) {

@@ -20,7 +20,11 @@ void Vector::normalize()
     Z *= l;
 }
 
+<<<<<<< HEAD
 real Vector::length() const
+=======
+real Vector::length()
+>>>>>>> 5eababce84a924f7b3f281471cc8115b09966a0d
 {
     return sqrt(X * X + Y * Y + Z * Z);
 }

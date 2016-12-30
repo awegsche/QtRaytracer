@@ -5,6 +5,7 @@ Lambertian::Lambertian()
 
 }
 
+
 void Lambertian::set_k(float k)
 {
     kd = k;
@@ -14,6 +15,7 @@ void Lambertian::set_color(const RGBColor &color)
 {
     cd = color;
 }
+
 
 RGBColor Lambertian::f(const ShadeRec &sr, const Vector &wi, const Vector &wo) const
 {
@@ -29,3 +31,4 @@ RGBColor Lambertian::sample_f(const ShadeRec &sr, const Vector &wi, const Vector
 {
     return RGBColor();
 }
+

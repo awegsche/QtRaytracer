@@ -21,6 +21,7 @@ public:
     const Vector operator-();
 
     Vector hat() const;
+
 };
 
 const Vector operator*(const Vector& v, real a);

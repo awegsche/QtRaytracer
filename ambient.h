@@ -4,6 +4,7 @@
 #include "light.h"
 #include "rgbcolor.h"
 
+
 class Ambient : public Light
 {
 private:
@@ -12,6 +13,7 @@ private:
 
 public:
     Ambient();
+
     Ambient(float brightness, float r, float g, float b);
 
     // Light interface

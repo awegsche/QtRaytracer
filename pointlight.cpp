@@ -30,6 +30,7 @@ void PointLight::set_position(real x, real y, real z)
 
 Vector PointLight::get_direction(ShadeRec &sr)
 {
+
     return (location - sr.hitPoint).hat();
 }
 

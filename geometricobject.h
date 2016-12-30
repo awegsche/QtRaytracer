@@ -19,6 +19,7 @@ public:
     virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr) const = 0;
 
     Material *get_material();
+
     void set_material(Material* mat);
 };
 

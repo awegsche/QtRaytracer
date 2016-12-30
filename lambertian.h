@@ -12,6 +12,7 @@ private:
 public:
     Lambertian();
 
+
     void set_k(float k);
     void set_color(const RGBColor& color);
 
