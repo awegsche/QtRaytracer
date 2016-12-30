@@ -12,5 +12,15 @@ Tracer::Tracer(World *w_ptr)
 
 RGBColor Tracer::trace_ray(const Ray &ray) const
 {
-    return RGBColor(0,0,0);
+    return RGBColor();
+}
+
+RGBColor Tracer::trace_ray(const Ray &ray, int depth) const
+{
+    return RGBColor();
+}
+
+RGBColor Tracer::trace_ray(const Ray &ray, float &tmin, int depth) const
+{
+    return RGBColor();
 }

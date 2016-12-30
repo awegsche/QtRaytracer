@@ -12,7 +12,7 @@ public:
 
     // Tracer interface
 public:
-    RGBColor trace_ray(const Ray &ray) const;
+    RGBColor trace_ray(const Ray &ray, int depth) const;
 };
 
 #endif // MULTIPLEOBJECTS_H
