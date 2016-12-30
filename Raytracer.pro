@@ -26,4 +26,8 @@ include(GeometricObjects.pri)
 include(Materials.pri)
 include(World.pri)
 include(Tracers.pri)
+include(Cameras.pri)
+include(Sampler.pri)
+include(BRDFs.pri)
+include(Lights.pri)
 

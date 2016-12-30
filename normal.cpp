@@ -25,7 +25,7 @@ const Normal &Normal::operator=(const Vector &v)
     return *this;
 }
 
-const real operator*(const Vector &u, const Normal &n)
+real operator*(const Vector &u, const Normal &n)
 {
     return n.X * u.X + n.Y * u.Y + n.Z * u.Z;
 }

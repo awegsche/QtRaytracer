@@ -6,18 +6,20 @@
 
 class Ray;
 class ShadeRec;
+class Material;
 
 
 class GeometricObject
 {
-public:
-    RGBColor color;
+private:
+    Material *material_ptr;
 public:
     GeometricObject();
 
     virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr) const = 0;
 
-    RGBColor get_color();
+    Material *get_material();
+    void set_material(Material* mat);
 };
 
 #endif // GEOMETRICOBJECT_H

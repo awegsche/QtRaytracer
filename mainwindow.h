@@ -20,6 +20,8 @@ class MainWindow : public QMainWindow
     QImage _image;
     World* _world;
     QTime clock;
+    int i_width;
+    int i_height;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

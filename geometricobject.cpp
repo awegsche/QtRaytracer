@@ -2,11 +2,17 @@
 #include "rgbcolor.h"
 
 GeometricObject::GeometricObject()
-{
+    : material_ptr(nullptr){
 
 }
 
-RGBColor GeometricObject::get_color()
+Material *GeometricObject::get_material()
 {
-    return color;
+    return material_ptr;
 }
+
+void GeometricObject::set_material(Material *mat)
+{
+    material_ptr = mat;
+}
+
