@@ -27,10 +27,8 @@ public:
 };
 
 const RGBColor operator/ (const RGBColor& c, float f);
-<<<<<<< HEAD
 const RGBColor operator* (const RGBColor& a, const RGBColor& b);
-=======
->>>>>>> 5eababce84a924f7b3f281471cc8115b09966a0d
+
 
 
 Q_DECLARE_METATYPE(RGBColor)

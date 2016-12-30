@@ -69,11 +69,8 @@ const RGBColor operator/(const RGBColor &c, float f)
 {
     return RGBColor(c.r / f, c.g / f, c.b / f);
 }
-<<<<<<< HEAD
 
 const RGBColor operator*(const RGBColor &a, const RGBColor &b)
 {
     return RGBColor(a.r * b.r, a.g * b.g, a.b * b.b);
 }
-=======
->>>>>>> 5eababce84a924f7b3f281471cc8115b09966a0d

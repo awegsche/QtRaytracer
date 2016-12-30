@@ -3,13 +3,10 @@
 
 #include "constants.h"
 #include "light.h"
-<<<<<<< HEAD
 #include "rgbcolor.h"
 #include "vector.h"
 #include "point.h"
-=======
-class RGBColor;
->>>>>>> 5eababce84a924f7b3f281471cc8115b09966a0d
+
 
 class PointLight : public Light
 {
