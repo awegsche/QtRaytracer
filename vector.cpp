@@ -6,6 +6,11 @@ Vector::Vector()
 
 }
 
+Vector::Vector(real a)
+    : X(a), Y(a), Z(a) {
+
+}
+
 Vector::Vector(real x, real y, real z)
     : X(x), Y(y), Z(z)
 {

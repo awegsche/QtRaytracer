@@ -18,6 +18,7 @@ public:
 };
 
 const Point operator+(const Point& p, const Vector& v);
+const Point operator-(const Point& p, const Vector& v);
 const Vector operator-(const Point& a, const Point& b);
 
 #endif // POINT_H

@@ -44,6 +44,7 @@ void Pinhole::render_scene(World &w)
            }
 
        }
+       emit w.done();
 }
 
 void Pinhole::set_zoom(float z)

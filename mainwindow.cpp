@@ -35,6 +35,7 @@ void MainWindow::on_pushButton_clicked()
 {
     _image.fill(0xA0FFFF);
     clock.start();
+    clock2.start();
     _world->start();
 }
 
@@ -44,11 +45,12 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
 //    rgb |= g << 8;
 //    rgb |= b << 16;
     uint rgb = r << 16 | g << 8 | b;
-    _image.setPixel(y, i_height - x, rgb);
+    _image.setPixel(y, i_height - x - 1, rgb);
     //this->setWindowTitle(QString::number(x) + ", " + QString::number(y));
     if (clock.elapsed() > 10) {
         ui->label->setPixmap(QPixmap::fromImage(_image));
         clock.restart();
+        ui->label_info->setText(QString("%1 s").arg((float)clock2.elapsed()/1000.0f));
     }
 
     //ui->label->setPixmap(QPixmap::fromImage(_image));
@@ -57,5 +59,9 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
 void MainWindow::done()
 {
     ui->label->setPixmap(QPixmap::fromImage(_image));
-    this->setWindowTitle("DOne");
+    this->setWindowTitle("Done");
+    float elapsed = (float)clock2.elapsed();
+    ui->label_info->setText(QString("Rendering took %1 s\n%2 Pixel per second")
+                            .arg(elapsed/1000.0f)
+                            .arg((float)(_world->vp.hres * _world->vp.vres) / elapsed * 1000.0));
 }

@@ -1,5 +1,6 @@
 #include "plane.h"
 #include "shaderec.h"
+#include "myexception.h"
 
 Plane::Plane()
 {
@@ -8,7 +9,7 @@ Plane::Plane()
 
 bool Plane::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 {
-    double t = (point - ray.o) * normal / (ray.d * normal);
+    real t = (point - ray.o) * normal / (ray.d * normal);
 
     if (t > kEpsilon) {
         tmin = t;
@@ -19,4 +20,23 @@ bool Plane::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
     }
     else
         return false;
+}
+
+BBox Plane::get_bounding_box()
+{
+    MyException e(QString("Plane does not have a bounding box since it is infinite."));
+    e.raise();
+}
+
+bool Plane::shadow_hit(const Ray &ray, real &tmin) const
+{
+    real t = (point - ray.o) * normal / (ray.d * normal);
+
+    if (t > kEpsilon) {
+        tmin = t;
+        return true;
+    }
+    else
+        return false;
+
 }

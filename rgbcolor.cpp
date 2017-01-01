@@ -19,11 +19,15 @@ RGBColor::RGBColor(float brightness)
 
 RGBColor RGBColor::truncate() const
 {
-    float r_ = r < 1.0f ? r : 1.0f;
-    float g_ = g < 1.0f ? g : 1.0f;
-    float b_ = b < 1.0f ? b : 1.0f;
+//    float r_ = r < 1.0f ? r : 1.0f;
+//    float g_ = g < 1.0f ? g : 1.0f;
+//    float b_ = b < 1.0f ? b : 1.0f;
 
-    return RGBColor(r_, g_, b_);
+//    return RGBColor(r_, g_, b_);
+
+    return RGBColor(clamp(r, .0f, 1.0f),
+                    clamp(g, .0f, 1.0f),
+                    clamp(b, .0f, 1.0f));
 }
 
 RGBColor RGBColor::operator+(const RGBColor &color)
@@ -73,4 +77,9 @@ const RGBColor operator/(const RGBColor &c, float f)
 const RGBColor operator*(const RGBColor &a, const RGBColor &b)
 {
     return RGBColor(a.r * b.r, a.g * b.g, a.b * b.b);
+}
+
+real clamp(real x, real min, real max)
+{
+    return x < min ? min : (x > max ? max : x);
 }

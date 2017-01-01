@@ -18,6 +18,14 @@ public:
     // GeometricObject interface
 public:
     bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const;
+
+    // GeometricObject interface
+public:
+    BBox get_bounding_box();
+
+    // GeometricObject interface
+public:
+    bool shadow_hit(const Ray &ray, real &tmin) const;
 };
 
 #endif // SPHERE_H

@@ -2,6 +2,7 @@
 #define RGBCOLOR_H
 
 #include <QMetaType>
+#include "constants.h"
 
 class RGBColor
 {
@@ -29,7 +30,7 @@ public:
 const RGBColor operator/ (const RGBColor& c, float f);
 const RGBColor operator* (const RGBColor& a, const RGBColor& b);
 
-
+real clamp(real x, real min, real max);
 
 Q_DECLARE_METATYPE(RGBColor)
 

@@ -6,4 +6,5 @@ SOURCES += \
     $$PWD/world.cpp \
     $$PWD/viewplane.cpp \
 #    $$PWD/simple_scene.cpp \
-    $$PWD/build_matte.cpp
+#    $$PWD/build_matte.cpp \
+    $$PWD/build_grid.cpp

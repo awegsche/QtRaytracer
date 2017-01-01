@@ -12,6 +12,7 @@ public:
     real Z;
 public:
     Vector();
+    Vector(real a);
     Vector(real x, real y, real z);
 
     void normalize();
