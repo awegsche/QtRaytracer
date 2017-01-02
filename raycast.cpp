@@ -1,6 +1,7 @@
 #include "raycast.h"
 #include "ray.h"
 #include "shaderec.h"
+#include "matte.h"
 
 RayCast::RayCast()
 {
@@ -18,6 +19,7 @@ RGBColor RayCast::trace_ray(const Ray &ray, int depth) const
 
     if(sr.hit_an_object) {
         sr.ray = ray;
+        if (sr.material_ptr == nullptr) sr.material_ptr = missing_mat;
         return sr.material_ptr->shade(sr);
     }
     else

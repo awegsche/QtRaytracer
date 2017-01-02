@@ -3,11 +3,14 @@
 
 #include "rgbcolor.h"
 #include "ray.h"
+#include "material.h"
 
 class World;
 
 class Tracer
 {
+protected:
+    Material* missing_mat;
 public:
     World* world_ptr;
 public:

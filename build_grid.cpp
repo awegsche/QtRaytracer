@@ -40,7 +40,7 @@ void World::build() {
                 float b = (float)rand() / RAND_MAX;
 
                 sph_ptr->m = Point((real)i * DIST+ x, (real)j * DIST +y, (real)k * DIST +z);
-                sph_ptr->r = 5.0;
+                sph_ptr->r = 1.0;
                 Matte* mat_ptr = new Matte;
                 mat_ptr->set_color(r,g,b);
                 mat_ptr->set_kambient(1.0);
@@ -74,7 +74,7 @@ void World::build() {
     this->ambient_ptr = new Ambient(0.1, 1, 1, 1);
 
     Pinhole* ph_ptr = new Pinhole();
-    ph_ptr->set_eye(0,50,5000);
+    ph_ptr->set_eye(0,50,1000);
     ph_ptr->set_lookat(EDGE*DIST/2,EDGE*DIST/2,0);
     ph_ptr->set_distance(1000);
     ph_ptr->set_zoom(2);

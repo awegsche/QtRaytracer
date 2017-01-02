@@ -15,7 +15,7 @@ bool Plane::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
         tmin = t;
         sr.normal = normal;
         sr.local_hit_point = ray.o + t * ray.d;
-
+        sr.material_ptr = material_ptr;
         return true;
     }
     else

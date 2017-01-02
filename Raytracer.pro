@@ -8,6 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+#INCLUDEPATH += C:\Qt\Tools\mingw530_32\i686-w64-mingw32\include\c++
+
 TARGET = Raytracer
 TEMPLATE = app
 
