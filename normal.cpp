@@ -64,3 +64,8 @@ Normal operator +(const Normal &n, const Normal &m)
 {
     return Normal(m.X + n.X, m.Y + n.Y, m.Z + n.Z);
 }
+
+real operator*(const Normal &n, const Vector &u)
+{
+    return n.X * u.X + n.Y * u.Y + n.Z * u.Z;
+}

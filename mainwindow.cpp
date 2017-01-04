@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QString>
 #include "camera.h"
+#include "imagedisplay.h"
+#include <QPainter>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    ui->label->setPixmap(QPixmap::fromImage(_image));
+    //ui->label->setPixmap(QPixmap::fromImage(_image));
 
     _world = new World();
     _world->build();
@@ -21,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     _image.setPixel(10, 10, 0xFF0000);
 
     i_height = _world->vp.vres;
+
+    _display = new ImageDisplay(this);
+    _display->setImage(&_image);
+    ((QVBoxLayout*)ui->centralWidget->layout())->insertWidget(0, _display);
 
     connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
     connect(_world, SIGNAL(done()), this, SLOT(done()));
@@ -34,6 +41,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     _image.fill(0xA0FFFF);
+    last_line = 0;
+
     clock.start();
     clock2.start();
     _world->start();
@@ -48,7 +57,8 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
     _image.setPixel(y, i_height - x - 1, rgb);
     //this->setWindowTitle(QString::number(x) + ", " + QString::number(y));
     if (clock.elapsed() > 10) {
-        ui->label->setPixmap(QPixmap::fromImage(_image));
+        _display->repaint();
+        //ui->label->setPixmap(QPixmap::fromImage(_image));
         clock.restart();
         ui->label_info->setText(QString("%1 s").arg((float)clock2.elapsed()/1000.0f));
     }
@@ -58,7 +68,8 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
 
 void MainWindow::done()
 {
-    ui->label->setPixmap(QPixmap::fromImage(_image));
+    //ui->label->setPixmap(QPixmap::fromImage(_image));
+    _display->repaint();
     this->setWindowTitle("Done");
     float elapsed = (float)clock2.elapsed();
     ui->label_info->setText(QString("Rendering took %1 s\n%2 Pixel per second")

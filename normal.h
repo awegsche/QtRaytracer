@@ -24,6 +24,7 @@ public:
 };
 
 real operator*(const Vector& u, const Normal& n);
+real operator*(const Normal& n, const Vector& v);
 Normal operator *(real a, const Normal& n);
 Normal operator +( const Normal& n, const Normal& m);
 #endif // NORMAL_H

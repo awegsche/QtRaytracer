@@ -16,6 +16,11 @@ RGBColor::RGBColor(float brightness)
 
 }
 
+RGBColor::RGBColor(const RGBColor &color)
+    : r(color.r), g(color.g), b(color.b) {
+
+}
+
 
 RGBColor RGBColor::truncate() const
 {

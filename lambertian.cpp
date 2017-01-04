@@ -5,6 +5,11 @@ Lambertian::Lambertian()
 
 }
 
+Lambertian::Lambertian(float k, const RGBColor &color)
+    : kd(k), cd(color){
+
+}
+
 
 void Lambertian::set_k(float k)
 {

@@ -16,6 +16,7 @@ public:
     RGBColor();
     RGBColor(float red, float green, float blue);
     RGBColor(float brightness);
+    RGBColor(const RGBColor& color);
 
     RGBColor truncate() const;
 

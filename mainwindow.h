@@ -8,6 +8,7 @@
 #include "world.h"
 #include "rgbcolor.h"
 #include <QTime>
+#include "imagedisplay.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,10 @@ class MainWindow : public QMainWindow
     QTime clock2;
     int i_width;
     int i_height;
+
+    // for updating the pixmap:
+    int last_line;
+    ImageDisplay *_display;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

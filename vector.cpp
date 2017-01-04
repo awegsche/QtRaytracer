@@ -39,7 +39,7 @@ const Vector &Vector::operator=(const Vector &v)
     return *this;
 }
 
-const Vector Vector::operator-()
+const Vector Vector::operator-() const
 {
     return Vector(-X, -Y, -Z);
 }

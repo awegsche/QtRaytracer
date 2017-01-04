@@ -10,13 +10,14 @@
 #include "plane.h"
 #include "grid.h"
 #include "constants.h"
+#include "phong.h"
 
 const real DIST = 20.0;
 const int EDGE = 100;
 
 void World::build() {
-    vp.hres = 1200;
-    vp.vres = 900;
+    vp.hres = 600;
+    vp.vres = 400;
     vp.s = 1.0;
     vp.num_samples = 16;
 
@@ -30,12 +31,15 @@ void World::build() {
 
     Grid* grid_ptr = new Grid(3.0);
 
-    grid_ptr->read_ply_file("E:\\Andreas\\3D Modelle\\Tomb Raider\\laracroft\\RenderMesh\\Section 1076out.ply", 0);
-   // grid_ptr->compute_mesh_normals();
-    grid_ptr->set_material(mat);
-    grid_ptr->setup_cells();
-    //grid_ptr->calculate_bounding_box();
-    add_object(grid_ptr);
+
+
+
+    //add_object(grid_ptr);
+
+    Sphere* s = new Sphere(Point(0,0,0), 20);
+    Phong* p = new Phong(.2, .7, .05,5, 1,0,0);
+    s->set_material(p);
+    add_object(s);
 
 
     Plane* pl_ptr = new Plane();
@@ -48,16 +52,16 @@ void World::build() {
 
     PointLight* l = new PointLight(2.0,
                                   1.0, 1.0, 1.0,
-                                  100, 100, 100);
+                                  0, 300, -500);
     add_light(l);
 
     this->ambient_ptr = new Ambient(0.1, 1, 1, 1);
 
     Pinhole* ph_ptr = new Pinhole();
     ph_ptr->set_eye(0,300,500);
-    ph_ptr->set_lookat(0,140,0);
+    ph_ptr->set_lookat(0,0,0);
     ph_ptr->set_distance(1000);
-    ph_ptr->set_zoom(10);
+    ph_ptr->set_zoom(6);
     ph_ptr->set_up(0,1,0);
 
     ph_ptr->compute_uvw();
