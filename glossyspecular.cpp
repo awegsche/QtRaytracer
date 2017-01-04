@@ -27,11 +27,14 @@ RGBColor GlossySpecular::f(const ShadeRec &sr, const Vector &wi, const Vector &w
 {
     RGBColor L;
     real ndotwi = sr.normal * wi;
-    Vector r(-wi + 2.0 * sr.normal * ndotwi);
-    real rdotwi = r * wi;
+    Vector r(-wi + (2.0 * sr.normal * ndotwi));
+    //r = r.hat();        // very experimental
+    real rdotwo = r * wo;
 
-    if (rdotwi > .0)
-        L = ks * pow(rdotwi, exp);
+    if (rdotwo > .0)
+        L = ks * pow(rdotwo, exp);
+    if(rdotwo > 1.0)
+        int fsejifj = 0;
 
     return L;
 }

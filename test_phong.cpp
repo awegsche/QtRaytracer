@@ -20,6 +20,7 @@ void World::build() {
     vp.vres = 400;
     vp.s = 1.0;
     vp.num_samples = 16;
+    vp.set_gamma(1.2);
 
     background_color = RGBColor(0,0,0);
 
@@ -37,7 +38,7 @@ void World::build() {
     //add_object(grid_ptr);
 
     Sphere* s = new Sphere(Point(0,0,0), 20);
-    Phong* p = new Phong(.2, .7, .05,5, 1,0,0);
+    Phong* p = new Phong(.2, .7, 1, 10, 1,0,0);
     s->set_material(p);
     add_object(s);
 
@@ -50,9 +51,9 @@ void World::build() {
     add_object(pl_ptr);
 
 
-    PointLight* l = new PointLight(2.0,
+    PointLight* l = new PointLight(1,
                                   1.0, 1.0, 1.0,
-                                  0, 300, -500);
+                                  1000, 1000, 1000);
     add_light(l);
 
     this->ambient_ptr = new Ambient(0.1, 1, 1, 1);

@@ -14,12 +14,13 @@ public:
     Vector();
     Vector(real a);
     Vector(real x, real y, real z);
+    Vector(const Vector& v);
 
     void normalize();
     real length() const;
 
-    const Vector& operator=(const Vector& v);
-    const Vector operator-() const;
+    Vector& operator=(const Vector& v);
+    Vector operator-() const;
 
     Vector hat() const;
 

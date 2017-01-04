@@ -12,6 +12,16 @@ Normal::Normal(real x, real y, real z)
 
 }
 
+Normal::Normal(const Vector &v)
+    : X(v.X), Y(v.Y), Z(v.Z) {
+
+}
+
+Normal::Normal(const Normal &n)
+    : X(n.X), Y(n.Y), Z(n.Z) {
+
+}
+
 void Normal::normalize()
 {
     using namespace std;
@@ -55,17 +65,22 @@ real operator*(const Vector &u, const Normal &n)
     return n.X * u.X + n.Y * u.Y + n.Z * u.Z;
 }
 
-Normal operator *(real a, const Normal &n)
+Vector operator *(real a, const Normal &n)
 {
-    return Normal(a * n.X, a * n.Y, a * n.Z);
+    return Vector(a * n.X, a * n.Y, a * n.Z);
 }
 
-Normal operator +(const Normal &n, const Normal &m)
+Vector operator +(const Normal &n, const Normal &m)
 {
-    return Normal(m.X + n.X, m.Y + n.Y, m.Z + n.Z);
+    return Vector(m.X + n.X, m.Y + n.Y, m.Z + n.Z);
 }
 
 real operator*(const Normal &n, const Vector &u)
 {
     return n.X * u.X + n.Y * u.Y + n.Z * u.Z;
+}
+
+Vector operator *(const Normal &n, real a)
+{
+    return Vector(n.X * a, n.Y * a, n.Z * a);
 }

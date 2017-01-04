@@ -30,9 +30,13 @@ RGBColor RGBColor::truncate() const
 
 //    return RGBColor(r_, g_, b_);
 
-    return RGBColor(clamp(r, .0f, 1.0f),
-                    clamp(g, .0f, 1.0f),
-                    clamp(b, .0f, 1.0f));
+//    return RGBColor(clamp(r, .0f, 1.0f),
+//                    clamp(g, .0f, 1.0f),
+//                    clamp(b, .0f, 1.0f));
+    float max = std::max(r, std::max(g,b));
+    if (max > 1.0)
+        return (*this) / max;
+    return *this;
 }
 
 RGBColor RGBColor::operator+(const RGBColor &color)

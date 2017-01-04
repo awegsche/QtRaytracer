@@ -16,3 +16,9 @@ ViewPlane::ViewPlane(const ViewPlane &vp)
         sampler_ptr(vp.sampler_ptr){
 
 }
+
+void ViewPlane::set_gamma(float gamma_)
+{
+    gamma=gamma_;
+    inv_gamma = 1.0/gamma_;
+}

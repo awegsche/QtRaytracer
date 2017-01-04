@@ -17,6 +17,8 @@ public:
 public:
     ViewPlane();
     ViewPlane(const ViewPlane& vp);
+
+    void set_gamma(float gamma_);
 };
 
 #endif // VIEWPLANE_H

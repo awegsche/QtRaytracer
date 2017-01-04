@@ -32,5 +32,5 @@ RGBColor Phong::shade(ShadeRec &sr)
             L += (diffuse_brdf->f(sr, wo, wi) + specular_brdf->f(sr, wo, wi)) * sr.w->lights[j]->L(sr) * ndotwi;
     }
 
-    return L;
+     return L;
 }

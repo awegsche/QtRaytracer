@@ -17,6 +17,12 @@ Vector::Vector(real x, real y, real z)
 
 }
 
+Vector::Vector(const Vector &v)
+    : X(v.X), Y(v.Y), Z(v.Z)
+{
+
+}
+
 void Vector::normalize()
 {
     real l = 1.0 / length();
@@ -30,7 +36,7 @@ real Vector::length() const
     return sqrt(X * X + Y * Y + Z * Z);
 }
 
-const Vector &Vector::operator=(const Vector &v)
+Vector &Vector::operator=(const Vector &v)
 {
     this->X = v.X;
     this->Y = v.Y;
@@ -39,7 +45,7 @@ const Vector &Vector::operator=(const Vector &v)
     return *this;
 }
 
-const Vector Vector::operator-() const
+Vector Vector::operator-() const
 {
     return Vector(-X, -Y, -Z);
 }

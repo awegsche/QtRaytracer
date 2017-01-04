@@ -111,6 +111,7 @@ ShadeRec World::hit_objects(const Ray &ray)
 void World::dosplay_p(int r, int c, const RGBColor& pixel_color)
 {
     RGBColor color = pixel_color.truncate();
+
     emit display_pixel(r, c, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
 }
 
