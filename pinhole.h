@@ -4,12 +4,18 @@
 #include "camera.h"
 #include "vector"
 #include "point2d.h"
+#include "concurrentstruct.h"
+#include "pixel.h"
 
 class Pinhole : public Camera
 {
 private:
     float d;
     float zoom;
+
+public:
+
+    Pixel render_pixel(const ConcurrentStruct &input);
 
 public:
     Pinhole();

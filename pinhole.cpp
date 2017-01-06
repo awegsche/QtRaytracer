@@ -2,6 +2,11 @@
 #include "rgbcolor.h"
 #include "viewplane.h"
 #include "ray.h"
+#include <QtConcurrent/QtConcurrent>
+#include "concurrentstruct.h"
+#include <QFuture>
+#include "pixel.h"
+#include <QList>
 
 Pinhole::Pinhole()
     :d(10.0), zoom(1.0){
@@ -13,6 +18,27 @@ Vector Pinhole::ray_direction(const Point2D &p) const
     Vector dir = p.X * u + p.Y * v - d * w;
     dir.normalize();
     return dir;
+}
+
+Pixel Pinhole::render_pixel(const ConcurrentStruct& input)
+{
+    RGBColor L;
+    Point2D sp;
+    Point2D pp;
+    Ray ray;
+    ray.o = input.ray.o;
+
+    for (int j = 0; j < input.vp.num_samples; j++) {
+        sp = input.vp.sampler_ptr->sample_unit_square();
+        pp.X = input.vp.s * (input.pixel_point.X - 0.5 * input.vp.hres + sp.X);
+        pp.Y = input.vp.s * (input.pixel_point.Y - 0.5 * input.vp.vres + sp.Y);
+        ray.d = ray_direction(pp);
+        L += input.w->tracer_ptr->trace_ray(input.ray, input.depth);
+    }
+    L /= input.vp.num_samples;
+    L *= exposure_time;
+
+    return Pixel(L, input.pixel_point, input.w);
 }
 
 void Pinhole::render_scene(World &w)
@@ -27,23 +53,49 @@ void Pinhole::render_scene(World &w)
        vp.s /= zoom;
        ray.o = eye;
 
+       /*
        for (int row = 0; row < vp.vres; row++) {
            for (int column = 0; column < vp.hres; column++) {
-               L = RGBColor(0,0,0);
-
+               Point2D pixel_point(column, row);
                for (int j = 0; j < vp.num_samples; j++) {
                    sp = vp.sampler_ptr->sample_unit_square();
-                   pp.X = vp.s * (column - 0.5 * vp.hres + sp.X);
-                   pp.Y = vp.s * (row - 0.5 * vp.vres + sp.Y);
+                   pp.X = vp.s * (pixel_point.X - 0.5 * vp.hres + sp.X);
+                   pp.Y = vp.s * (pixel_point.Y - 0.5 * vp.vres + sp.Y);
                    ray.d = ray_direction(pp);
                    L += w.tracer_ptr->trace_ray(ray, depth);
                }
                L /= vp.num_samples;
                L *= exposure_time;
-               w.dosplay_p(row, column, L);
+               w.dosplay_p(pixel_point.Y, pixel_point.X, L);
+           }
+       }
+
+       /*/
+
+
+       QList<ConcurrentStruct> pixel_points;
+       pixel_points.reserve(vp.vres*vp.hres);
+
+       for (int row = 0; row < vp.vres; row++) {
+           for (int column = 0; column < vp.hres; column++) {
+               Point2D pixel_point(column, row);
+
+
+               ConcurrentStruct cs = ConcurrentStruct(ray, pp, vp, sp, depth, L, &w, pixel_point);
+               pixel_points.push_back(cs);
+
+
+//               L = render_pixel(cs);
+//               w.dosplay_p(pixel_point.Y, pixel_point.X, L);
            }
 
        }
+
+       QFuture<Pixel> pixels = QtConcurrent::mappedReduced(pixel_points, &Pinhole::render_pixel, &World::display_p);
+
+
+       // */
+
        emit w.done();
 }
 

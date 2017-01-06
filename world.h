@@ -10,6 +10,7 @@
 #include "geometricobject.h"
 #include "light.h"
 #include <QThread>
+#include "pixel.h"
 
 class Camera;
 
@@ -40,6 +41,7 @@ public:
     ShadeRec hit_bare_bones_objects(const Ray &ray);
     ShadeRec hit_objects(const Ray& ray);
     void dosplay_p(int r, int c, const RGBColor &pixel_color);
+    static Pixel display_p(Pixel& result, const Pixel& p);
 
    // void open_window(const int hres, const int vres) const;
     //void display(const int row, const int column, const RGBColor& pixel_color) const;

@@ -115,6 +115,14 @@ void World::dosplay_p(int r, int c, const RGBColor& pixel_color)
     emit display_pixel(r, c, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
 }
 
+Pixel World::display_p(Pixel& result, const Pixel &p)
+{
+    RGBColor color = p.color.truncate();
+    result = p;
+    emit p.w->display_pixel(p.point.Y, p.point.X, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
+    return p;
+}
+
 void World::run()
 {
     render_camera();
