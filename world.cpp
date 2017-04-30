@@ -85,7 +85,7 @@ void World::add_chunks(MCWorld* world, int x, int y)
                         }
                         chunkgrid->addblock(i, j, k, block);
                     }
-            grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
+            //grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
         }
 
     }

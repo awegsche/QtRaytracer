@@ -28,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     NBTFileReader F("/home/awegsche/.minecraft/saves/New World/region/r.0.0.mca");
     MCWorld* W = new MCWorld();
-    F.Load(W);
+    //F.Load(W);
 
-    _world->add_chunks(W, 0, 0);
+    //_world->add_chunks(W, 0, 0);
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
     ui->treeView->setModel(W);
