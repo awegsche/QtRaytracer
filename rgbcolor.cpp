@@ -11,13 +11,21 @@ RGBColor::RGBColor(float red, float green, float blue)
 
 }
 
-RGBColor::RGBColor(float brightness)
+RGBColor::RGBColor(real brightness)
     : r(brightness), g(brightness), b(brightness){
 
 }
 
 RGBColor::RGBColor(const RGBColor &color)
     : r(color.r), g(color.g), b(color.b) {
+
+}
+
+RGBColor::RGBColor(const QRgb &color)
+    : r((real)((color & 0x00FF0000) >> 16)/255.0),
+      g((real)((color & 0x0000FF00) >> 8)/255.0),
+      b((real)((color & 0x000000FF)/255.0))
+{
 
 }
 
@@ -44,7 +52,7 @@ RGBColor RGBColor::operator+(const RGBColor &color)
     return RGBColor(this->r + color.r, this->g + color.g, this->b + color.b);
 }
 
-RGBColor RGBColor::operator*(float f)
+RGBColor RGBColor::operator*(real f)
 {
     return RGBColor(this->r * f, this->g * f, this->b * f);
 }
@@ -58,7 +66,7 @@ RGBColor &RGBColor::operator+=(const RGBColor &c)
     return *this;
 }
 
-RGBColor &RGBColor::operator/=(float f)
+RGBColor &RGBColor::operator/=(real f)
 {
     r /= f;
     g /= f;
@@ -67,7 +75,7 @@ RGBColor &RGBColor::operator/=(float f)
     return *this;
 }
 
-RGBColor &RGBColor::operator*=(float f)
+RGBColor &RGBColor::operator*=(real f)
 {
     r *= f;
     g *= f;
@@ -76,14 +84,23 @@ RGBColor &RGBColor::operator*=(float f)
     return *this;
 }
 
+RGBColor &RGBColor::operator*=(const RGBColor &c)
+{
+    r *= c.r;
+    g *= c.g;
+    b *= c.b;
+
+    return *this;
+}
 
 
-const RGBColor operator/(const RGBColor &c, float f)
+
+RGBColor operator/(const RGBColor &c, float f)
 {
     return RGBColor(c.r / f, c.g / f, c.b / f);
 }
 
-const RGBColor operator*(const RGBColor &a, const RGBColor &b)
+RGBColor operator*(const RGBColor &a, const RGBColor &b)
 {
     return RGBColor(a.r * b.r, a.g * b.g, a.b * b.b);
 }

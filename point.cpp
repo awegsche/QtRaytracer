@@ -21,6 +21,15 @@ const Point &Point::operator=(const Vector &v)
     return *this;
 }
 
+Point &Point::operator +=(const Vector &v)
+{
+    X += v.X;
+    Y += v.Y;
+    Z += v.Z;
+
+    return *this;
+}
+
 const Point operator+(const Point &p, const Vector &v)
 {
     return Point(p.X + v.X, p.Y + v.Y, p.Z + v.Z);

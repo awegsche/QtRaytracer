@@ -1,11 +1,11 @@
 #include "viewplane.h"
-#include "pseudorandom.h"
+#include "PureRandom.h"
 
 ViewPlane::ViewPlane()
  : gamma(1.0f), inv_gamma(1.0f),
    s(1.0f), num_samples(1),
    hres(128), vres(128),
-   sampler_ptr(new PseudoRandom){
+   sampler_ptr(new PureRandom(num_samples)){
 
 }
 

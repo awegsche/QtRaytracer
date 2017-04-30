@@ -9,6 +9,7 @@
 #include "rgbcolor.h"
 #include <QTime>
 #include "imagedisplay.h"
+#include "previewworld.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,11 +20,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     QPixmap _pixmap;
     QImage _image;
-    World* _world;
+    PreviewWorld* _world;
+
     QTime clock;
     QTime clock2;
     int i_width;
     int i_height;
+    int i_downsampling;
+    int m_downsampling;
 
     // for updating the pixmap:
     int last_line;
@@ -42,6 +46,10 @@ private:
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);
     void done();
+
+    // QWidget interface
+protected:
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

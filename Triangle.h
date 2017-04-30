@@ -10,7 +10,7 @@
 
 // this is the triangle discussed in Section 19.3
 
-#include "GeometricObject.h"
+#include "geometricobject.h"
 
 class Triangle: public GeometricObject {	
 	public:

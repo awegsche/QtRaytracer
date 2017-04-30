@@ -18,6 +18,10 @@ public:
     // NBTTag interface
 public:
     NBTTagID ID() const;
+
+    // NBTTag interface
+public:
+    NBTTag *get_child(const QString &name);
 };
 
 #endif // NBTTAGCOMPOUND_H

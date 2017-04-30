@@ -72,9 +72,9 @@ MultiJittered::shuffle_x_coordinates(void) {
 			for (int i = 0; i < n; i++)		
 				for (int j = 0; j < n; j++) {
 					int k = rand_int(j, n - 1);
-					float t = samples[i * n + j + p * num_samples].x;
-					samples[i * n + j + p * num_samples].x = samples[i * n + k + p * num_samples].x;
-					samples[i * n + k + p * num_samples].x = t;
+                    float t = samples[i * n + j + p * num_samples].X;
+                    samples[i * n + j + p * num_samples].X = samples[i * n + k + p * num_samples].X;
+                    samples[i * n + k + p * num_samples].X = t;
 				}
 		}
 }
@@ -108,8 +108,8 @@ MultiJittered::generate_samples(void) {
 	for (int p = 0; p < num_sets; p++) 
 		for (int i = 0; i < n; i++)		
 			for (int j = 0; j < n; j++) {
-				samples[i * n + j + p * num_samples].x = (i * n + j) * subcell_width + rand_float(0, subcell_width);
-				samples[i * n + j + p * num_samples].y = (j * n + i) * subcell_width + rand_float(0, subcell_width);
+                samples[i * n + j + p * num_samples].X = (i * n + j) * subcell_width + rand_float(0, subcell_width);
+                samples[i * n + j + p * num_samples].Y = (j * n + i) * subcell_width + rand_float(0, subcell_width);
 			}
 	
 	// shuffle x coordinates
@@ -118,9 +118,9 @@ MultiJittered::generate_samples(void) {
 		for (int i = 0; i < n; i++)		
 			for (int j = 0; j < n; j++) {
 				int k = rand_int(j, n - 1);
-				float t = samples[i * n + j + p * num_samples].x;
-				samples[i * n + j + p * num_samples].x = samples[i * n + k + p * num_samples].x;
-				samples[i * n + k + p * num_samples].x = t;
+                float t = samples[i * n + j + p * num_samples].X;
+                samples[i * n + j + p * num_samples].X = samples[i * n + k + p * num_samples].X;
+                samples[i * n + k + p * num_samples].X = t;
 			}
 
 	// shuffle y coordinates
@@ -129,9 +129,9 @@ MultiJittered::generate_samples(void) {
 		for (int i = 0; i < n; i++)		
 			for (int j = 0; j < n; j++) {
 				int k = rand_int(j, n - 1);
-				float t = samples[j * n + i + p * num_samples].y;
-				samples[j * n + i + p * num_samples].y = samples[k * n + i + p * num_samples].y;
-				samples[k * n + i + p * num_samples].y = t;
+                float t = samples[j * n + i + p * num_samples].Y;
+                samples[j * n + i + p * num_samples].Y = samples[k * n + i + p * num_samples].Y;
+                samples[k * n + i + p * num_samples].Y = t;
 		}
 }
 

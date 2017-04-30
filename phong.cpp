@@ -1,4 +1,5 @@
 #include "phong.h"
+#include "world.h"
 
 Phong::Phong()
 {
@@ -28,8 +29,18 @@ RGBColor Phong::shade(ShadeRec &sr)
         Vector wi = sr.w->lights[j]->get_direction(sr);
         real ndotwi = sr.normal * wi;
 
-        if (ndotwi > .0)
-            L += (diffuse_brdf->f(sr, wo, wi) + specular_brdf->f(sr, wo, wi)) * sr.w->lights[j]->L(sr) * ndotwi;
+        if (ndotwi > .0) {
+            bool in_shadow = false;
+            if(sr.w->lights[j]->casts_shadows())
+            {
+                Ray shadowray(sr.hitPoint, wi);
+                in_shadow = sr.w->lights[j]->in_shadow(shadowray, sr);
+            }
+
+            if(!in_shadow)
+                L += (diffuse_brdf->f(sr, wo, wi) + specular_brdf->f(sr, wo, wi)) * sr.w->lights[j]->L(sr) * ndotwi;
+
+        }
     }
 
      return L;

@@ -2,22 +2,25 @@
 #define MATTE_H
 
 #include "material.h"
+#include "texture.h"
 
 class Lambertian;
 
 class Matte : public Material
 {
-private:
+protected:
     Lambertian* ambient_brdf;
     Lambertian* diffuse_brdf;
 
 public:
     Matte();
     Matte(float ka_, float kd_, float r_, float g_, float b_);
+    Matte(float ka_, float kd_, Texture* t);
 
     void set_kambient(float k);
     void set_kdiffuse(float k);
     void set_color(float r, float g, float b);
+    void set_color(Texture* t);
 
     // Material interface
 public:

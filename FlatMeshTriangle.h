@@ -11,7 +11,7 @@
 // FlatMeshTriangle is a MeshTriangle that uses flat shading with a constant normal
 // This uses the inherited shadow hit function from MeshTriangle
 
-#include "MeshTriangle.h"
+#include "meshtriangle.h"
 
 class FlatMeshTriangle: public MeshTriangle {	
 	public:

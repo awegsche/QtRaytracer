@@ -2,6 +2,7 @@
 #include "rgbcolor.h"
 #include "vector.h"
 #include "shaderec.h"
+#include "world.h"
 
 PointLight::PointLight()
     :ls(1.0), color(0.0), location(){
@@ -37,4 +38,20 @@ Vector PointLight::get_direction(ShadeRec &sr)
 RGBColor PointLight::L(ShadeRec &sr)
 {
     return ls * color;
+}
+
+bool PointLight::in_shadow(Ray& ray, ShadeRec& sr)
+{
+    real t = kHugeValue;
+    int numObjects = sr.w->objects.size();
+    real d = Vector(location - ray.o).length();
+
+
+    for (int j = 0; j < numObjects; j++)
+            if (sr.w->objects[j]->shadow_hit(ray, t) && t < d)
+                    return (true);
+
+
+    return (false);
+
 }

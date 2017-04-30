@@ -14,7 +14,7 @@ typedef enum {
 
 
 Grid::Grid()
-    :   multiplier(2.0),
+    :   multiplier(0.5),
         reverse_normal(false)
 {
 
@@ -321,7 +321,7 @@ void Grid::compute_mesh_normals()
 
 bool Grid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 {
-    Material* mat_ptr;
+    //Material* mat_ptr;
     double ox = ray.o.X;
     double oy = ray.o.Y;
     double oz = ray.o.Z;

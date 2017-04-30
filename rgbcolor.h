@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include "constants.h"
+#include <QRgb>
 
 class RGBColor
 {
@@ -15,21 +16,23 @@ public:
 public:
     RGBColor();
     RGBColor(float red, float green, float blue);
-    RGBColor(float brightness);
+    RGBColor(real brightness);
     RGBColor(const RGBColor& color);
+    RGBColor(const QRgb& color);
 
     RGBColor truncate() const;
 
 
     RGBColor operator+ (const RGBColor& color);
-    RGBColor operator* (float f);
+    RGBColor operator* (real f);
     RGBColor& operator+= (const RGBColor& c);
-    RGBColor& operator/= (float f);
-    RGBColor& operator*= (float f);
+    RGBColor& operator/= (real f);
+    RGBColor& operator*= (real f);
+    RGBColor& operator*= (const RGBColor& c);
 };
 
-const RGBColor operator/ (const RGBColor& c, float f);
-const RGBColor operator* (const RGBColor& a, const RGBColor& b);
+RGBColor operator/ (const RGBColor& c, float f);
+RGBColor operator* (const RGBColor& a, const RGBColor& b);
 
 real clamp(real x, real min, real max);
 

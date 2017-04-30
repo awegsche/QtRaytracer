@@ -19,6 +19,75 @@ void Camera::set_eye(real x, real y, real z)
     eye = Vector(x,y,z);
 }
 
+void Camera::move_eye(real x, real y, real z)
+{
+    eye += Vector(x, y, z);
+}
+
+void Camera::move_eye_forward(real d)
+{
+    eye += w * (-d);
+//    lookat += w * (-d);
+//    compute_uvw();
+}
+
+void Camera::move_eye_left(real d)
+{
+    eye += u * (-d);
+//    lookat += u * (-d);
+//    compute_uvw();
+}
+
+void Camera::move_eye_right(real d)
+{
+    eye += u * d;
+//    lookat += u * d;
+//    compute_uvw();
+}
+
+void Camera::move_eye_backward(real d)
+{
+    eye += w * d;
+//    lookat += w * d;
+//    compute_uvw();
+}
+
+void Camera::rotate_up(real d)
+{
+    w += up * d;
+    w.normalize();
+    u = up ^ w;
+    u.normalize();
+    v = w ^ u;
+}
+
+void Camera::rotate_down(real d)
+{
+    w += up * (-d);
+    w.normalize();
+    u = up ^ w;
+    u.normalize();
+    v = w ^ u;
+}
+
+void Camera::rotate_left(real d)
+{
+    w += u * d;
+    w.normalize();
+    u = up ^ w;
+    u.normalize();
+    v = w ^ u;
+}
+
+void Camera::rotate_right(real d)
+{
+    w += u * (-d);
+    w.normalize();
+    u = up ^ w;
+    u.normalize();
+    v = w ^ u;
+}
+
 void Camera::set_lookat(real x, real y, real z)
 {
     lookat = Vector(x,y,z);

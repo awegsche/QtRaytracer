@@ -8,7 +8,7 @@
 //	See the file COPYING.txt for the full license.
 
 
-#include "Sampler.h"
+#include "sampler.h"
 
 class PureRandom: public Sampler {
 	public:

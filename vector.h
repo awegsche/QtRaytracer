@@ -20,7 +20,9 @@ public:
     real length() const;
 
     Vector& operator=(const Vector& v);
+    Vector& operator=(const Normal& n);
     Vector operator-() const;
+    Vector operator+=(const Vector& v);
 
     Vector hat() const;
 

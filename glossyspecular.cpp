@@ -6,21 +6,26 @@
 
 
 GlossySpecular::GlossySpecular()
-    : ks(1.0), exp(1.0), cs(1.0)
+    : ks(1.0), exp(1.0)
 {
-
+    cs = new ConstantColor(RGBColor(1.0));
 }
 
 GlossySpecular::GlossySpecular(real kspecular, real exponent)
-    : ks(kspecular), exp(exponent), cs(1.0)
+    : ks(kspecular), exp(exponent)
 {
-
+     cs = new ConstantColor(RGBColor(1.0));
 }
 
 GlossySpecular::GlossySpecular(real kspecular, real exponent, const RGBColor &color)
-    : ks(kspecular), exp(exponent), cs(color)
+    : ks(kspecular), exp(exponent)
 {
+    cs = new ConstantColor(color);
+}
 
+void GlossySpecular::set_color(Texture *t)
+{
+    cs = t;
 }
 
 RGBColor GlossySpecular::f(const ShadeRec &sr, const Vector &wi, const Vector &wo) const
@@ -32,9 +37,7 @@ RGBColor GlossySpecular::f(const ShadeRec &sr, const Vector &wi, const Vector &w
     real rdotwo = r * wo;
 
     if (rdotwo > .0)
-        L = ks * pow(rdotwo, exp);
-    if(rdotwo > 1.0)
-        int fsejifj = 0;
+        L = ks * pow(rdotwo, exp) * cs->get_color(sr);
 
     return L;
 }

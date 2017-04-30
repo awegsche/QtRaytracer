@@ -3,12 +3,25 @@
 #include "point2d.h"
 #include "camera.h"
 #include "ambient.h"
-
+#include "nbttag.h"
+#include "mcgrid.h"
+#include "nbttagcompound.h"
+#include "nbttaglist.h"
+#include "nbttagint.h"
+#include "nbttagbyte.h"
+#include "nbttagbytearray.h"
+#include "matte.h"
+#include "constants.h"
+#include "textureholder.h"
+#include "matte.h"
 //#include "simple_scene.cpp"
 
-World::World(QObject *parent)
-    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient){
 
+World::World(QObject *parent)
+    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true)
+{
+    world_grid = new Grid();
+    this->tholder = new TextureHolder();
 }
 
 void World::add_object(GeometricObject *o)
@@ -19,6 +32,65 @@ void World::add_object(GeometricObject *o)
 void World::add_light(Light *l)
 {
     lights.push_back(l);
+}
+
+void World::add_chunks(MCWorld* world, int x, int y)
+{
+    Point p0(BLOCKLENGTH * x * 32, BLOCKLENGTH * y * 32, 0);
+    MCGrid *grid = new MCGrid();
+    grid->setup(32, 16, 32, BLOCKLENGTH * 16.0, p0);
+
+    for(Chunk* chunk : world->_chunks) {
+        //Chunk* chunk = world->_chunks[i];
+        NBTTag* nbtchunk = chunk->root;
+        if (nbtchunk->ID() == NBTTag::TAG_End) return;
+        NBTTagList<NBTTagCompound> *regions = static_cast<NBTTagList<NBTTagCompound> *>(nbtchunk->get_child("Level")->get_child("Sections"));
+
+        Matte* mat = new Matte(0.4, 0.5, 1.0, .0, 1.0);
+
+        for (NBTTagCompound* region : regions->_children)
+        {
+            int Y = ((NBTTagByte*)region->get_child("Y"))->getValue();
+
+            MCGrid* chunkgrid = new MCGrid();
+            chunkgrid->setup(16, 16, 16, BLOCKLENGTH, Point(chunk->x * 16, Y * 16, chunk->y * 16));
+
+            NBTTagByteArray* blocks = ((NBTTagByteArray*)region->get_child("Blocks"));
+            for(int j = 0; j < 16; j++)
+                for (int k = 0; k < 16; k++)
+                    for (int i = 0; i < 16; i++)
+                    {
+                        MCBlock* block = new MCBlock();
+                        block->set_material(mat);
+                        int blockid = blocks->_content[j * 256 + k * 16 + i];
+                        if (blockid != 0) {
+                            block->air = false;
+                            Texture* sidetext = tholder->get_side(blockid);
+                            if (sidetext != nullptr) {
+                                Matte* matside = new Matte(.4, .8, 0,0,0);
+                                matside->set_color(sidetext);
+                                block->mat_side = matside;
+                            }
+                            else
+                                block->mat_side = mat;
+
+                            Texture* toptext = tholder->get_top(blockid);
+                            if (toptext != nullptr) {
+                                Matte* mattop = new Matte(.4,.8,0,0,0);
+                                mattop->set_color(toptext);
+                                block->mat_top = mattop;
+                            }
+                            else
+                                block->mat_top = mat;
+                        }
+                        chunkgrid->addblock(i, j, k, block);
+                    }
+            grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
+        }
+
+    }
+    add_object(grid);
+
 }
 
 void World::render_scene_()
@@ -115,13 +187,13 @@ void World::dosplay_p(int r, int c, const RGBColor& pixel_color)
     emit display_pixel(r, c, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
 }
 
-Pixel World::display_p(Pixel& result, const Pixel &p)
-{
-    RGBColor color = p.color.truncate();
-    result = p;
-    emit p.w->display_pixel(p.point.Y, p.point.X, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
-    return p;
-}
+//Pixel World::display_p(Pixel& result, const Pixel &p)
+//{
+//    RGBColor color = p.color.truncate();
+//    result = p;
+//    emit p.w->display_pixel(p.point.Y, p.point.X, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
+//    return p;
+//}
 
 void World::run()
 {

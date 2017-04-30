@@ -4,7 +4,7 @@
 //	See the file COPYING.txt for the full license.
 
 
-#include "Constants.h"
+#include "constants.h"
 #include "SmoothMeshTriangle.h"
 #include "shaderec.h"
 						

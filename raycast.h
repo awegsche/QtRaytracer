@@ -7,9 +7,11 @@ class World;
 
 class RayCast : public Tracer
 {
+
 public:
     RayCast();
     RayCast(World *w);
+
 
     // Tracer interface
 public:

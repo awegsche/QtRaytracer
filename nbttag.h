@@ -30,7 +30,10 @@ public:
     void setName(const QString& name);
 
     virtual NBTTagID ID() const = 0;
+    //bool is_empty() override;
+    virtual NBTTag *get_child(const QString &name);
 
+    NBTTag *parent;
 
 };
 

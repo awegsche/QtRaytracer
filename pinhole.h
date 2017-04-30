@@ -10,8 +10,8 @@
 class Pinhole : public Camera
 {
 private:
-    float d;
-    float zoom;
+    double d;
+    double zoom;
 
 public:
 
@@ -19,6 +19,8 @@ public:
 
 public:
     Pinhole();
+    Pinhole(const Camera& cam);
+   // Pinhole(const Pinhole& cam);
 
     Vector ray_direction(const Point2D& p) const;
 
@@ -26,8 +28,9 @@ public:
 public:
     void render_scene(World &w);
 
-    void set_zoom(float z);
-    void set_distance(float distance);
+    void set_zoom(double z);
+    void rescale_zoom(double a);
+    void set_distance(double distance);
 };
 
 #endif // PINHOLE_H

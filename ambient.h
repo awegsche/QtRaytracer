@@ -20,6 +20,10 @@ public:
 public:
     Vector get_direction(ShadeRec &sr);
     RGBColor L(ShadeRec &sr);
+
+    // Light interface
+public:
+    bool in_shadow(Ray& ray, ShadeRec& sr);
 };
 
 #endif // AMBIENT_H

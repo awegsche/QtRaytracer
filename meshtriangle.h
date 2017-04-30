@@ -21,8 +21,8 @@
 // MeshTriangle doesn't inherit from the Triangle class discussed in Chapter 19, 
 // because Triangle stores the vertices and a normal
 
-#include "GeometricObject.h"
-#include "Mesh.h"
+#include "geometricobject.h"
+#include "mesh.h"
 
 class MeshTriangle: public GeometricObject {	
 	public:

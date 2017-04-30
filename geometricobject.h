@@ -14,12 +14,15 @@ class GeometricObject
 {
 protected:
     Material *material_ptr;
+    bool casts_shadow;
 public:
     GeometricObject();
 
     virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr) const = 0;
     virtual bool shadow_hit(const Ray& ray, real& tmin) const = 0;
     virtual BBox get_bounding_box();
+
+    void set_casts_shadow(bool b);
 
     Material *get_material();
 

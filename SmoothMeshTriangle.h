@@ -9,7 +9,7 @@
 
 // SmoothMeshTriangle is a MeshTriangle that uses smooth shading with an interpolated normal at each hit point
 
-#include "MeshTriangle.h"
+#include "meshtriangle.h"
 
 class SmoothMeshTriangle: public MeshTriangle {		
 	public:

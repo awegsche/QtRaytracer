@@ -15,6 +15,8 @@ public:
     Point(real x, real y, real z);
 
     const Point& operator=(const Vector& v);
+
+    Point &operator += (const Vector& v);
 };
 
 const Point operator+(const Point& p, const Vector& v);

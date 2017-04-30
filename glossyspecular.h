@@ -2,7 +2,8 @@
 #define GLOSSYSPECULAR_H
 
 #include "brdf.h"
-
+#include "constantcolor.h"
+#include "texture.h"
 
 
 class GlossySpecular : public BRDF
@@ -10,14 +11,14 @@ class GlossySpecular : public BRDF
 private:
     real ks;
     real exp;
-    RGBColor cs;
+    Texture* cs;
 
 public:
     GlossySpecular();
     GlossySpecular(real kspecular, real exponent);
     GlossySpecular(real kspecular, real exponent, const RGBColor& color);
 
-
+    void set_color(Texture *t);
 
     // BRDF interface
 public:

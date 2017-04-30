@@ -28,6 +28,10 @@ public:
 public:
     Vector get_direction(ShadeRec &sr);
     RGBColor L(ShadeRec &sr);
+
+    // Light interface
+public:
+    bool in_shadow(Ray& ray, ShadeRec& sr);
 };
 
 #endif // POINTLIGHT_H

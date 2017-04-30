@@ -3,6 +3,7 @@
 #include "myexception.h"
 
 Plane::Plane()
+    :GeometricObject()
 {
 
 }
@@ -30,6 +31,7 @@ BBox Plane::get_bounding_box()
 
 bool Plane::shadow_hit(const Ray &ray, real &tmin) const
 {
+    if (!casts_shadow) return false;
     real t = (point - ray.o) * normal / (ray.d * normal);
 
     if (t > kEpsilon) {

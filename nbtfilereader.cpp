@@ -26,12 +26,12 @@ NBTFileReader::NBTFileReader(const QString &filename)
 
 }
 
-void NBTFileReader::Load(World *world)
+void NBTFileReader::Load(MCWorld *world)
 {
     QFile file(_filename);
     file.open(QIODevice::ReadOnly);
     //byte* buffer = new byte[1024];
-    QByteArray buffer =  file.read(1024);
+    QByteArray buffer =  file.read(4096);
 
     BigEndianReader Lreader(buffer);
     //QDataStream stream(&file);
@@ -45,6 +45,8 @@ void NBTFileReader::Load(World *world)
 
 
        int offset = Lreader.readInt24();
+       Lreader.readByte();
+       if (offset == 0) continue;
        //stream.skipRawData(1);
 
         qDebug() << "\noffset["<<i<<"] = "<<offset<<"";
@@ -74,7 +76,10 @@ void NBTFileReader::Load(World *world)
 
         NBTTag *root = fromFile(R);
 
-        world->addChunk(_X*32 + i%32, _Z*32 + i/32, root);
+        world->addChunk(i%32, i/32, root);
+       // w->add_chunk(root, _X*32 + i%32, _Z*32 + i/32);
+
+
     }
 
     file.close();

@@ -2,7 +2,8 @@
 #define NBTFILEREADER_H
 #include "constants.h"
 #include <QString>
-class World;
+#include "mcworld.h"
+#include "world.h"
 
 class NBTFileReader
 {
@@ -13,7 +14,7 @@ private:
 public:
     NBTFileReader(const QString &filename);
 
-    void Load(World* world);
+    void Load(MCWorld *world);
 
     qint16 readInt16(byte *src, int position);
     qint32 readInt24(byte *src, int position);

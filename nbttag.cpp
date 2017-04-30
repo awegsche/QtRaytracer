@@ -15,6 +15,7 @@
 #include <vector>
 
 NBTTag::NBTTag()
+    :parent(nullptr)
 {
 
 }
@@ -27,6 +28,12 @@ QString &NBTTag::Name()
 void NBTTag::setName(const QString &name)
 {
     _name = name;
+}
+
+
+NBTTag* NBTTag::get_child(const QString &name)
+{
+    return nullptr;
 }
 
 NBTTag *fromFile(BigEndianReader &r)
@@ -54,6 +61,7 @@ NBTTag *fromFile(BigEndianReader &r)
         do{
             child = fromFile(r);
             tag->_children.push_back(child);
+            child->parent = tag;
         } while (child->ID() != NBTTag::TAG_End);
         return tag;
     }
@@ -106,8 +114,10 @@ NBTTag *fromFile(BigEndianReader &r)
                 do{
                     child = fromFile(r);
                     tag->_children.push_back(child);
+                    child->parent = tag;
                 } while (child->ID() != NBTTag::TAG_End);
                 list->_children.push_back(tag);
+                tag->parent = list;
             }
             return list;
         }
@@ -119,6 +129,7 @@ NBTTag *fromFile(BigEndianReader &r)
                 tag->_value = r.readDouble();
 
                 list->_children.push_back(tag);
+                tag->parent = list;
             }
             return list;
         }
@@ -130,6 +141,7 @@ NBTTag *fromFile(BigEndianReader &r)
                 tag->_value = r.readFloat();
 
                 list->_children.push_back(tag);
+                tag->parent = list;
             }
             return list;
         }

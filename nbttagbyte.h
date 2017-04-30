@@ -5,7 +5,7 @@
 
 class NBTTagByte : public NBTTag
 {
-private:
+public:
     byte _value;
 public:
     NBTTagByte();

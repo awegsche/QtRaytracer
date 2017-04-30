@@ -2,12 +2,13 @@
 #define LAMBERTIAN_H
 
 #include "brdf.h"
+#include "texture.h"
 
 class Lambertian : public BRDF
 {
 private:
     float kd;
-    RGBColor cd;
+    Texture* cd;
 
 public:
     Lambertian();
@@ -16,6 +17,7 @@ public:
 
     void set_k(float k);
     void set_color(const RGBColor& color);
+    void set_color(Texture* t);
 
     // BRDF interface
 public:

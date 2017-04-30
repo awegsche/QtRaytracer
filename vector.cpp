@@ -45,9 +45,27 @@ Vector &Vector::operator=(const Vector &v)
     return *this;
 }
 
+Vector &Vector::operator=(const Normal &n)
+{
+    this->X = n.X;
+    this->Y = n.Y;
+    this->Z = n.Z;
+
+    return *this;
+}
+
 Vector Vector::operator-() const
 {
     return Vector(-X, -Y, -Z);
+}
+
+Vector Vector::operator+=(const Vector &v)
+{
+    this->X += v.X;
+    this->Y += v.Y;
+    this->Z += v.Z;
+
+    return *this;
 }
 
 Vector Vector::hat() const

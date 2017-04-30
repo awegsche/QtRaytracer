@@ -33,4 +33,5 @@ include(Sampler.pri)
 include(BRDFs.pri)
 include(Lights.pri)
 include(Utilities.pri)
+include(NBT.pri)
 
