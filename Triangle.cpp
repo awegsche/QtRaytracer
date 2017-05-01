@@ -7,7 +7,7 @@
 #include "Triangle.h"
 #include "shaderec.h"
 
-#include <cmath>
+#include <math.h>
 
 using namespace std;
 

@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _world = new PreviewWorld(i_downsampling);
     _world->build();
 
-    NBTFileReader F("/home/awegsche/.minecraft/saves/New World/region/r.0.0.mca");
+    NBTFileReader F("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Epans/region/r.0.0.mca");
     MCWorld* W = new MCWorld();
     F.Load(W);
 

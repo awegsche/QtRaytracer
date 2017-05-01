@@ -27,6 +27,7 @@ BBox Plane::get_bounding_box()
 {
     MyException e(QString("Plane does not have a bounding box since it is infinite."));
     e.raise();
+    return BBox();
 }
 
 bool Plane::shadow_hit(const Ray &ray, real &tmin) const

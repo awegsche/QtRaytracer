@@ -46,6 +46,7 @@ RGBColor GlossySpecular::sample_f(const ShadeRec &sr, const Vector &wi, const Ve
 {
     MyException E("sample_f not yet implemented.");
     E.raise();
+    return RGBColor();
 }
 
 RGBColor GlossySpecular::rho(const ShadeRec &sr, const Vector &wo) const

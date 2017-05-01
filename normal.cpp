@@ -1,6 +1,6 @@
 #include "normal.h"
 #include "vector.h"
-#include <cmath>
+#include <math.h>
 
 Normal::Normal()
 {

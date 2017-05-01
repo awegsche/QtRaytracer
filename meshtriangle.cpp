@@ -7,7 +7,7 @@
 
 #include "constants.h"
 #include "meshtriangle.h"
-#include <cmath>
+#include <math.h>
 						
 
 // ----------------------------------------------------------------  default constructor

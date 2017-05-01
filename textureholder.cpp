@@ -5,7 +5,8 @@
 
 TextureHolder::TextureHolder()
 {
-    QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
+    //QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
+    QString texturepath = "G:\\Games\\Minecraft\\res\\minecraft\\textures\\blocks\\";
 
 
 

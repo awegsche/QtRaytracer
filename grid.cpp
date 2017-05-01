@@ -1,6 +1,5 @@
 #include "grid.h"
 #include "shaderec.h"
-#include "ply.h"
 #include "FlatMeshTriangle.h"
 #include "SmoothMeshTriangle.h"
 
@@ -101,192 +100,192 @@ void Grid::setup_cells()
 
 }
 
-void Grid::read_ply_file(char *file_name, const int triangle_type)
-{
-    mesh_ptr = new Mesh();
-    using namespace std;
-    // Vertex definition
+//void Grid::read_ply_file(char *file_name, const int triangle_type)
+//{
+//    mesh_ptr = new Mesh();
+//    using namespace std;
+//    // Vertex definition
 
-    typedef struct Vertex {
-      float x,y,z;      // space coordinates
-    } Vertex;
+//    typedef struct Vertex {
+//      float x,y,z;      // space coordinates
+//    } Vertex;
 
-    // Face definition. This is the same for all files but is placed here to keep all the definitions together
+//    // Face definition. This is the same for all files but is placed here to keep all the definitions together
 
-    typedef struct Face {
-        unsigned char nverts;    // number of vertex indices in list
-        int* verts;              // vertex index list
-    } Face;
+//    typedef struct Face {
+//        unsigned char nverts;    // number of vertex indices in list
+//        int* verts;              // vertex index list
+//    } Face;
 
-    // list of property information for a vertex
-    // this varies depending on what you are reading from the file
+//    // list of property information for a vertex
+//    // this varies depending on what you are reading from the file
 
-    PlyProperty vert_props[] = {
-      {"x", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,x), 0, 0, 0, 0},
-      {"y", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,y), 0, 0, 0, 0},
-      {"z", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,z), 0, 0, 0, 0}
-    };
+//    PlyProperty vert_props[] = {
+//      {"x", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,x), 0, 0, 0, 0},
+//      {"y", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,y), 0, 0, 0, 0},
+//      {"z", PLY_FLOAT, PLY_FLOAT, offsetof(Vertex,z), 0, 0, 0, 0}
+//    };
 
-    // list of property information for a face.
-    // there is a single property, which is a list
-    // this is the same for all files
+//    // list of property information for a face.
+//    // there is a single property, which is a list
+//    // this is the same for all files
 
-    PlyProperty face_props[] = {
-        {"vertex_indices", PLY_INT, PLY_INT, offsetof(Face,verts),
-            1, PLY_UCHAR, PLY_UCHAR, offsetof(Face,nverts)}
-    };
+//    PlyProperty face_props[] = {
+//        {"vertex_indices", PLY_INT, PLY_INT, offsetof(Face,verts),
+//            1, PLY_UCHAR, PLY_UCHAR, offsetof(Face,nverts)}
+//    };
 
-    // local variables
+//    // local variables
 
-    int 			i,j;
-    PlyFile*		ply;
-    int 			nelems;		// number of element types: 2 in our case - vertices and faces
-    char**			elist;
-    int 			file_type;
-    float 			version;
-    int 			nprops;		// number of properties each element has
-    int 			num_elems;	// number of each type of element: number of vertices or number of faces
-    PlyProperty**	plist;
-    Vertex**		vlist;
-    Face**			flist;
-    char*			elem_name;
-    int				num_comments;
-    char**			comments;
-    int 			num_obj_info;
-    char**			obj_info;
-
-
-    // open a ply file for reading
-
-    ply = ply_open_for_reading(file_name, &nelems, &elist, &file_type, &version);
-
-    // print what we found out about the file
-
-    printf ("version %f\n", version);
-    printf ("type %d\n", file_type);
-
-    // go through each kind of element that we learned is in the file and read them
-
-    for (i = 0; i < nelems; i++) {  // there are only two elements in our files: vertices and faces
-        // get the description of the first element
-
-        elem_name = elist[i];
-        plist = ply_get_element_description (ply, elem_name, &num_elems, &nprops);
-
-        // print the name of the element, for debugging
-
-        cout << "element name  " << elem_name << "  num elements = " << num_elems << "  num properties =  " << nprops << endl;
-
-        // if we're on vertex elements, read in the properties
-
-        if (equal_strings ("vertex", elem_name)) {
-            // set up for getting vertex elements
-            // the three properties are the vertex coordinates
-
-            ply_get_property (ply, elem_name, &vert_props[0]);
-            ply_get_property (ply, elem_name, &vert_props[1]);
-            ply_get_property (ply, elem_name, &vert_props[2]);
-
-            // reserve mesh elements
-
-            mesh_ptr->num_vertices = num_elems;
-            mesh_ptr->vertices.reserve(num_elems);
-
-            // grab all the vertex elements
-
-            for (j = 0; j < num_elems; j++) {
-                Vertex* vertex_ptr = new Vertex;
-
-                // grab an element from the file
-
-                ply_get_element (ply, (void *) vertex_ptr);
-                mesh_ptr->vertices.push_back(Point(vertex_ptr->x, vertex_ptr->y, vertex_ptr->z));
-                delete vertex_ptr;
-            }
-        }
-
-        // if we're on face elements, read them in
-
-        if (equal_strings ("face", elem_name)) {
-            // set up for getting face elements
-
-            ply_get_property (ply, elem_name, &face_props[0]);   // only one property - a list
-
-            mesh_ptr->num_triangles = num_elems;
-            objects.reserve(num_elems);  // triangles will be stored in Compound::objects
-
-            // the following code stores the face numbers that are shared by each vertex
-
-            mesh_ptr->vertex_faces.reserve(mesh_ptr->num_vertices);
-            vector<int> faceList;
-
-            for (j = 0; j < mesh_ptr->num_vertices; j++)
-                mesh_ptr->vertex_faces.push_back(faceList); // store empty lists so that we can use the [] notation below
-
-            // grab all the face elements
-
-            int count = 0; // the number of faces read
-
-            for (j = 0; j < num_elems; j++) {
-                // grab an element from the file
-
-                Face* face_ptr = new Face;
-
-                ply_get_element (ply, (void *) face_ptr);
-
-                // construct a mesh triangle of the specified type
-
-                if (triangle_type == flat) {
-                    FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, face_ptr->verts[0], face_ptr->verts[1], face_ptr->verts[2]);
-                    triangle_ptr->compute_normal(reverse_normal);
-                    objects.push_back(triangle_ptr);
-                }
-
-                if (triangle_type == smooth) {
-                    SmoothMeshTriangle* triangle_ptr = new SmoothMeshTriangle(mesh_ptr, face_ptr->verts[0], face_ptr->verts[1], face_ptr->verts[2]);
-                    triangle_ptr->compute_normal(reverse_normal); 	// the "flat triangle" normal is used to compute the average normal at each mesh vertex
-                    objects.push_back(triangle_ptr); 				// it's quicker to do it once here, than have to do it on average 6 times in compute_mesh_normals
-
-                    // the following code stores a list of all faces that share a vertex
-                    // it's used for computing the average normal at each vertex in order(num_vertices) time
-
-                    mesh_ptr->vertex_faces[face_ptr->verts[0]].push_back(count);
-                    mesh_ptr->vertex_faces[face_ptr->verts[1]].push_back(count);
-                    mesh_ptr->vertex_faces[face_ptr->verts[2]].push_back(count);
-                    count++;
-                }
-            }
-
-            if (triangle_type == flat)
-                mesh_ptr->vertex_faces.erase(mesh_ptr->vertex_faces.begin(), mesh_ptr->vertex_faces.end());
-        }
-
-        // print out the properties we got, for debugging
-
-        for (j = 0; j < nprops; j++)
-            printf ("property %s\n", plist[j]->name);
-
-    }  // end of for (i = 0; i < nelems; i++)
+//    int 			i,j;
+//    PlyFile*		ply;
+//    int 			nelems;		// number of element types: 2 in our case - vertices and faces
+//    char**			elist;
+//    int 			file_type;
+//    float 			version;
+//    int 			nprops;		// number of properties each element has
+//    int 			num_elems;	// number of each type of element: number of vertices or number of faces
+//    PlyProperty**	plist;
+//    Vertex**		vlist;
+//    Face**			flist;
+//    char*			elem_name;
+//    int				num_comments;
+//    char**			comments;
+//    int 			num_obj_info;
+//    char**			obj_info;
 
 
-    // grab and print out the comments in the file
+//    // open a ply file for reading
 
-    comments = ply_get_comments (ply, &num_comments);
+//    ply = ply_open_for_reading(file_name, &nelems, &elist, &file_type, &version);
 
-    for (i = 0; i < num_comments; i++)
-        printf ("comment = '%s'\n", comments[i]);
+//    // print what we found out about the file
 
-    // grab and print out the object information
+//    printf ("version %f\n", version);
+//    printf ("type %d\n", file_type);
 
-    obj_info = ply_get_obj_info (ply, &num_obj_info);
+//    // go through each kind of element that we learned is in the file and read them
 
-    for (i = 0; i < num_obj_info; i++)
-        printf ("obj_info = '%s'\n", obj_info[i]);
+//    for (i = 0; i < nelems; i++) {  // there are only two elements in our files: vertices and faces
+//        // get the description of the first element
 
-    // close the ply file
+//        elem_name = elist[i];
+//        plist = ply_get_element_description (ply, elem_name, &num_elems, &nprops);
 
-    ply_close (ply);
-}
+//        // print the name of the element, for debugging
+
+//        cout << "element name  " << elem_name << "  num elements = " << num_elems << "  num properties =  " << nprops << endl;
+
+//        // if we're on vertex elements, read in the properties
+
+//        if (equal_strings ("vertex", elem_name)) {
+//            // set up for getting vertex elements
+//            // the three properties are the vertex coordinates
+
+//            ply_get_property (ply, elem_name, &vert_props[0]);
+//            ply_get_property (ply, elem_name, &vert_props[1]);
+//            ply_get_property (ply, elem_name, &vert_props[2]);
+
+//            // reserve mesh elements
+
+//            mesh_ptr->num_vertices = num_elems;
+//            mesh_ptr->vertices.reserve(num_elems);
+
+//            // grab all the vertex elements
+
+//            for (j = 0; j < num_elems; j++) {
+//                Vertex* vertex_ptr = new Vertex;
+
+//                // grab an element from the file
+
+//                ply_get_element (ply, (void *) vertex_ptr);
+//                mesh_ptr->vertices.push_back(Point(vertex_ptr->x, vertex_ptr->y, vertex_ptr->z));
+//                delete vertex_ptr;
+//            }
+//        }
+
+//        // if we're on face elements, read them in
+
+//        if (equal_strings ("face", elem_name)) {
+//            // set up for getting face elements
+
+//            ply_get_property (ply, elem_name, &face_props[0]);   // only one property - a list
+
+//            mesh_ptr->num_triangles = num_elems;
+//            objects.reserve(num_elems);  // triangles will be stored in Compound::objects
+
+//            // the following code stores the face numbers that are shared by each vertex
+
+//            mesh_ptr->vertex_faces.reserve(mesh_ptr->num_vertices);
+//            vector<int> faceList;
+
+//            for (j = 0; j < mesh_ptr->num_vertices; j++)
+//                mesh_ptr->vertex_faces.push_back(faceList); // store empty lists so that we can use the [] notation below
+
+//            // grab all the face elements
+
+//            int count = 0; // the number of faces read
+
+//            for (j = 0; j < num_elems; j++) {
+//                // grab an element from the file
+
+//                Face* face_ptr = new Face;
+
+//                ply_get_element (ply, (void *) face_ptr);
+
+//                // construct a mesh triangle of the specified type
+
+//                if (triangle_type == flat) {
+//                    FlatMeshTriangle* triangle_ptr = new FlatMeshTriangle(mesh_ptr, face_ptr->verts[0], face_ptr->verts[1], face_ptr->verts[2]);
+//                    triangle_ptr->compute_normal(reverse_normal);
+//                    objects.push_back(triangle_ptr);
+//                }
+
+//                if (triangle_type == smooth) {
+//                    SmoothMeshTriangle* triangle_ptr = new SmoothMeshTriangle(mesh_ptr, face_ptr->verts[0], face_ptr->verts[1], face_ptr->verts[2]);
+//                    triangle_ptr->compute_normal(reverse_normal); 	// the "flat triangle" normal is used to compute the average normal at each mesh vertex
+//                    objects.push_back(triangle_ptr); 				// it's quicker to do it once here, than have to do it on average 6 times in compute_mesh_normals
+
+//                    // the following code stores a list of all faces that share a vertex
+//                    // it's used for computing the average normal at each vertex in order(num_vertices) time
+
+//                    mesh_ptr->vertex_faces[face_ptr->verts[0]].push_back(count);
+//                    mesh_ptr->vertex_faces[face_ptr->verts[1]].push_back(count);
+//                    mesh_ptr->vertex_faces[face_ptr->verts[2]].push_back(count);
+//                    count++;
+//                }
+//            }
+
+//            if (triangle_type == flat)
+//                mesh_ptr->vertex_faces.erase(mesh_ptr->vertex_faces.begin(), mesh_ptr->vertex_faces.end());
+//        }
+
+//        // print out the properties we got, for debugging
+
+//        for (j = 0; j < nprops; j++)
+//            printf ("property %s\n", plist[j]->name);
+
+//    }  // end of for (i = 0; i < nelems; i++)
+
+
+//    // grab and print out the comments in the file
+
+//    comments = ply_get_comments (ply, &num_comments);
+
+//    for (i = 0; i < num_comments; i++)
+//        printf ("comment = '%s'\n", comments[i]);
+
+//    // grab and print out the object information
+
+//    obj_info = ply_get_obj_info (ply, &num_obj_info);
+
+//    for (i = 0; i < num_obj_info; i++)
+//        printf ("obj_info = '%s'\n", obj_info[i]);
+
+//    // close the ply file
+
+//    ply_close (ply);
+//}
 
 void Grid::compute_mesh_normals()
 {

@@ -23,8 +23,8 @@ public:
 
     void setup_cells();
 
-    void
-    read_ply_file(char* file_name, const int triangle_type);
+//    void
+//    read_ply_file(char* file_name, const int triangle_type);
 
     void compute_mesh_normals();
 
