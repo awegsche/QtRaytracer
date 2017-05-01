@@ -30,25 +30,25 @@ bool MCBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
     case ShadeRec::East:
         sr.material_ptr = mat_side;
         sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = 1.0 - fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
         break;
 
     case ShadeRec::West:
         sr.material_ptr = mat_side;
         sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = 1.0 - fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
         break;
 
     case ShadeRec::North:
         sr.material_ptr = mat_side;
         sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = 1.0 - fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
         break;
 
     case ShadeRec::South:
         sr.material_ptr = mat_side;
         sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = 1.0 - fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
         break;
     default:
         sr.material_ptr = material_ptr;
@@ -57,6 +57,7 @@ bool MCBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
     if (sr.u < 0) sr.u = -sr.u;
     if (sr.v < 0) sr.v = -sr.v;
+//    sr.v = 1.0 - sr.v;
 
 
     sr.hitPoint = sr.local_hit_point;

@@ -11,7 +11,8 @@ HEADERS += \
     $$PWD/SmoothMeshTriangle.h \
     $$PWD/Triangle.h \
     $$PWD/mcgrid.h \
-    $$PWD/mcblock.h
+    $$PWD/mcblock.h \
+    $$PWD/mcregiongrid.h
 
 SOURCES += \
     $$PWD/geometricobject.cpp \
@@ -26,4 +27,5 @@ SOURCES += \
     $$PWD/SmoothMeshTriangle.cpp \
     $$PWD/Triangle.cpp \
     $$PWD/mcgrid.cpp \
-    $$PWD/mcblock.cpp
+    $$PWD/mcblock.cpp \
+    $$PWD/mcregiongrid.cpp

@@ -1,5 +1,5 @@
-#ifndef MCGRID_H
-#define MCGRID_H
+#ifndef MCREGIONGRID_H
+#define MCREGIONGRID_H
 
 #include "compound.h"
 #include "vector"
@@ -11,10 +11,10 @@
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
 
-class MCGrid : public Compound
+class MCRegionGrid : public Compound
 {
 private:
-    std::vector<MCBlock*> cells;
+    std::vector<GeometricObject*> cells;
     int nx, ny, nz;
     real multiplier;
     Point position;
@@ -23,12 +23,12 @@ private:
     real m_unit;
 
 public:
-    MCGrid();
+    MCRegionGrid();
 
     void setup(int nx_, int ny_, int nz_, real unit, Point pos);
 
     void read_nbt(QString filename, World *w);
-    void addblock(int x, int y, int z, MCBlock* block);
+    void addblock(int x, int y, int z, GeometricObject* block);
 
     // GeometricObject interface
 public:
