@@ -207,6 +207,51 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
     if (tx_next < 0) tx_next = kHugeValue;
     if (ty_next < 0) ty_next = kHugeValue;
     if (tz_next < 0) tz_next = kHugeValue;
+
+
+
+        // Test if there is a block face glued to the bounding box:
+        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+
+        if (block_ptr) {
+            real t_before = 0;
+
+            real tx_min_pp = tx_next - dtx;
+            real ty_min_pp = ty_next - dtx;
+            real tz_min_pp = tz_next - dtx;
+
+            if (ix != 0 && ix != (nx - 1)) tx_min_pp = kHugeValue;
+            if (iy != 0 && iy != (ny - 1)) ty_min_pp = kHugeValue;
+            if (iz != 0 && iz != (nz - 1)) tz_min_pp = kHugeValue;
+
+
+            if (tx_min_pp < ty_min_pp && tx_min_pp < tz_min_pp) {
+                sr.normal = Normal(-(real)ix_step, 0, 0);
+                sr.hdir = ix_step > 0 ? ShadeRec::South : ShadeRec::North;
+                t_before = tx_min_pp;
+            }
+            else if (ty_min_pp < tz_min_pp) {
+                sr.normal = Normal(0, -(real)iy_step, 0);
+                sr.hdir = iy_step > 0 ? ShadeRec::Bottom : ShadeRec::Top;
+                t_before = ty_min_pp;
+
+            }
+            else   {
+                sr.normal = Normal(0, 0, -(real)iz_step);
+                sr.hdir = iz_step > 0 ? ShadeRec::West : ShadeRec::East;
+                t_before = tz_min_pp;
+
+            }
+            if (block_ptr->hit(ray, t_before, sr) && t_before < t) {
+                t = t_before;
+
+
+                return (true);
+            }
+        }
+
+
+
     // traverse the grid
     t = kHugeValue;
     real t_before = kHugeValue;
@@ -231,7 +276,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
             MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
 
-            if (block_ptr && block_ptr->hit(ray, t_before, sr) && tmin < t) {
+            if (block_ptr && block_ptr->hit(ray, t_before, sr) && t_before < t) {
                 t = t_before;
 
 

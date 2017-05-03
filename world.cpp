@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "textureholder.h"
 #include "matte.h"
+#include "mcregiongrid.h"
 //#include "simple_scene.cpp"
 
 
@@ -37,7 +38,7 @@ void World::add_light(Light *l)
 void World::add_chunks(MCWorld* world, int x, int y)
 {
     Point p0(BLOCKLENGTH * x * 32, BLOCKLENGTH * y * 32, 0);
-    MCGrid *grid = new MCGrid();
+    MCRegionGrid *grid = new MCRegionGrid();
     grid->setup(32, 16, 32, BLOCKLENGTH * 16.0, p0);
 
     for(Chunk* chunk : world->_chunks) {
@@ -85,7 +86,7 @@ void World::add_chunks(MCWorld* world, int x, int y)
                         }
                         chunkgrid->addblock(i, j, k, block);
                     }
-            //grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
+            grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
         }
 
     }

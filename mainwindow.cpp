@@ -23,17 +23,18 @@ MainWindow::MainWindow(QWidget *parent) :
     m_downsampling = 3;
     i_downsampling = m_downsampling;
 
-    _world = new PreviewWorld(i_downsampling);
+    _world = new PreviewWorld(i_downsampling, 8);
+
     _world->build();
 
-    NBTFileReader F("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Epans/region/r.0.0.mca");
+    NBTFileReader F("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Alkas/region/r.0.0.mca");
     MCWorld* W = new MCWorld();
-    //F.Load(W);
+    F.Load(W);
 
-    //_world->add_chunks(W, 0, 0);
+    _world->add_chunks(W, 0, 0);
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
-    ui->treeView->setModel(W);
+    //ui->treeView->setModel(W);
 
 
 

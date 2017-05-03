@@ -3,8 +3,8 @@
 #include "ambient.h"
 #include "ambientoccluder.h"
 
-PreviewWorld::PreviewWorld(int dowmsampling)
-    : m_downsampling(dowmsampling), preview(true), World(), num_samples(16)
+PreviewWorld::PreviewWorld(int dowmsampling, int supersampling)
+    : m_downsampling(dowmsampling), preview(true), World(), num_samples(supersampling)
 {
 
 }
@@ -18,10 +18,10 @@ void PreviewWorld::build()
 
     auto ao = new AmbientOccluder(.8, .1, 1.0, 1.0, 1.0);
     auto amb = new Ambient(.8, 1,1,1);
-    ao->set_sampler(new PureRandom(16));
+    ao->set_sampler(new PureRandom(num_samples));
 
     render_ambient = ao;
-    preview_ambient = amb;
+    preview_ambient = ao;
 
 
     preview_camera = new Pinhole(*camera_ptr);

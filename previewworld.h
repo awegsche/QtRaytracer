@@ -19,7 +19,7 @@ public:
     bool preview;
 
 public:
-    PreviewWorld(int dowmsampling = 2);
+    PreviewWorld(int dowmsampling = 2, int supersampling = 16);
 
     void build();
     void render_preview();
