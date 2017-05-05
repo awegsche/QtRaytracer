@@ -185,27 +185,21 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
     if (ty_next < 0) ty_next = kHugeValue;
     if (tz_next < 0) tz_next = kHugeValue;
     // traverse the grid
-    t = kHugeValue;
-    real t_before = kHugeValue;
+    //t = kHugeValue;
+    //real t_before = kHugeValue;
 
     while (true) {
         GeometricObject* block_ptr = cells[ix + nx * iy + nx * ny * iz];
         if (tx_next < ty_next && tx_next < tz_next) {
-            real tmin = tx_next - kEpsilon;
+            //real tmin = tx_next - kEpsilon;
             //Material* mptr = sr.material_ptr;
-            if (block_ptr && block_ptr->hit(ray, t_before, sr) && tmin < t) {
-                t = tmin;
+            if (block_ptr && block_ptr->hit(ray, t, sr) && t < tx_next) {
 
-                t = tx_next;
                 return (true);
             }
             //sr.material_ptr = mptr;
-            t_before = tx_next;
             tx_next += dtx;
             ix += ix_step;
-            sr.normal = Normal(-(real)ix_step, 0, 0);
-            sr.hdir = ix_step > 0 ? ShadeRec::South : ShadeRec::North;
-            sr.t_Before = t_before;
 
             if (ix == ix_stop) {
                 sr.material_ptr = mat_ptr;
@@ -215,20 +209,15 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
         else {
             if (ty_next < tz_next) {
                 //Material* mptr = sr.material_ptr;
-                real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->hit(ray, t_before, sr) && tmin < t) {
+                //real tmin = ty_next - kEpsilon;
+                if (block_ptr && block_ptr->hit(ray, t, sr) && t < ty_next) {
                     //material_ptr = object_ptr->get_material();
-                    t=tmin;
-                    t = ty_next;
+
                     return (true);
                 }
                 //sr.material_ptr = mptr;
-                t_before = ty_next;
                 ty_next += dty;
                 iy += iy_step;
-                sr.normal = Normal(0.0, -(real)iy_step, 0);
-                sr.hdir = iy_step > 0 ? ShadeRec::Bottom : ShadeRec::Top;
-                sr.t_Before = t_before;
                 //mat_ptr
 
                 if (iy == iy_stop) {
@@ -238,22 +227,15 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
             }
             else {
                 //Material* mptr = sr.material_ptr;
-                real tmin = tz_next - kEpsilon;
+                //real tmin = tz_next - kEpsilon;
                 //material_ptr = sr.material_ptr;
-                if (block_ptr && block_ptr->hit(ray, tmin, sr) && tmin < t) {
-                    //material_ptr = object_ptr->get_material();
-                    //sr.material_ptr = material_ptr;
-                    t=tmin;
-                   // t = tz_next;
+                if (block_ptr && block_ptr->hit(ray, t, sr) && t < tz_next) {
+
                     return (true);
                 }
                 //sr.material_ptr = mptr;
-                t_before = tz_next;
                 tz_next += dtz;
                 iz += iz_step;
-                sr.normal = Normal(0.0, 0.0, -(real)iz_step);
-                sr.hdir = iz_step > 0 ? ShadeRec::West : ShadeRec::East;
-                sr.t_Before = t_before;
 
                 if (iz == iz_stop) {
                     sr.material_ptr = mat_ptr;

@@ -57,7 +57,7 @@ bool MCBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
     if (sr.u < 0) sr.u = -sr.u;
     if (sr.v < 0) sr.v = -sr.v;
-//    sr.v = 1.0 - sr.v;
+    sr.v = 1.0 - sr.v;
 
 
     sr.hitPoint = sr.local_hit_point;
