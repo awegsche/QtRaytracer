@@ -48,7 +48,7 @@ bool PointLight::in_shadow(Ray& ray, ShadeRec& sr)
 
 
     for (int j = 0; j < numObjects; j++)
-            if (sr.w->objects[j]->shadow_hit(ray, t) && t < d)
+            if (sr.w->objects[j]->shadow_hit(ray, t) && t < d && t > 0)
                     return (true);
 
 

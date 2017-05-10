@@ -61,7 +61,7 @@ void World::build() {
 
     MCGrid *mc_grid = new MCGrid();
     mc_grid->read_nbt(QString(""), this);
-    add_object(mc_grid);
+    //add_object(mc_grid);
     //grid_ptr->setup_cells();
     //grid_ptr->calculate_bounding_box();
     //add_object(grid_ptr);
@@ -72,7 +72,7 @@ void World::build() {
     Phong *phong = new Phong(.3, .5, .6, 2, 0,1,1);
     kugel->set_material(phong);
     add_object(kugel);
-
+/*
     Plane* rear_ptr = new Plane();
     rear_ptr->set_casts_shadow(false);
     rear_ptr->normal = Normal(-1, 0, 0);
@@ -112,8 +112,8 @@ void World::build() {
     floor->set_material(mat1);
     //add_object(floor);
 
-
-    PointLight* l = new PointLight(2.0,
+*/
+    PointLight* l = new PointLight(1.0,
                                   1.0, 1.0, 1.0,
                                   1000, 3000, 2000);
     l->set_shadows(true);

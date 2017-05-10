@@ -3,6 +3,7 @@
 #include "shaderec.h"
 
 MCGrid::MCGrid()
+    : parent(nullptr)
 {
 
 }
@@ -24,7 +25,7 @@ void MCGrid::setup(int nx_, int ny_, int nz_, real unit, Point pos)
     int count_ = nx * ny * nz;
     cells.reserve(nx * ny * nz);
     for (int i = 0; i < count_; i++)
-        cells.push_back(nullptr);
+        cells.push_back(0);
 }
 
 void MCGrid::read_nbt(QString filename, World *w)
@@ -34,25 +35,21 @@ void MCGrid::read_nbt(QString filename, World *w)
 
     setup(10, 10, 10, BLOCKLENGTH, Point(0,0,0));
 
-    Matte *m = new Matte(.4, .6, 0, 1, 0);
-    Matte *m1 = new Matte(.4, .6, 1, 1, 0);
-
-    MCBlock *b = new MCBlock();
-    b->air = false;
-
-    b->mat_side = new Matte(.5, .5, w->tholder->get_side(2));
-    b->mat_top = new Matte(.5, .5, w->tholder->get_top(2));
-
-    cells[1 + nx * 0 + nx * ny * 1] = b;
-    cells[3 + nx * 0 + nx * ny * 1] = b;
-    cells[2 + nx * 0 + nx * ny * 3] = b;
-    cells[2 + nx * 0 + nx * ny * 4] = b;
-    cells[0 + nx * 0 + nx * ny * 4] = b;
+    cells[1 + nx * 0 + nx * ny * 1] = 2;
+    cells[3 + nx * 0 + nx * ny * 1] = 2;
+    cells[2 + nx * 0 + nx * ny * 3] = 2;
+    cells[2 + nx * 0 + nx * ny * 4] = 1;
+    cells[0 + nx * 0 + nx * ny * 4] = 17;
 }
 
-void MCGrid::addblock(int x, int y, int z, MCBlock *block)
+void MCGrid::addblock(int x, int y, int z, int block)
 {
     cells[x + nx * y + nx * ny * z] = block;
+}
+
+void MCGrid::set_parent(MCRegionGrid *grid)
+{
+    parent = grid;
 }
 
 bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
@@ -204,21 +201,22 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
         iz_stop = -1;
     }
 
-    if (tx_next < 0) tx_next = kHugeValue;
-    if (ty_next < 0) ty_next = kHugeValue;
-    if (tz_next < 0) tz_next = kHugeValue;
+//    if (tx_next < 0) tx_next = kHugeValue;
+//    if (ty_next < 0) ty_next = kHugeValue;
+//    if (tz_next < 0) tz_next = kHugeValue;
 
 
 
         // Test if there is a block face glued to the bounding box:
-        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+        int index = cells[ix + nx * iy + nx * ny * iz];
+        MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
 
         if (block_ptr) {
             real t_before = 0;
 
             real tx_min_pp = tx_next - dtx;
-            real ty_min_pp = ty_next - dtx;
-            real tz_min_pp = tz_next - dtx;
+            real ty_min_pp = ty_next - dty;
+            real tz_min_pp = tz_next - dtz;
 
             if (ix != 0 && ix != (nx - 1)) tx_min_pp = -kHugeValue;
             if (iy != 0 && iy != (ny - 1)) ty_min_pp = -kHugeValue;
@@ -242,7 +240,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                 t_before = tz_min_pp;
 
             }
-            if (block_ptr->hit(ray, t_before, sr)) {
+            if (block_ptr->hit(ray, t_before, sr) && t_before < t) {
                 t = t_before;
 
 
@@ -274,7 +272,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
             }
             real tmin = tx_next - kEpsilon;
 
-            MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+            MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
 
             if (block_ptr && block_ptr->hit(ray, t_before, sr) && t_before < t) {
                 t = t_before;
@@ -299,7 +297,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                     return (false);
                 }
 
-                MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 real tmin = ty_next - kEpsilon;
                 if (block_ptr && block_ptr->hit(ray, t_before, sr) && tmin < t) {
                     //material_ptr = object_ptr->get_material();
@@ -325,7 +323,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                 }
                 real tmin = tz_next - kEpsilon;
 
-                MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 tmin=tz_next;
                 //material_ptr = sr.material_ptr;
                 if (block_ptr && block_ptr->hit(ray, t_before, sr) && tmin < t) {
@@ -344,7 +342,6 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
 bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 {
-    Material* mat_ptr;
     double ox = ray.o.X;
     double oy = ray.o.Y;
     double oz = ray.o.Z;
@@ -491,63 +488,121 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
         iz_stop = -1;
     }
 
-    if (tx_next < 0) tx_next = kHugeValue;
-    if (ty_next < 0) ty_next = kHugeValue;
-    if (tz_next < 0) tz_next = kHugeValue;
-    // traverse the grid
-    t = kHugeValue;
-    real t_before = kHugeValue;
+//    if (tx_next < 0) tx_next = kHugeValue;
+//    if (ty_next < 0) ty_next = kHugeValue;
+//    if (tz_next < 0) tz_next = kHugeValue;
 
-    while (true) {
-        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
-        if (tx_next < ty_next && tx_next < tz_next) {
-            real tmin = tx_next - kEpsilon;
-            if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
 
-                //material_ptr = object_ptr->get_material();
-                t = tx_next;
+
+        // Test if there is a block face glued to the bounding box:
+        int index = cells[ix + nx * iy + nx * ny * iz];
+        MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+        if (block_ptr) {
+            real t_before = 0;
+
+            real tx_min_pp = tx_next - dtx;
+            real ty_min_pp = ty_next - dty;
+            real tz_min_pp = tz_next - dtz;
+
+            if (ix != 0 && ix != (nx - 1)) tx_min_pp = -kHugeValue;
+            if (iy != 0 && iy != (ny - 1)) ty_min_pp = -kHugeValue;
+            if (iz != 0 && iz != (nz - 1)) tz_min_pp = -kHugeValue;
+
+
+            if (tx_min_pp > ty_min_pp && tx_min_pp > tz_min_pp) {
+                t_before = tx_min_pp;
+            }
+            else if (ty_min_pp > tz_min_pp) {
+                t_before = ty_min_pp;
+
+            }
+            else   {
+                t_before = tz_min_pp;
+
+            }
+            if (block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                t = t_before;
 
 
                 return (true);
             }
+        }
+
+
+
+    // traverse the grid
+   // t = kHugeValue;
+    real t_before = kHugeValue;
+
+    while (true) {
+//        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
+
+        if (tx_next < ty_next && tx_next < tz_next) {
+            //real tmin = tx_next - kEpsilon;
+            //Material* mptr = sr.material_ptr;
             t_before = tx_next;
             tx_next += dtx;
             ix += ix_step;
-
-            if (ix == ix_stop)
+            if (ix == ix_stop) {
                 return (false);
+            }
+
+            MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+            if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                t = t_before;
+
+
+                return (true);
+            }
+            //sr.material_ptr = mptr;
+
         }
         else {
             if (ty_next < tz_next) {
-                real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
-                    //material_ptr = object_ptr->get_material();
-                    t = ty_next;
-
-                    return (true);
-                }
-
+                //Material* mptr = sr.material_ptr;
                 t_before = ty_next;
                 ty_next += dty;
                 iy += iy_step;
-
-                if (iy == iy_stop)
+                if (iy == iy_stop) {
                     return (false);
-            }
-            else {
-                real tmin = tz_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
-                    //material_ptr = object_ptr->get_material();
+                }
 
-                    t = tz_next;
+                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+                real tmin = ty_next - kEpsilon;
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                    //material_ptr = object_ptr->get_material();
+                    t=t_before;
+                    //t = ty_next;
                     return (true);
                 }
+                //sr.material_ptr = mptr;
+                //mat_ptr
+
+            }
+            else {
+                //Material* mptr = sr.material_ptr;
                 t_before = tz_next;
                 tz_next += dtz;
                 iz += iz_step;
-
-                if (iz == iz_stop)
+                if (iz == iz_stop) {
                     return (false);
+                }
+                real tmin = tz_next - kEpsilon;
+
+                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+                tmin=tz_next;
+                //material_ptr = sr.material_ptr;
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                    //material_ptr = object_ptr->get_material();
+                    //sr.material_ptr = material_ptr;
+                    t=t_before;
+                   // t = tz_next;
+                    return (true);
+                }
+                //sr.material_ptr = mptr;
+
             }
         }
     }

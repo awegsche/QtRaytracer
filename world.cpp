@@ -23,6 +23,36 @@ World::World(QObject *parent)
 {
     world_grid = new Grid();
     this->tholder = new TextureHolder();
+    setup_blocklist(tholder);
+}
+
+
+void World::setup_blocklist(TextureHolder *th)
+{
+    Matte* mat = new Matte(0.4, 0.5, 1.0, .0, 1.0);
+    blocklist.insert(0, nullptr);
+    for (int i = 1; i < 256; i++)
+    {
+        MCBlock* block = new MCBlock();
+        Texture* sidetext = th->get_side(i);
+        if (sidetext != nullptr) {
+            Matte* matside = new Matte(.4, .8, 0,0,0);
+            matside->set_color(sidetext);
+            block->mat_side = matside;
+        }
+        else
+            block->mat_side = mat;
+
+        Texture* toptext = th->get_top(i);
+        if (toptext != nullptr) {
+            Matte* mattop = new Matte(.4,.8,0,0,0);
+            mattop->set_color(toptext);
+            block->mat_top = mattop;
+        }
+        else
+            block->mat_top = mat;
+        blocklist.insert(i, block);
+    }
 }
 
 void World::add_object(GeometricObject *o)
@@ -37,7 +67,9 @@ void World::add_light(Light *l)
 
 void World::add_chunks(MCWorld* world, int x, int y)
 {
-    Point p0(BLOCKLENGTH * x * 32, BLOCKLENGTH * y * 32, 0);
+    real X = BLOCKLENGTH * x * 32 * 16;
+    real Z = BLOCKLENGTH * y * 32 * 16;
+    Point p0(X, 0.0, Z);
     MCRegionGrid *grid = new MCRegionGrid();
     grid->setup(32, 16, 32, BLOCKLENGTH * 16.0, p0);
 
@@ -47,49 +79,31 @@ void World::add_chunks(MCWorld* world, int x, int y)
         if (nbtchunk->ID() == NBTTag::TAG_End) return;
         NBTTagList<NBTTagCompound> *regions = static_cast<NBTTagList<NBTTagCompound> *>(nbtchunk->get_child("Level")->get_child("Sections"));
 
-        Matte* mat = new Matte(0.4, 0.5, 1.0, .0, 1.0);
+
 
         for (NBTTagCompound* region : regions->_children)
         {
             int Y = ((NBTTagByte*)region->get_child("Y"))->getValue();
 
             MCGrid* chunkgrid = new MCGrid();
-            chunkgrid->setup(16, 16, 16, BLOCKLENGTH, Point(chunk->x * 16, Y * 16, chunk->y * 16));
+            chunkgrid->setup(16, 16, 16, BLOCKLENGTH, Point(X + chunk->x * 16, Y * 16, Z + chunk->y * 16));
 
             NBTTagByteArray* blocks = ((NBTTagByteArray*)region->get_child("Blocks"));
             for(int j = 0; j < 16; j++)
                 for (int k = 0; k < 16; k++)
                     for (int i = 0; i < 16; i++)
                     {
-                        MCBlock* block = new MCBlock();
-                        block->set_material(mat);
-                        int blockid = blocks->_content[j * 256 + k * 16 + i];
-                        if (blockid != 0) {
-                            block->air = false;
-                            Texture* sidetext = tholder->get_side(blockid);
-                            if (sidetext != nullptr) {
-                                Matte* matside = new Matte(.4, .8, 0,0,0);
-                                matside->set_color(sidetext);
-                                block->mat_side = matside;
-                            }
-                            else
-                                block->mat_side = mat;
 
-                            Texture* toptext = tholder->get_top(blockid);
-                            if (toptext != nullptr) {
-                                Matte* mattop = new Matte(.4,.8,0,0,0);
-                                mattop->set_color(toptext);
-                                block->mat_top = mattop;
-                            }
-                            else
-                                block->mat_top = mat;
-                        }
-                        chunkgrid->addblock(i, j, k, block);
+                        int blockid = blocks->_content[j * 256 + k * 16 + i];
+
+                        chunkgrid->addblock(i, j, k, blockid);
                     }
+            chunkgrid->set_parent(grid);
             grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
         }
 
     }
+    grid->blocklist = &this->blocklist;
     add_object(grid);
 
 }

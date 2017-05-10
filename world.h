@@ -15,6 +15,8 @@
 #include "mcworld.h"
 #include "grid.h"
 #include "textureholder.h"
+#include "mcblock.h"
+#include <QMap>
 
 #include <vector>
 
@@ -35,6 +37,9 @@ public:
     bool running;
     Grid* world_grid;
     TextureHolder* tholder;
+    QMap<int, MCBlock*> blocklist;
+
+    void setup_blocklist(TextureHolder* th);
 
 public:
     World(QObject* parent = nullptr);

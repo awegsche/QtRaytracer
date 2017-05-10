@@ -44,6 +44,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    void loadchunk(int y_, int x_);
+    
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);
     void done();

@@ -3,6 +3,7 @@
 #include "shaderec.h"
 
 MCRegionGrid::MCRegionGrid()
+    :blocklist(nullptr)
 {
 
 }
@@ -26,6 +27,7 @@ void MCRegionGrid::setup(int nx_, int ny_, int nz_, real unit, Point pos)
     for (int i = 0; i < count_; i++)
         cells.push_back(nullptr);
 }
+
 
 void MCRegionGrid::addblock(int x, int y, int z, GeometricObject *block)
 {

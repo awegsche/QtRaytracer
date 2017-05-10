@@ -7,6 +7,8 @@
 #include "mcblock.h"
 #include <QString>
 #include "world.h"
+#include "textureholder.h"
+#include <QMap>
 
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
@@ -23,9 +25,14 @@ private:
     real m_unit;
 
 public:
+    QMap<int, MCBlock*>* blocklist;
+
+
+public:
     MCRegionGrid();
 
     void setup(int nx_, int ny_, int nz_, real unit, Point pos);
+
 
     void read_nbt(QString filename, World *w);
     void addblock(int x, int y, int z, GeometricObject* block);

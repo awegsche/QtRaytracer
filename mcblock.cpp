@@ -4,7 +4,7 @@
 #include <math.h>
 
 MCBlock::MCBlock()
-    : air(true)
+    : air(false)
 {
 
 }
