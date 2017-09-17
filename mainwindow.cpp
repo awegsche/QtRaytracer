@@ -38,10 +38,10 @@ MainWindow::MainWindow(QWidget *parent) :
     _world = new PreviewWorld(i_downsampling, 8);
 
     _world->build();
-/*
+
 
     loadchunk(0, 0);
-    loadchunk(0, -1);
+  /*  loadchunk(0, -1);
     loadchunk(0, -2);
     loadchunk(0, -3);
     loadchunk(1, 0);
