@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _world = new PreviewWorld(i_downsampling, 8);
 
     _world->build();
-
+/*
 
     loadchunk(0, 0);
     loadchunk(0, -1);
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     loadchunk(1, -1);
     loadchunk(-1, -1);
     loadchunk(1, -2);
-    loadchunk(1, -3);
+    loadchunk(1, -3);*/
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
     //ui->treeView->setModel(W);

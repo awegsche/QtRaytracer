@@ -20,8 +20,8 @@ void PreviewWorld::build()
     auto amb = new Ambient(.8, 1,1,1);
     ao->set_sampler(new PureRandom(num_samples));
 
-    render_ambient = ao;
-    preview_ambient = ao;
+    render_ambient = amb;
+    preview_ambient = amb;
 
 
     preview_camera = new Pinhole(*camera_ptr);
