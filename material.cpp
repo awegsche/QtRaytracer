@@ -20,3 +20,8 @@ RGBColor Material::path_shade(ShadeRec &sr)
 {
     return RGBColor();
 }
+
+RGBColor Material::noshade(ShadeRec &sr)
+{
+    return RGBColor();
+}

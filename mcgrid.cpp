@@ -511,6 +511,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
 
             if (tx_min_pp > ty_min_pp && tx_min_pp > tz_min_pp) {
+
                 t_before = tx_min_pp;
             }
             else if (ty_min_pp > tz_min_pp) {
@@ -532,21 +533,20 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
 
     // traverse the grid
-   // t = kHugeValue;
+    t = kHugeValue;
     real t_before = kHugeValue;
 
     while (true) {
 //        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
 
         if (tx_next < ty_next && tx_next < tz_next) {
-            //real tmin = tx_next - kEpsilon;
-            //Material* mptr = sr.material_ptr;
             t_before = tx_next;
             tx_next += dtx;
             ix += ix_step;
             if (ix == ix_stop) {
                 return (false);
             }
+            real tmin = tx_next - kEpsilon;
 
             MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
 
@@ -571,7 +571,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && tmin < t) {
                     //material_ptr = object_ptr->get_material();
                     t=t_before;
                     //t = ty_next;
@@ -594,7 +594,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 tmin=tz_next;
                 //material_ptr = sr.material_ptr;
-                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && tmin < t) {
                     //material_ptr = object_ptr->get_material();
                     //sr.material_ptr = material_ptr;
                     t=t_before;

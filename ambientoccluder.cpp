@@ -19,13 +19,13 @@ Vector AmbientOccluder::get_direction(ShadeRec &sr)
 {
     Point sp = sampler_ptr->sample_hemisphere();
 
-    return sp.X * u + sp.Y + v + sp.Z * w;
+    return sp.X * u + sp.Y * v + sp.Z * w;
 }
 
 RGBColor AmbientOccluder::L(ShadeRec &sr)
 {
     w = sr.normal;
-    v = w ^ Vector(.00073, 1.0, .00034);
+    v = w ^ Vector(-0.0073, 1.0, 0.0034);
     v.normalize();
     u = v ^ w;
     Vector get_d = get_direction(sr);
@@ -43,7 +43,7 @@ bool AmbientOccluder::in_shadow(Ray &ray, ShadeRec &sr)
     int num_objects = sr.w->objects.size();
 
     for (int j = 0; j < num_objects; j++)
-        if (sr.w->objects[j]->shadow_hit(ray, t) && t > kEpsilon)
+        if (sr.w->objects[j]->shadow_hit(ray, t) && t > kEpsilon * 100.0f)
             return true;
 
     return false;

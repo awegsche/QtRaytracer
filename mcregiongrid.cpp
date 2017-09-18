@@ -250,7 +250,6 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
 bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
 {
-    Material* mat_ptr;
     double ox = ray.o.X;
     double oy = ray.o.Y;
     double oz = ray.o.Z;
@@ -401,59 +400,59 @@ bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
     if (ty_next < 0) ty_next = kHugeValue;
     if (tz_next < 0) tz_next = kHugeValue;
     // traverse the grid
-    t = kHugeValue;
-    real t_before = kHugeValue;
+    //t = kHugeValue;
+    //real t_before = kHugeValue;
 
     while (true) {
         GeometricObject* block_ptr = cells[ix + nx * iy + nx * ny * iz];
         if (tx_next < ty_next && tx_next < tz_next) {
-            real tmin = tx_next - kEpsilon;
-            if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
-
-                //material_ptr = object_ptr->get_material();
-                t = tx_next;
-
+            //real tmin = tx_next - kEpsilon;
+            //Material* mptr = sr.material_ptr;
+            if (block_ptr && block_ptr->shadow_hit(ray, t) && t < tx_next) {
 
                 return (true);
             }
-            t_before = tx_next;
+            //sr.material_ptr = mptr;
             tx_next += dtx;
             ix += ix_step;
 
-            if (ix == ix_stop)
+            if (ix == ix_stop) {
                 return (false);
+            }
         }
         else {
             if (ty_next < tz_next) {
-                real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
+                //Material* mptr = sr.material_ptr;
+                //real tmin = ty_next - kEpsilon;
+                if (block_ptr && block_ptr->shadow_hit(ray, t) && t < ty_next) {
                     //material_ptr = object_ptr->get_material();
-                    t = ty_next;
 
                     return (true);
                 }
-
-                t_before = ty_next;
+                //sr.material_ptr = mptr;
                 ty_next += dty;
                 iy += iy_step;
+                //mat_ptr
 
-                if (iy == iy_stop)
+                if (iy == iy_stop) {
                     return (false);
+                }
             }
             else {
-                real tmin = tz_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, tmin) && tmin < t) {
-                    //material_ptr = object_ptr->get_material();
+                //Material* mptr = sr.material_ptr;
+                //real tmin = tz_next - kEpsilon;
+                //material_ptr = sr.material_ptr;
+                if (block_ptr && block_ptr->shadow_hit(ray, t) && t < tz_next) {
 
-                    t = tz_next;
                     return (true);
                 }
-                t_before = tz_next;
+                //sr.material_ptr = mptr;
                 tz_next += dtz;
                 iz += iz_step;
 
-                if (iz == iz_stop)
+                if (iz == iz_stop) {
                     return (false);
+                }
             }
         }
     }

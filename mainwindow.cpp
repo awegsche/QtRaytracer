@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_downsampling = 3;
     i_downsampling = m_downsampling;
 
-    _world = new PreviewWorld(i_downsampling, 8);
+    _world = new PreviewWorld(i_downsampling, 4);
 
     _world->build();
 
@@ -101,7 +101,7 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
         for (int j = 0; j < i_downsampling; j++)
             _image.setPixel(y * i_downsampling + j, (i_height - x * i_downsampling) - i - 1, rgb);
     //this->setWindowTitle(QString::number(x) + ", " + QString::number(y));
-    if (clock.elapsed() > 33) {
+    if (clock.elapsed() > 50) {
         _display->repaint();
         //ui->label->setPixmap(QPixmap::fromImage(_image));
         clock.restart();

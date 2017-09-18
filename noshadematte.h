@@ -8,6 +8,7 @@ class NoShadeMatte : public Matte
 public:
     NoShadeMatte();
     NoShadeMatte(float ka_, float kd_, float r_, float g_, float b_);
+    NoShadeMatte(float ka_, float kd_, Texture* t);
 
 
     // Material interface

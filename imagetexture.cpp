@@ -27,8 +27,8 @@ ImageTexture::ImageTexture(const QString &filename, int sprite_width, int sprite
                 texels[x + y * width] = RGBColor(col);
                 transparency[x + y * width] = (byte)((col & 0xFF000000) >> 24);
             }
-        width = sprite_width;
-        height = sprite_height;
+//        width = sprite_width;
+//        height = sprite_height;
     }
     else
     {

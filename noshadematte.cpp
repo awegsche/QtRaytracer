@@ -16,6 +16,12 @@ NoShadeMatte::NoShadeMatte(float ka_, float kd_, float r_, float g_, float b_)
 
 }
 
+NoShadeMatte::NoShadeMatte(float ka_, float kd_, Texture *t)
+    : Matte(ka_, kd_, t)
+{
+
+}
+
 RGBColor NoShadeMatte::shade(ShadeRec &sr)
 {
     Vector wo = -sr.ray.d;

@@ -5,13 +5,17 @@
 
 TextureHolder::TextureHolder()
 {
-    //QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
+#ifndef WIN64 | WIN32
+    QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
+#else
     QString texturepath = "G:\\Games\\Minecraft\\res\\minecraft\\textures\\blocks\\";
-
+#endif
 
 
     textures.insert(1, new ImageTexture(texturepath + "stone.png"));
     textures.insert(2, new ImageTexture(texturepath + "grass_side.png"));
+    textures.insert(12, new ImageTexture(texturepath + "sand.png"));
+    textures.insert(60 + 1024, new ImageTexture(texturepath + "farmland_dry.png"));
 
     ImageTexture* t = new ImageTexture(texturepath + "grass_top.png");
     t->colorize(RGBColor(.0, 1.0, .0));

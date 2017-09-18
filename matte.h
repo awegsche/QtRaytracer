@@ -25,6 +25,10 @@ public:
     // Material interface
 public:
     RGBColor shade(ShadeRec &sr);
+
+    // Material interface
+public:
+    RGBColor noshade(ShadeRec &sr);
 };
 
 #endif // MATTE_H
