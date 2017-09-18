@@ -13,7 +13,7 @@ public:
     std::vector<Normal> normals;
     std::vector<real> u;
     std::vector<real> v;
-    std::vector<std::vector<int>> vertex_faces;
+    std::vector<std::vector<int> > vertex_faces;
     int num_vertices;
     int num_triangles;
 

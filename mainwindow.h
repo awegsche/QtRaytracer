@@ -12,6 +12,12 @@
 #include "imagedisplay.h"
 #include "previewworld.h"
 
+#ifdef WIN64 | WIN32
+    const QString STR_REGIONSPATH = QString("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Alkas/region");
+#else
+    const QString STR_REGIONSPATH = QString("/home/awegsche/Dropbox/Minecraft Save");
+#endif
+
 namespace Ui {
 class MainWindow;
 }
@@ -44,7 +50,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    void loadchunk(int y_, int x_);
+    void loadchunk(const QString& path, int y_, int x_);
     
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);
@@ -54,5 +60,7 @@ public slots:
 protected:
     void keyPressEvent(QKeyEvent *event);
 };
+
+void checkPaths();
 
 #endif // MAINWINDOW_H

@@ -8,11 +8,12 @@
 #include <QDebug>
 #include "mcworld.h"
 #include "nbtfilereader.h"
+#include <QDir>
 
 
-void MainWindow::loadchunk(int y_, int x_)
+void MainWindow::loadchunk(const QString& path, int y_, int x_)
 {
-    QString path_ = QString("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Alkas/region/r.%1.%2.mca")
+    QString path_ =  path + QDir::separator() + QString("r.%1.%2.mca")
             .arg(QString::number(y_)).arg(QString::number(x_));
 
     NBTFileReader F(path_);
@@ -40,16 +41,16 @@ MainWindow::MainWindow(QWidget *parent) :
     _world->build();
 
 
-    loadchunk(0, 0);
-  /*  loadchunk(0, -1);
-    loadchunk(0, -2);
-    loadchunk(0, -3);
-    loadchunk(1, 0);
-    loadchunk(-1, 0);
-    loadchunk(1, -1);
-    loadchunk(-1, -1);
-    loadchunk(1, -2);
-    loadchunk(1, -3);*/
+    loadchunk(STR_REGIONSPATH, 0, 0);
+  /*  loadchunk(STR_REGIONSPATH, 0, -1);
+    loadchunk(STR_REGIONSPATH, 0, -2);
+    loadchunk(STR_REGIONSPATH, 0, -3);
+    loadchunk(STR_REGIONSPATH, 1, 0);
+    loadchunk(STR_REGIONSPATH, -1, 0);
+    loadchunk(STR_REGIONSPATH, 1, -1);
+    loadchunk(STR_REGIONSPATH, -1, -1);
+    loadchunk(STR_REGIONSPATH, 1, -2);
+    loadchunk(STR_REGIONSPATH, 1, -3);*/
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
     //ui->treeView->setModel(W);
@@ -144,3 +145,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     _world->start();
 }
 
+
+void checkPaths()
+{
+
+}
