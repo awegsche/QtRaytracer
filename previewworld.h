@@ -28,6 +28,8 @@ public:
 
 
     // QThread interface
+    void set_sampler(const int nsamples = -1);
+
 protected:
     void run();
 };

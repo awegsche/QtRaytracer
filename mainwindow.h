@@ -12,7 +12,7 @@
 #include "imagedisplay.h"
 #include "previewworld.h"
 
-#ifdef WIN64 | WIN32
+#ifdef WIN64
     const QString STR_REGIONSPATH = QString("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Alkas/region");
 #else
     const QString STR_REGIONSPATH = QString("/home/awegsche/Dropbox/Minecraft Save");
@@ -27,10 +27,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     QPixmap _pixmap;
     QImage _image;
-    PreviewWorld* _world;
 
     QTime clock;
     QTime clock2;
+
+public:
+    PreviewWorld* _world;
+
     int i_width;
     int i_height;
     int i_downsampling;
@@ -43,14 +46,26 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void render();
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_camPosX_editingFinished();
+
+    void on_camPosY_editingFinished();
+
+    void on_camPosZ_editingFinished();
+
+    void on_distanceSlider_sliderMoved(int position);
+
+    void on_supersamplingBox_editingFinished();
 
 private:
     Ui::MainWindow *ui;
 
     void loadchunk(const QString& path, int y_, int x_);
+    void update_camera_info();
     
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);

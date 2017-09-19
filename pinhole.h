@@ -31,6 +31,10 @@ public:
     void set_zoom(double z);
     void rescale_zoom(double a);
     void set_distance(double distance);
+
+    double get_distance() const {
+        return d;
+    }
 };
 
 #endif // PINHOLE_H

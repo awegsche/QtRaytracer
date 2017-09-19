@@ -9,6 +9,8 @@
 #include "mcworld.h"
 #include "nbtfilereader.h"
 #include <QDir>
+#include "pinhole.h"
+#include <QApplication>
 
 
 void MainWindow::loadchunk(const QString& path, int y_, int x_)
@@ -23,12 +25,25 @@ void MainWindow::loadchunk(const QString& path, int y_, int x_)
     _world->add_chunks(W, y_, x_);
 }
 
+void MainWindow::update_camera_info()
+{
+    ui->camPosX->setValue(_world->camera_ptr->eye.X);
+    ui->camPosY->setValue(_world->camera_ptr->eye.Y);
+    ui->camPosZ->setValue(_world->camera_ptr->eye.Z);
+    ui->camDirX->setValue(_world->camera_ptr->v.X);
+    ui->camDirY->setValue(_world->camera_ptr->v.Y);
+    ui->camDirZ->setValue(_world->camera_ptr->v.Z);
+
+    double d = ((Pinhole*)_world->camera_ptr)->get_distance();
+    ui->distanceSlider->setValue((int)d);
+    ui->distanceValue->setText(QString::number(d, 'g', 1));
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 
 
 
@@ -64,7 +79,8 @@ MainWindow::MainWindow(QWidget *parent) :
     i_height = _world->vp.vres;
 
 
-    _display = new ImageDisplay(this);
+    _display = new ImageDisplay(this, this);
+
     _display->setImage(&_image);
     ((QVBoxLayout*)ui->frame->layout())->insertWidget(0, _display);
 
@@ -122,31 +138,56 @@ void MainWindow::done()
                             .arg((float)(_world->vp.hres * _world->vp.vres) / elapsed * 1000.0));
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
+void MainWindow::render()
 {
-    qDebug() << QString("%1 pressed").arg(event->key());
-
-    last_line = 0;
-    i_downsampling = m_downsampling;
-    if (event->key() == Qt::Key_Space)
-    {
-        _world->preview = false;
-
-        i_downsampling = 1;
-    }
-    else
-        _world->Keypressed(event->key());
     clock.start();
     clock2.start();
     if (_world->isRunning()){
        _world->running = false;
        _world->wait();
     }
+    update_camera_info();
     _world->start();
+}
+
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+
 }
 
 
 void checkPaths()
 {
 
+}
+
+void MainWindow::on_camPosX_editingFinished()
+{
+    this->_world->camera_ptr->eye.X = ui->camPosX->value();
+    render();
+}
+
+void MainWindow::on_camPosY_editingFinished()
+{
+    this->_world->camera_ptr->eye.Y = ui->camPosY->value();
+    render();
+}
+
+void MainWindow::on_camPosZ_editingFinished()
+{
+    this->_world->camera_ptr->eye.Z = ui->camPosZ->value();
+    render();
+}
+
+void MainWindow::on_distanceSlider_sliderMoved(int position)
+{
+    Pinhole *p = static_cast<Pinhole*>(_world->camera_ptr);
+    p->set_distance((double) position);
+    render();
+}
+
+void MainWindow::on_supersamplingBox_editingFinished()
+{
+    _world->set_sampler(ui->supersamplingBox->value());
 }

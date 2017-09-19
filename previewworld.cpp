@@ -9,18 +9,27 @@ PreviewWorld::PreviewWorld(int dowmsampling, int supersampling)
 
 }
 
-void PreviewWorld::build()
+void PreviewWorld::set_sampler(const int nsamples)
 {
-    World::build();
-
+    if (nsamples != -1)
+        num_samples = nsamples;
     vp.sampler_ptr = new PureRandom(num_samples);
     vp.sampler_ptr->generate_samples();
 
     auto ao = new AmbientOccluder(2.2, .3, 1.0, 1.0, 1.0);
-    auto amb = new Ambient(1.5, 1,1,1);
     ao->set_sampler(new PureRandom(num_samples));
-
     render_ambient = ao;
+
+}
+
+void PreviewWorld::build()
+{
+    World::build();
+
+    set_sampler();
+
+    auto amb = new Ambient(1.5, 1,1,1);
+
     preview_ambient = amb;
 
 

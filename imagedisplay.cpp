@@ -1,10 +1,14 @@
 #include "imagedisplay.h"
 #include <QPainter>
 #include <QDebug>
+#include "mainwindow.h"
+#include <QKeyEvent>
 
-ImageDisplay::ImageDisplay(QWidget *parent) : QWidget(parent) {
+ImageDisplay::ImageDisplay(MainWindow *w, QWidget *parent) : QWidget(parent) {
   m_image = 0;
   setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  setFocusPolicy(Qt::ClickFocus);
+  mw = w;
 }
 
 void ImageDisplay::setImage(QImage *image) {
@@ -27,4 +31,24 @@ void ImageDisplay::paintEvent(QPaintEvent*) {
 QSize ImageDisplay::sizeHint() const
 {
     return m_image->size();
+}
+
+void ImageDisplay::keyPressEvent(QKeyEvent *event)
+{
+//    QKeyEvent *event = static_cast<QKeyEvent *>(e);
+    qDebug() << QString("%1 pressed").arg(event->key());
+
+
+
+    mw->last_line = 0;
+    mw->i_downsampling = mw->m_downsampling;
+    if (event->key() == Qt::Key_Space)
+    {
+        mw->_world->preview = false;
+
+        mw->i_downsampling = 1;
+    }
+    else
+        mw->_world->Keypressed(event->key());
+    mw->render();
 }

@@ -1,17 +1,22 @@
 #ifndef IMAGEDISPLAY_H
 #define IMAGEDISPLAY_H
 
+#include "previewworld.h"
+
 #include <QObject>
 #include <QWidget>
+
+class MainWindow;
 
 class ImageDisplay : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ImageDisplay(QWidget *parent = 0);
+    explicit ImageDisplay(MainWindow *w, QWidget *parent = 0);
     void setImage(QImage *image);
 
 
+    MainWindow* mw;
 
 signals:
 
@@ -27,6 +32,10 @@ private:
     // QWidget interface
 public:
     QSize sizeHint() const;
+
+    // QWidget interface
+protected:
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // IMAGEDISPLAY_H
