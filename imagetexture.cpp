@@ -52,5 +52,20 @@ RGBColor ImageTexture::get_color(const ShadeRec &sr)
     int iu = sr.u * width;
     int iv = sr.v * height;
 
+//    float cx = sr.t /60.0;
+//    float cy = 0.0f;
+//    float cz = 0.0f;
+
+//    if (cx > 1.0) {
+//        cz=1.0f;
+
+//        cx=0.0f;
+//    }
+////    if (cy < 0)
+////        cz += .5;
+////    if (cz < 0)
+////        cx += .5;
+
+//    return RGBColor(cx, cy, cz);
     return texels[iu + iv * width];
 }

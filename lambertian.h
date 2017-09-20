@@ -6,7 +6,7 @@
 
 class Lambertian : public BRDF
 {
-private:
+public:
     float kd;
     Texture* cd;
 
@@ -18,6 +18,7 @@ public:
     void set_k(float k);
     void set_color(const RGBColor& color);
     void set_color(Texture* t);
+
 
     // BRDF interface
 public:

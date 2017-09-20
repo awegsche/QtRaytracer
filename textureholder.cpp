@@ -5,7 +5,7 @@
 
 TextureHolder::TextureHolder()
 {
-#ifndef WIN64 | WIN32
+#ifndef WIN64
     QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
 #else
     QString texturepath = "G:\\Games\\Minecraft\\res\\minecraft\\textures\\blocks\\";

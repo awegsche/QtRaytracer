@@ -33,7 +33,7 @@ RGBColor Phong::shade(ShadeRec &sr)
             bool in_shadow = false;
             if(sr.w->lights[j]->casts_shadows())
             {
-                Ray shadowray(sr.hitPoint, wi);
+                Ray shadowray(sr.hitPoint + kEpsilon * sr.normal, wi);
                 in_shadow = sr.w->lights[j]->in_shadow(shadowray, sr);
             }
 

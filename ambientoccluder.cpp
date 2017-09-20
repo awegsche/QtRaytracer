@@ -29,7 +29,7 @@ RGBColor AmbientOccluder::L(ShadeRec &sr)
     v.normalize();
     u = v ^ w;
     Vector get_d = get_direction(sr);
-    Ray shadow_ray(sr.hitPoint, get_d);
+    Ray shadow_ray(sr.local_hit_point + 0.001 * sr.normal, get_d);
     if (in_shadow(shadow_ray, sr))
         return min_amount * ls * color;
     else
@@ -43,7 +43,7 @@ bool AmbientOccluder::in_shadow(Ray &ray, ShadeRec &sr)
     int num_objects = sr.w->objects.size();
 
     for (int j = 0; j < num_objects; j++)
-        if (sr.w->objects[j]->shadow_hit(ray, t) && t > kEpsilon * 100.0f)
+        if (sr.w->objects[j]->shadow_hit(ray, t) && t > kEpsilon)
             return true;
 
     return false;

@@ -67,12 +67,12 @@ void World::build() {
     //add_object(grid_ptr);
 
     Matte* mat1 = new Matte(.8, .8, .8, .8, 1.0);
+*/
+//    Sphere *kugel = new Sphere(Point(400, 70, 60), 10);
+//    Phong *phong = new Phong(.3, .5, .6, 2, 0,1,1);
+//    kugel->set_material(phong);
+//    add_object(kugel);
 
-    Sphere *kugel = new Sphere(Point(50, 0, 0), 10);
-    Phong *phong = new Phong(.3, .5, .6, 2, 0,1,1);
-    kugel->set_material(phong);
-    add_object(kugel);
-    */
 /*
     Plane* rear_ptr = new Plane();
     rear_ptr->set_casts_shadow(false);
@@ -114,9 +114,9 @@ void World::build() {
     //add_object(floor);
 
 */
-    PointLight* l = new PointLight(2.2,
+    PointLight* l = new PointLight(1.8,
                                   1.0, 1.0, 1.0,
-                                  1000, 3000, 2000);
+                                  1000, 1000, 2000);
     l->set_shadows(true);
     add_light(l);
 

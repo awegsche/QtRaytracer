@@ -34,6 +34,7 @@ void World::setup_blocklist(TextureHolder *th)
     for (int i = 1; i < 256; i++)
     {
         MCBlock* block = new MCBlock();
+        block->_id = (BlockID)i;
         Texture* sidetext = th->get_side(i);
         if (sidetext != nullptr) {
             Matte* matside = new Matte(.4, .8, 0,0,0);
@@ -176,19 +177,20 @@ ShadeRec World::hit_objects(const Ray &ray)
     int num_objects = objects.size();
 
     for(int j = 0; j < num_objects; j++)
-        if (objects[j]->hit(ray, t, sr) && t < tmin) {
+       if (objects[j]->hit(ray, t, sr) && t < tmin) {
             sr.hit_an_object = true;
             tmin = t;
             //sr.material_ptr = objects[j]->get_material(); // moved to hit function
             sr.hitPoint = ray.o + t * ray.d;
             mat_ptr = sr.material_ptr;
             normal = sr.normal;
-            local_hit_point = sr.local_hit_point;
+            local_hit_point = sr.hitPoint;
         }
     if (sr.hit_an_object) {
         sr.t = tmin;
         sr.normal = normal;
         sr.local_hit_point = local_hit_point;
+        sr.hitPoint = local_hit_point;
         sr.material_ptr = mat_ptr;
     }
 

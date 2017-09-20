@@ -48,6 +48,7 @@ void Matte::set_color(Texture *t)
 
 RGBColor Matte::shade(ShadeRec &sr)
 {
+//    return ambient_brdf->cd->get_color(sr);
     Vector wo = -sr.ray.d;
     RGBColor L = ambient_brdf->rho(sr, wo) * sr.w->ambient_ptr->L(sr);
     int numLights = sr.w->lights.size();
@@ -62,7 +63,7 @@ RGBColor Matte::shade(ShadeRec &sr)
             bool in_shadow = false;
             if(sr.w->lights[j]->casts_shadows())
             {
-                Ray shadowray(sr.local_hit_point + wi*0.001, wi);
+                Ray shadowray(sr.local_hit_point + 0.001 * sr.normal, wi);
                 in_shadow = sr.w->lights[j]->in_shadow(shadowray, sr);
             }
 

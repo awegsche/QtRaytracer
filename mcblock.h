@@ -3,6 +3,19 @@
 
 #include "geometricobject.h"
 
+enum BlockID {
+    Stone =     1,
+    GrassSide = 2,
+    Dirt =      3,
+    WaterFlow = 8,
+    WaterStill = 9,
+    Sand =      12,
+    LogOak =    17,
+    LeavesOak = 18,
+    FarmLand =  60,
+
+};
+
 class MCBlock : public GeometricObject
 {
 public:
@@ -11,6 +24,7 @@ public:
 
     Material* mat_top;
     Material* mat_side;
+    BlockID _id;
 
     // GeometricObject interface
 public:

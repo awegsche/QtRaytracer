@@ -36,7 +36,7 @@ void MainWindow::update_camera_info()
 
     double d = ((Pinhole*)_world->camera_ptr)->get_distance();
     ui->distanceSlider->setValue((int)d);
-    ui->distanceValue->setText(QString::number(d, 'g', 1));
+    ui->distanceValue->setText(QString::number(d, 'f', 1));
 }
 
 MainWindow::MainWindow(QWidget *parent) :
