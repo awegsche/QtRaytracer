@@ -131,6 +131,11 @@ void Pinhole::set_zoom(double z)
     zoom = z;
 }
 
+double Pinhole::get_zoom() const
+{
+    return zoom;
+}
+
 void Pinhole::rescale_zoom(double a)
 {
     zoom *= a;

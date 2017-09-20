@@ -75,8 +75,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>536</width>
-            <height>343</height>
+            <width>544</width>
+            <height>352</height>
            </rect>
           </property>
           <attribute name="label">
@@ -97,8 +97,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>536</width>
-            <height>343</height>
+            <width>544</width>
+            <height>352</height>
            </rect>
           </property>
           <attribute name="label">
@@ -260,7 +260,7 @@
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>1000</number>
+            <number>2000</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -336,6 +336,57 @@
             <number>4</number>
            </property>
           </widget>
+          <widget class="QLabel" name="label_5">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>160</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Focus</string>
+           </property>
+          </widget>
+          <widget class="QSlider" name="focusSlider">
+           <property name="geometry">
+            <rect>
+             <x>130</x>
+             <y>160</y>
+             <width>251</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="focusValue">
+           <property name="geometry">
+            <rect>
+             <x>390</x>
+             <y>160</y>
+             <width>58</width>
+             <height>14</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>value</string>
+           </property>
+          </widget>
          </widget>
         </widget>
        </item>
@@ -350,7 +401,7 @@
      <x>0</x>
      <y>0</y>
      <width>675</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

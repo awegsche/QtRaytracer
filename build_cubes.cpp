@@ -14,6 +14,7 @@
 #include "phong.h"
 #include "ambientoccluder.h"
 #include "PureRandom.h"
+#include "thinlens.h"
 
 const real DIST = 20.0;
 const int EDGE = 100;
@@ -115,21 +116,12 @@ void World::build() {
 
 */
     PointLight* l = new PointLight(1.8,
-                                  1.0, 1.0, 1.0,
-                                  1000, 1000, 2000);
+                                  1.0, .4, .1,
+                                  1000, 500, 2000);
     l->set_shadows(true);
     add_light(l);
 
 
 
-    Pinhole* ph_ptr = new Pinhole();
-    ph_ptr->set_eye(-0,250,200);
-    ph_ptr->set_lookat(0,0,0);
-    //ph_ptr->set_lookat(186,88,266);
-    ph_ptr->set_distance(100);
-    ph_ptr->set_zoom(10);
-    ph_ptr->set_up(0,1,0);
 
-    ph_ptr->compute_uvw();
-    camera_ptr = ph_ptr;
 }

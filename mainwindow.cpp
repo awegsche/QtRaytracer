@@ -11,6 +11,8 @@
 #include <QDir>
 #include "pinhole.h"
 #include <QApplication>
+#include "thinlens.h"
+#include "PureRandom.h"
 
 
 void MainWindow::loadchunk(const QString& path, int y_, int x_)
@@ -34,9 +36,9 @@ void MainWindow::update_camera_info()
     ui->camDirY->setValue(_world->camera_ptr->v.Y);
     ui->camDirZ->setValue(_world->camera_ptr->v.Z);
 
-    double d = ((Pinhole*)_world->camera_ptr)->get_distance();
-    ui->distanceSlider->setValue((int)d);
-    ui->distanceValue->setText(QString::number(d, 'f', 1));
+//    double d = ((Pinhole*)_world->camera_ptr)->get_zoom();
+//    ui->distanceSlider->setValue((int)(d*10));
+//    ui->distanceValue->setText(QString::number(d, 'f', 1));
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -44,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    _aperture = 1.0;
 
 
     //ui->label->setPixmap(QPixmap::fromImage(_image));
@@ -53,7 +55,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _world = new PreviewWorld(i_downsampling, 4);
 
+    ThinLens* ph_ptr = new ThinLens();
+    ph_ptr->set_eye(250,250,200);
+    ph_ptr->set_lookat(250,0,0);
+    ph_ptr->set_sampler(new PureRandom(4));
+    //ph_ptr->set_lookat(186,88,266);
+    ph_ptr->set_distance(100);
+    ph_ptr->set_zoom(10);
+    ph_ptr->set_up(0,1,0);
+
+    ph_ptr->compute_uvw();
+    _world->camera_ptr = ph_ptr;
+
+
     _world->build();
+
 
 
     loadchunk(STR_REGIONSPATH, 0, 0);
@@ -182,12 +198,37 @@ void MainWindow::on_camPosZ_editingFinished()
 
 void MainWindow::on_distanceSlider_sliderMoved(int position)
 {
-    Pinhole *p = static_cast<Pinhole*>(_world->camera_ptr);
-    p->set_distance((double) position);
-    render();
+    ThinLens *p = static_cast<ThinLens*>(_world->camera_ptr);
+    double zoom = (double) position / 100.0;
+    p->set_zoom(zoom);
+    ui->distanceValue->setText(QString::number(zoom, 'f', 1));
 }
 
 void MainWindow::on_supersamplingBox_editingFinished()
 {
     _world->set_sampler(ui->supersamplingBox->value());
+    ThinLens *p = static_cast<ThinLens*>(_world->camera_ptr);
+    p->set_sampler(new PureRandom(ui->supersamplingBox->value()));
+}
+
+void MainWindow::on_focusSlider_sliderReleased()
+{
+    ThinLens *p = static_cast<ThinLens*>(_world->camera_ptr);
+    double zalt = p->get_distance();
+    double zoom = (double) ui->focusSlider->value() / 100.0;
+    p->set_distance(zoom);
+    ui->focusValue->setText(QString::number(zoom, 'f', 1));
+    double q = zalt / zoom;
+    ui->distanceSlider->setValue(ui->distanceSlider->value() * q);
+    p->set_zoom(p->get_zoom() * q);
+    ui->distanceValue->setText(QString::number(p->get_zoom(), 'f', 1));
+
+    render();
+
+}
+
+void MainWindow::on_distanceSlider_sliderReleased()
+{
+    render();
+
 }

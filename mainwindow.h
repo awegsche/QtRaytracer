@@ -38,6 +38,7 @@ public:
     int i_height;
     int i_downsampling;
     int m_downsampling;
+    double _aperture;
 
     // for updating the pixmap:
     int last_line;
@@ -60,6 +61,10 @@ private slots:
     void on_distanceSlider_sliderMoved(int position);
 
     void on_supersamplingBox_editingFinished();
+
+    void on_focusSlider_sliderReleased();
+
+    void on_distanceSlider_sliderReleased();
 
 private:
     Ui::MainWindow *ui;

@@ -9,7 +9,7 @@
 
 class Pinhole : public Camera
 {
-private:
+protected:
     double d;
     double zoom;
 
@@ -29,6 +29,7 @@ public:
     void render_scene(World &w);
 
     void set_zoom(double z);
+    double get_zoom() const;
     void rescale_zoom(double a);
     void set_distance(double distance);
 
