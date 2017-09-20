@@ -1,6 +1,7 @@
 #include "textureholder.h"
 #include <QString>
 #include "rgbcolor.h"
+#include "mcblock.h"
 
 
 TextureHolder::TextureHolder()
@@ -14,6 +15,8 @@ TextureHolder::TextureHolder()
 
     textures.insert(1, new ImageTexture(texturepath + "stone.png"));
     textures.insert(2, new ImageTexture(texturepath + "grass_side.png"));
+    textures.insert(BlockID::CobbleStone, new ImageTexture(texturepath + "cobblestone.png"));
+    textures.insert(BlockID::OakWoodPlank, new ImageTexture(texturepath + "planks_oak.png"));
     textures.insert(12, new ImageTexture(texturepath + "sand.png"));
     textures.insert(60 + 1024, new ImageTexture(texturepath + "farmland_dry.png"));
 

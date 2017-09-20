@@ -274,7 +274,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
             MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
 
-            if (block_ptr && block_ptr->hit(ray, t_before, sr) && t_before < tz_next && t_before < ty_next) {
+            if (block_ptr && block_ptr->block_hit(ray, tx_next, ty_next, tz_next, t_before, sr))  {
                 t = t_before;
 
 
@@ -298,8 +298,8 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                 }
 
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
-                real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->hit(ray, t_before, sr) && t_before < tz_next && t_before < tx_next) {
+                real tmin = ty_next;
+                if (block_ptr && block_ptr->block_hit(ray, tx_next, ty_next, tz_next, t_before, sr)) {
                     //material_ptr = object_ptr->get_material();
                     t=t_before;
                     //t = ty_next;
@@ -326,7 +326,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 tmin=tz_next;
                 //material_ptr = sr.material_ptr;
-                if (block_ptr && block_ptr->hit(ray, t_before, sr) && t_before < ty_next && t_before < tx_next) {
+                if (block_ptr && block_ptr->block_hit(ray, tx_next, ty_next, tz_next, t_before, sr))  {
                     //material_ptr = object_ptr->get_material();
                     //sr.material_ptr = material_ptr;
                     t=t_before;

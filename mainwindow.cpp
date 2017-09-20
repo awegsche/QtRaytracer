@@ -232,3 +232,10 @@ void MainWindow::on_distanceSlider_sliderReleased()
     render();
 
 }
+
+void MainWindow::on_dial_sliderReleased()
+{
+    double ap = (double)ui->dial->value() / 500.0;
+    _aperture = ap;
+    ui->apertureValue->setText(QString::number(ap, 'f', 2));
+}

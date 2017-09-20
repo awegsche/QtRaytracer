@@ -66,6 +66,8 @@ private slots:
 
     void on_distanceSlider_sliderReleased();
 
+    void on_dial_sliderReleased();
+
 private:
     Ui::MainWindow *ui;
 

@@ -14,7 +14,7 @@ ImageTexture::ImageTexture(const QString &filename, int sprite_width, int sprite
 
         m_filename = filename;
 
-        height = i.height();
+        height = i.width();
         width = i.width();
 
         texels.resize(width * height);

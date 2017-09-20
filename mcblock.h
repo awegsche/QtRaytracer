@@ -7,6 +7,8 @@ enum BlockID {
     Stone =     1,
     GrassSide = 2,
     Dirt =      3,
+    CobbleStone = 4,
+    OakWoodPlank = 5,
     WaterFlow = 8,
     WaterStill = 9,
     Sand =      12,
@@ -29,6 +31,7 @@ public:
     // GeometricObject interface
 public:
     bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const;
+    bool block_hit(const Ray &ray, real &tx, real &ty, real &tz, real &tmin, ShadeRec &sr) const;
     bool shadow_hit(const Ray &ray, real &tmin) const;
 };
 
