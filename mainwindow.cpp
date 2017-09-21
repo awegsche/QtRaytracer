@@ -67,6 +67,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ph_ptr->compute_uvw();
     _world->camera_ptr = ph_ptr;
 
+    ui->focusSlider->setValue(10000);
+    ui->focusValue->setText("100.0");
+    ui->distanceSlider->setValue(1000);
+    ui->distanceValue->setText("10.0");
+    ui->apertureValue->setText("1.0");
+    ui->dial->setValue(500);
 
     _world->build();
 
