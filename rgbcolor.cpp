@@ -93,6 +93,11 @@ RGBColor &RGBColor::operator*=(const RGBColor &c)
     return *this;
 }
 
+uint RGBColor::to_uint() const
+{
+    return (uint)((int)(r * 255) << 16 | (int)(g * 255) << 8 | (int)(b * 255));
+}
+
 
 
 RGBColor operator/(const RGBColor &c, float f)

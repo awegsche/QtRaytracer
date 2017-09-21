@@ -76,6 +76,7 @@ private:
     
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);
+    void display_line(const int line, const uint *rgb);
     void done();
 
     // QWidget interface

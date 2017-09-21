@@ -17,18 +17,22 @@ AmbientOccluder::AmbientOccluder(real ls_, real min_value, float r, float b, flo
 
 Vector AmbientOccluder::get_direction(ShadeRec &sr)
 {
-    Point sp = sampler_ptr->sample_hemisphere();
+//    Point sp = sampler_ptr->sample_hemisphere();
 
-    return sp.X * u + sp.Y * v + sp.Z * w;
+//    return sp.X * u + sp.Y * v + sp.Z * w;
+    return Vector();
 }
 
 RGBColor AmbientOccluder::L(ShadeRec &sr)
 {
+    Vector u, v, w;
     w = sr.normal;
     v = w ^ Vector(-0.0073, 1.0, 0.0034);
     v.normalize();
     u = v ^ w;
-    Vector get_d = get_direction(sr);
+    Point sp = sampler_ptr->sample_hemisphere();
+    Vector get_d = sp.X * u + sp.Y * v + sp.Z * w;
+
     Ray shadow_ray(sr.local_hit_point + 0.001 * sr.normal, get_d);
     if (in_shadow(shadow_ray, sr))
         return min_amount * ls * color;

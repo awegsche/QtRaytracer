@@ -9,13 +9,13 @@
 
 class Pinhole : public Camera
 {
-protected:
+public:
     double d;
     double zoom;
 
 public:
 
-    Pixel render_pixel(const ConcurrentStruct &input);
+    virtual Pixel render_pixel(const ConcurrentStruct &input);
 
 public:
     Pinhole();

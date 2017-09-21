@@ -342,6 +342,7 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
 bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 {
+
     double ox = ray.o.X;
     double oy = ray.o.Y;
     double oz = ray.o.Z;

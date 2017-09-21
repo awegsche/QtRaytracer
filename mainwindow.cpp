@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //ui->label->setPixmap(QPixmap::fromImage(_image));
-    m_downsampling = 3;
+    m_downsampling = 1;
     i_downsampling = m_downsampling;
 
     _world = new PreviewWorld(i_downsampling, 4);
@@ -93,6 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _image.setPixel(10, 10, 0xFF0000);
 
     i_height = _world->vp.vres;
+    i_width = _world->vp.hres;
 
 
     _display = new ImageDisplay(this, this);
@@ -100,7 +101,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _display->setImage(&_image);
     ((QVBoxLayout*)ui->frame->layout())->insertWidget(0, _display);
 
-    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
+//    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
+    connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
     connect(_world, SIGNAL(done()), this, SLOT(done()));
 }
 
@@ -141,6 +143,22 @@ void MainWindow::display_pixel(int x, int y, int r, int g, int b)
     }
 
     //ui->label->setPixmap(QPixmap::fromImage(_image));
+}
+
+void MainWindow::display_line(const int line, const uint *rgb)
+{
+    for (int x = 0; x < i_width / i_downsampling; x++)
+        for (int i = 0; i < i_downsampling; i++)
+            for (int j = 0; j < i_downsampling; j++)
+                _image.setPixel(x * i_downsampling + j, (i_height - line * i_downsampling) - i - 1, rgb[x]);
+
+    if (clock.elapsed() > 50) {
+        _display->repaint();
+        //ui->label->setPixmap(QPixmap::fromImage(_image));
+        clock.restart();
+        ui->label_info->setText(QString("%1 s").arg((float)clock2.elapsed()/1000.0f));
+    }
+
 }
 
 void MainWindow::done()
@@ -222,13 +240,15 @@ void MainWindow::on_focusSlider_sliderReleased()
     ui->distanceSlider->setValue(ui->distanceSlider->value() * q);
     p->set_zoom(p->get_zoom() * q);
     ui->distanceValue->setText(QString::number(p->get_zoom(), 'f', 1));
-
+    i_downsampling = m_downsampling;
     render();
 
 }
 
 void MainWindow::on_distanceSlider_sliderReleased()
 {
+    i_downsampling = m_downsampling;
+
     render();
 
 }

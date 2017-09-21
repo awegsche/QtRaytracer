@@ -23,7 +23,7 @@ public:
 private:
     real ls;
     RGBColor color;
-    Vector u, v, w;
+
     Sampler* sampler_ptr;
     real min_amount;
 };

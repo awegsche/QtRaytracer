@@ -21,6 +21,34 @@ public:
     void render_scene(World &w) Q_DECL_OVERRIDE;
 
 
+
+
+
+    // Pinhole interface
+public:
+    Pixel render_pixel(const ConcurrentStruct &input) Q_DECL_OVERRIDE;
+
+
+    // QRunnable interface
+protected:
+    void render_line(ViewPlane vp, int row, World &w);
+};
+
+class ThinLensLineRenderer : public QRunnable {
+    int _line;
+    World* _w;
+    ViewPlane _vp;
+    ThinLens* _camera;
+
+//    void render_line(ViewPlane vp, int row, World &w);
+
+public:
+    ThinLensLineRenderer(const int line, World* w, const ViewPlane& vp, ThinLens* camera);
+    // QRunnable interface
+
+    ~ThinLensLineRenderer();
+public:
+    void run() Q_DECL_OVERRIDE;
 };
 
 #endif // THINLENS_H

@@ -3,7 +3,7 @@
 
 #include "rgbcolor.h"
 #include "point2d.h"
-#include "world.h"
+class World;
 
 class Pixel
 {

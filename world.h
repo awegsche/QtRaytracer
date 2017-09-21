@@ -17,6 +17,7 @@
 #include "textureholder.h"
 #include "mcblock.h"
 #include <QMap>
+#include "pixel.h"
 
 #include <vector>
 
@@ -55,13 +56,16 @@ public:
     ShadeRec hit_bare_bones_objects(const Ray &ray);
     ShadeRec hit_objects(const Ray& ray);
     void dosplay_p(int r, int c, const RGBColor &pixel_color);
-    //static Pixel display_p(Pixel& result, const Pixel& p);
+    static Pixel display_p(Pixel& result, const Pixel& p);
+
+//    void set_line(const int line, const RGBColor *line_colors);
 
    // void open_window(const int hres, const int vres) const;
     //void display(const int row, const int column, const RGBColor& pixel_color) const;
 
 signals:
     void display_pixel(int row, int column, int r, int g, int b);
+    void display_line(const int row, const uint* rgb);
     void done();
 
     // QThread interface

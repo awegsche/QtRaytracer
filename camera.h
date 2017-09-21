@@ -4,8 +4,9 @@
 #include "point.h"
 #include "vector.h"
 #include "world.h"
+#include <QRunnable>
 
-class Camera
+class Camera// : public QRunnable
 {
 public:
     Point eye;
@@ -19,6 +20,8 @@ public:
 
     void compute_uvw();
     virtual void render_scene(World &w) = 0;
+
+
     void set_eye(real x, real y, real z);
     void move_eye(real x, real y, real z);
     void move_eye_forward(real d);

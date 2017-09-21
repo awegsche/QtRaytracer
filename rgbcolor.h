@@ -29,6 +29,8 @@ public:
     RGBColor& operator/= (real f);
     RGBColor& operator*= (real f);
     RGBColor& operator*= (const RGBColor& c);
+
+    uint to_uint() const;
 };
 
 RGBColor operator/ (const RGBColor& c, float f);
