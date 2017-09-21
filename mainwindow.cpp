@@ -42,6 +42,27 @@ void MainWindow::update_camera_info()
 //    ui->distanceValue->setText(QString::number(d, 'f', 1));
 }
 
+void MainWindow::resize_display()
+{
+    _world->vp.vres = i_height;
+    _world->vp.hres = i_width;
+
+    _image = QImage(_world->vp.hres, _world->vp.vres, QImage::Format_RGB32);
+    _image.fill(0xA0FFFF);
+    _image.setPixel(10, 10, 0xFF0000);
+
+    _display->setImage(&_image);
+
+    int wmax = i_width < 1280 ? i_width : 1280;
+    int hmax = i_height < 640 ? i_height : 640;
+    _display->setFixedSize(wmax, hmax);
+    _display->adjustSize();
+    ui->frame->adjustSize();
+
+//    ui->centralWidget->layout()->
+
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -93,20 +114,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //_world->add_object(_world->world_grid);
     //ui->treeView->setModel(W);
 
-
-
-    _image = QImage(_world->vp.hres, _world->vp.vres, QImage::Format_RGB32);
-    _image.fill(0xA0FFFF);
-    _image.setPixel(10, 10, 0xFF0000);
-
-    i_height = _world->vp.vres;
-    i_width = _world->vp.hres;
-
+    i_height = 480;
+    i_width = 640;
 
     _display = new ImageDisplay(this, this);
 
-    _display->setImage(&_image);
     ((QVBoxLayout*)ui->frame->layout())->insertWidget(0, _display);
+    qDebug() <<((QVBoxLayout*)ui->frame->layout())->setAlignment(_display, Qt::AlignHCenter);
+
+    resize_display();
 
 //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
     connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
@@ -261,4 +277,18 @@ void MainWindow::on_dial_sliderReleased()
     double ap = (double)ui->dial->value() / 500.0;
     _aperture = ap;
     ui->apertureValue->setText(QString::number(ap, 'f', 2));
+}
+
+
+void MainWindow::on_spinBox_height_editingFinished()
+{
+    i_height = ui->spinBox_height->value();
+    resize_display();
+}
+
+void MainWindow::on_spinBox_width_editingFinished()
+{
+    i_width = ui->spinBox_width->value();
+    resize_display();
+
 }

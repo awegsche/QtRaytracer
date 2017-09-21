@@ -57,7 +57,7 @@ void ThinLens::render_scene(World &w)
 
     QThreadPool* pool = new QThreadPool();
 
-
+    qDebug() << vp.hres;
 
     for (int row = 0; row < vp.vres && w.running; row++) {
         //render_line(vp, row, w);

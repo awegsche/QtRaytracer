@@ -9,6 +9,7 @@ ImageDisplay::ImageDisplay(MainWindow *w, QWidget *parent) : QWidget(parent) {
   m_image = 0;
   setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   setFocusPolicy(Qt::ClickFocus);
+  setMaximumSize(1280, 640);
   mw = w;
 }
 
@@ -16,7 +17,7 @@ void ImageDisplay::setImage(QImage *image) {
   m_image = image;
 
   //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  qDebug() << m_image->size().height() << ", " ;
+  qDebug() << m_image->size().width() << ", " << m_image->size().width();
   repaint();
 
 
@@ -31,6 +32,7 @@ void ImageDisplay::save_image(const QString &filename) const
 void ImageDisplay::paintEvent(QPaintEvent*) {
   if (!m_image) { return; }
   QPainter painter(this);
+  qDebug() << m_image->size().width() << ", " << m_image->size().width();
   painter.drawImage(rect(), *m_image, m_image->rect());
 }
 

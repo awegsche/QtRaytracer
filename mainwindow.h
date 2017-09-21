@@ -49,6 +49,8 @@ public:
     ~MainWindow();
     void render();
 
+    void resize_display();
+
 private slots:
     void on_pushButton_clicked();
 
@@ -67,6 +69,11 @@ private slots:
     void on_distanceSlider_sliderReleased();
 
     void on_dial_sliderReleased();
+
+
+    void on_spinBox_height_editingFinished();
+
+    void on_spinBox_width_editingFinished();
 
 private:
     Ui::MainWindow *ui;
