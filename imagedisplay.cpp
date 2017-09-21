@@ -20,7 +20,12 @@ void ImageDisplay::setImage(QImage *image) {
   repaint();
 
 
- // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
+void ImageDisplay::save_image(const QString &filename) const
+{
+    m_image->save(filename, "jpeg", 80);
 }
 
 void ImageDisplay::paintEvent(QPaintEvent*) {

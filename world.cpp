@@ -18,10 +18,16 @@
 //#include "simple_scene.cpp"
 
 
+
 World::World(QObject *parent)
-    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true)
+    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects()
 {
-    world_grid = new Grid();
+    world_grid = new MCRegionGrid();
+    world_grid->setup(NREGIONS, 1, NREGIONS, BLOCKLENGTH * 16.0 * 32,
+                      Point(-BLOCKLENGTH * 16.0 * 32 * NREGIONS / 2, 0.0, -BLOCKLENGTH * 16.0 * 32 * NREGIONS / 2));
+
+
+    add_object(world_grid);
     this->tholder = new TextureHolder();
     setup_blocklist(tholder);
 }
@@ -105,7 +111,7 @@ void World::add_chunks(MCWorld* world, int x, int y)
 
     }
     grid->blocklist = &this->blocklist;
-    add_object(grid);
+    world_grid->addblock(x + NREGIONS / 2, 0, y + NREGIONS / 2, grid);
 
 }
 

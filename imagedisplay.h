@@ -14,7 +14,7 @@ class ImageDisplay : public QWidget
 public:
     explicit ImageDisplay(MainWindow *w, QWidget *parent = 0);
     void setImage(QImage *image);
-
+    void save_image(const QString& filename) const;
 
     MainWindow* mw;
 

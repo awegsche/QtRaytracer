@@ -19,9 +19,11 @@
 #include <QMap>
 #include "pixel.h"
 
+
 #include <vector>
 
 class Camera;
+class MCRegionGrid;
 
 class World : public QThread
 {
@@ -36,7 +38,7 @@ public:
     Light* ambient_ptr;
     std::vector<Light*> lights;
     bool running;
-    Grid* world_grid;
+    MCRegionGrid* world_grid;
     TextureHolder* tholder;
     QMap<int, MCBlock*> blocklist;
 

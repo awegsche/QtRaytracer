@@ -13,6 +13,7 @@
 #include <QApplication>
 #include "thinlens.h"
 #include "PureRandom.h"
+#include <QFileDialog>
 
 
 void MainWindow::loadchunk(const QString& path, int y_, int x_)
@@ -79,11 +80,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     loadchunk(STR_REGIONSPATH, 0, 0);
-  /*  loadchunk(STR_REGIONSPATH, 0, -1);
+    //loadchunk(STR_REGIONSPATH, 0, -1);
     loadchunk(STR_REGIONSPATH, 0, -2);
     loadchunk(STR_REGIONSPATH, 0, -3);
     loadchunk(STR_REGIONSPATH, 1, 0);
-    loadchunk(STR_REGIONSPATH, -1, 0);
+  /*  loadchunk(STR_REGIONSPATH, -1, 0);
     loadchunk(STR_REGIONSPATH, 1, -1);
     loadchunk(STR_REGIONSPATH, -1, -1);
     loadchunk(STR_REGIONSPATH, 1, -2);
@@ -119,15 +120,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-   // _image.fill(0xA0FFFF);
-    last_line = 0;
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Open Image"), QString(), tr("Image Files (*.jpg)"));
 
-    clock.start();
-    clock2.start();
-    _world->preview = false;
-
-    i_downsampling = 1;
-    _world->start();
+    if (fileName != QString())
+        _display->save_image(fileName);
 }
 
 void MainWindow::display_pixel(int x, int y, int r, int g, int b)

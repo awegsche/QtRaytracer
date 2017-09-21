@@ -36,7 +36,7 @@
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
-          <string>start</string>
+          <string>save image</string>
          </property>
         </widget>
        </item>
@@ -75,8 +75,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>544</width>
-            <height>352</height>
+            <width>536</width>
+            <height>343</height>
            </rect>
           </property>
           <attribute name="label">
@@ -97,8 +97,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>544</width>
-            <height>352</height>
+            <width>536</width>
+            <height>343</height>
            </rect>
           </property>
           <attribute name="label">
@@ -449,7 +449,7 @@
      <x>0</x>
      <y>0</y>
      <width>675</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

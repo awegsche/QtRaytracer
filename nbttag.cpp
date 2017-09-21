@@ -60,8 +60,10 @@ NBTTag *fromFile(BigEndianReader &r)
         NBTTag *child;
         do{
             child = fromFile(r);
+
             tag->_children.push_back(child);
             child->parent = tag;
+
         } while (child->ID() != NBTTag::TAG_End);
         return tag;
     }
