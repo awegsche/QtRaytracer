@@ -13,7 +13,6 @@ bool MCBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 {
     if (air || tmin < kEpsilon) return false;
 
-
     sr.local_hit_point = ray.o + ray.d * tmin;
 
 
@@ -82,6 +81,7 @@ bool MCBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
     sr.hitPoint = sr.local_hit_point;
     sr.t = tmin;
+
     return true; // replace this by form-dependent (block, slab, plant) code
 
     return false;
@@ -163,6 +163,9 @@ bool MCBlock::block_hit(const Ray &ray, real &tx, real &ty, real &tz, real &tmin
 
     sr.hitPoint = sr.local_hit_point;
     sr.t = tmin;
+
+
+
     return true; // replace this by form-dependent (block, slab, plant) code
 
     return false;

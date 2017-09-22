@@ -7,7 +7,8 @@ HEADERS += \
     $$PWD/texture.h \
     $$PWD/constantcolor.h \
     $$PWD/textureholder.h \
-    $$PWD/imagetexture.h
+    $$PWD/imagetexture.h \
+    $$PWD/reflective.h
 
 SOURCES += \
     $$PWD/rgbcolor.cpp \
@@ -18,4 +19,5 @@ SOURCES += \
     $$PWD/texture.cpp \
     $$PWD/constantcolor.cpp \
     $$PWD/textureholder.cpp \
-    $$PWD/imagetexture.cpp
+    $$PWD/imagetexture.cpp \
+    $$PWD/reflective.cpp

@@ -15,7 +15,7 @@ public:
 
     // Tracer interface
 public:
-    RGBColor trace_ray(const Ray &ray, int depth) const;
+    RGBColor trace_ray(const Ray &ray, const int depth) const;
 };
 
 #endif // RAYCAST_H

@@ -33,6 +33,7 @@ public:
     bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const;
     bool block_hit(const Ray &ray, real &tx, real &ty, real &tz, real &tmin, ShadeRec &sr) const;
     bool shadow_hit(const Ray &ray, real &tmin) const;
+
 };
 
 #endif // MCBLOCK_H

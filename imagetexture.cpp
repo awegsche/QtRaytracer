@@ -25,7 +25,7 @@ ImageTexture::ImageTexture(const QString &filename, int sprite_width, int sprite
             {
                 QRgb col = i.pixel(x,y);
                 texels[x + y * width] = RGBColor(col);
-                transparency[x + y * width] = (byte)((col & 0xFF000000) >> 24);
+                transparency[x + y * width] = (real)((col & 0xFF000000) >> 24) / 255.0;
             }
 //        width = sprite_width;
 //        height = sprite_height;
@@ -68,4 +68,12 @@ RGBColor ImageTexture::get_color(const ShadeRec &sr)
 
 //    return RGBColor(cx, cy, cz);
     return texels[iu + iv * width];
+}
+
+real ImageTexture::get_transparency(const ShadeRec &sr)
+{
+    int iu = sr.u * width;
+    int iv = sr.v * height;
+
+    return transparency[iu + iv * width];
 }

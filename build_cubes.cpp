@@ -15,6 +15,7 @@
 #include "ambientoccluder.h"
 #include "PureRandom.h"
 #include "thinlens.h"
+#include "reflective.h"
 
 const real DIST = 20.0;
 const int EDGE = 100;
@@ -69,10 +70,21 @@ void World::build() {
 
     Matte* mat1 = new Matte(.8, .8, .8, .8, 1.0);
 */
-//    Sphere *kugel = new Sphere(Point(400, 70, 60), 10);
-//    Phong *phong = new Phong(.3, .5, .6, 2, 0,1,1);
-//    kugel->set_material(phong);
-//    add_object(kugel);
+    Sphere *kugel = new Sphere(Point(400, 70, 60), 10);
+//    Phong *refl = new Reflective();
+    Reflective* refl = new Reflective();
+    refl->set_diffuse_color(1,1,1);
+    refl->set_ambient_color(1,1,1);
+    refl->set_kr(0.4);
+    refl->set_reflective_color(1,1,1);
+    refl->set_specular_color(1,1,1);
+    refl->set_ka(.2);
+    refl->set_kd(.2);
+    refl->set_ks(.2);
+    refl->set_exp(10.0);
+    kugel->set_material(refl);
+
+    add_object(kugel);
 
 /*
     Plane* rear_ptr = new Plane();

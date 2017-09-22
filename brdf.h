@@ -15,9 +15,11 @@ protected:
 public:
     BRDF();
 
-    virtual RGBColor f(const ShadeRec& sr, const Vector& wi, const Vector& wo) const = 0;
-    virtual RGBColor sample_f(const ShadeRec& sr, const Vector& wi, const Vector& wo) const = 0;
-    virtual RGBColor rho(const ShadeRec& sr, const Vector& wo) const = 0;
+    virtual RGBColor f(const ShadeRec& sr, const Vector& wi, const Vector& wo) const;
+    virtual RGBColor sample_f(const ShadeRec& sr, Vector& wi, const Vector& wo) const;
+    virtual RGBColor rho(const ShadeRec& sr, const Vector& wo) const;
+
+    virtual real transparency(const ShadeRec& sr);
 };
 
 #endif // BRDF_H

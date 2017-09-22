@@ -11,10 +11,11 @@ class ImageTexture : public Texture
 {
 private:
     std::vector<RGBColor> texels;
-    std::vector<char> transparency;
+    std::vector<real> transparency;
     int width;
     int height;
     QString m_filename;
+
 
 public:
     ImageTexture();
@@ -26,6 +27,10 @@ public:
     // Texture interface
 public:
     RGBColor get_color(const ShadeRec &sr);
+
+    // Texture interface
+public:
+    real get_transparency(const ShadeRec &sr) Q_DECL_OVERRIDE;
 };
 
 #endif // IMAGETEXTURE_H

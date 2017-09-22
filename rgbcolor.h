@@ -9,13 +9,13 @@ class RGBColor
 {
 
 public:
-    float r;
-    float g;
-    float b;
+    real r;
+    real g;
+    real b;
 
 public:
     RGBColor();
-    RGBColor(float red, float green, float blue);
+    RGBColor(real red, real green, real blue);
     RGBColor(real brightness);
     RGBColor(const RGBColor& color);
     RGBColor(const QRgb& color);
@@ -33,7 +33,7 @@ public:
     uint to_uint() const;
 };
 
-RGBColor operator/ (const RGBColor& c, float f);
+RGBColor operator/ (const RGBColor& c, real f);
 RGBColor operator* (const RGBColor& a, const RGBColor& b);
 
 real clamp(real x, real min, real max);

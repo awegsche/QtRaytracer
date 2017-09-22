@@ -11,6 +11,7 @@ private:
 public:
     ConstantColor();
     ConstantColor(const RGBColor& color_);
+    ConstantColor(const real r, const real g, const real b);
 
     // Texture interface
 public:

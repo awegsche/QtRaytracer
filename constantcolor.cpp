@@ -12,6 +12,12 @@ ConstantColor::ConstantColor(const RGBColor &color_)
 
 }
 
+ConstantColor::ConstantColor(const real r, const real g, const real b)
+    :color(RGBColor(r, g, b))
+{
+
+}
+
 RGBColor ConstantColor::get_color(const ShadeRec &sr)
 {
     return color;

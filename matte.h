@@ -29,6 +29,10 @@ public:
     // Material interface
 public:
     RGBColor noshade(ShadeRec &sr);
+
+    // Material interface
+public:
+    real transparency(const ShadeRec &sr) Q_DECL_OVERRIDE;
 };
 
 #endif // MATTE_H

@@ -7,15 +7,15 @@
 class Lambertian : public BRDF
 {
 public:
-    float kd;
+    real kd;
     Texture* cd;
 
 public:
     Lambertian();
-    Lambertian(float k, const RGBColor& color);
+    Lambertian(real k, const RGBColor& color);
 
 
-    void set_k(float k);
+    void set_k(real k);
     void set_color(const RGBColor& color);
     void set_color(Texture* t);
 
@@ -27,7 +27,11 @@ public:
 
     // BRDF interface
 public:
-    RGBColor sample_f(const ShadeRec &sr, const Vector &wi, const Vector &wo) const;
+    RGBColor sample_f(const ShadeRec &sr, Vector &wi, const Vector &wo) const;
+
+    // BRDF interface
+public:
+    real transparency(const ShadeRec &sr) Q_DECL_OVERRIDE;
 };
 
 #endif // LAMBERTIAN_H

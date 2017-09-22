@@ -41,6 +41,7 @@ public:
     MCRegionGrid* world_grid;
     TextureHolder* tholder;
     QMap<int, MCBlock*> blocklist;
+    int max_depth;
 
     void setup_blocklist(TextureHolder* th);
 

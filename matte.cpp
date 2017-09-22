@@ -50,6 +50,8 @@ RGBColor Matte::shade(ShadeRec &sr)
 {
 //    return ambient_brdf->cd->get_color(sr);
     Vector wo = -sr.ray.d;
+
+
     RGBColor L = ambient_brdf->rho(sr, wo) * sr.w->ambient_ptr->L(sr);
     int numLights = sr.w->lights.size();
 
@@ -70,6 +72,13 @@ RGBColor Matte::shade(ShadeRec &sr)
             if(!in_shadow)
                 L += diffuse_brdf->f(sr, wo, wi) * sr.w->lights[j]->L(sr) * ndotwi;
         }
+    }
+
+    Ray second_ray(sr.local_hit_point + kEpsilon * sr.ray.d, sr.ray.d);
+
+    if (has_transparency) {
+        real tr = diffuse_brdf->transparency(sr);
+        L = tr * L + (1.0 - tr) * sr.w->tracer_ptr->trace_ray(second_ray, sr.depth + 1);
     }
 
     return L;
@@ -94,4 +103,9 @@ RGBColor Matte::noshade(ShadeRec &sr)
     }
 
     return L;
+}
+
+real Matte::transparency(const ShadeRec &sr)
+{
+    return diffuse_brdf->transparency(sr);
 }

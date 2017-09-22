@@ -6,7 +6,7 @@ RGBColor::RGBColor()
 
 }
 
-RGBColor::RGBColor(float red, float green, float blue)
+RGBColor::RGBColor(real red, real green, real blue)
     : r(red), g(green), b(blue) {
 
 }
@@ -100,7 +100,7 @@ uint RGBColor::to_uint() const
 
 
 
-RGBColor operator/(const RGBColor &c, float f)
+RGBColor operator/(const RGBColor &c, real f)
 {
     return RGBColor(c.r / f, c.g / f, c.b / f);
 }

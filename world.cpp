@@ -15,12 +15,13 @@
 #include "textureholder.h"
 #include "matte.h"
 #include "mcregiongrid.h"
+#include "reflective.h"
 //#include "simple_scene.cpp"
 
 
 
 World::World(QObject *parent)
-    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects()
+    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(), max_depth(5)
 {
     world_grid = new MCRegionGrid();
     world_grid->setup(NREGIONS, 1, NREGIONS, BLOCKLENGTH * 16.0 * 32,
@@ -41,23 +42,50 @@ void World::setup_blocklist(TextureHolder *th)
     {
         MCBlock* block = new MCBlock();
         block->_id = (BlockID)i;
-        Texture* sidetext = th->get_side(i);
-        if (sidetext != nullptr) {
-            Matte* matside = new Matte(.4, .8, 0,0,0);
-            matside->set_color(sidetext);
-            block->mat_side = matside;
-        }
-        else
-            block->mat_side = mat;
 
-        Texture* toptext = th->get_top(i);
-        if (toptext != nullptr) {
-            Matte* mattop = new Matte(.4,.8,0,0,0);
-            mattop->set_color(toptext);
-            block->mat_top = mattop;
+        switch(block->_id) {
+        case BlockID::WaterFlow:
+        case BlockID::WaterStill:
+        {
+            Reflective* refl = new Reflective();
+            refl->set_diffuse_color(th->get_side(i));
+            refl->set_ambient_color(th->get_side(i));
+            refl->set_kr(0.2);
+            refl->set_reflective_color(1,1,1);
+            refl->set_specular_color(th->get_side(i));
+            refl->set_ka(.4);
+            refl->set_kd(.6);
+            refl->set_ks(th->get_side(i));
+            refl->set_exp(10.0);
+            block->mat_side = refl;
+            block->mat_top = refl;
+            break;
         }
-        else
-            block->mat_top = mat;
+        default:
+        {
+            Texture* sidetext = th->get_side(i);
+
+            if (sidetext != nullptr) {
+                Matte* matside = new Matte(.4, .8, 0,0,0);
+                matside->set_color(sidetext);
+                block->mat_side = matside;
+                if (block->_id == BlockID::LeavesOak)
+                    block->mat_side->has_transparency = true;
+            }
+            else
+                block->mat_side = mat;
+
+            Texture* toptext = th->get_top(i);
+            if (toptext != nullptr) {
+                Matte* mattop = new Matte(.4,.8,0,0,0);
+                mattop->set_color(toptext);
+                block->mat_top = mattop;
+            }
+            else
+                block->mat_top = mat;
+            break;
+        }
+        }
         blocklist.insert(i, block);
     }
 }

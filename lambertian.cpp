@@ -6,13 +6,13 @@ Lambertian::Lambertian()
 
 }
 
-Lambertian::Lambertian(float k, const RGBColor &color)
+Lambertian::Lambertian(real k, const RGBColor &color)
     : kd(k){
     cd = new ConstantColor(color);
 }
 
 
-void Lambertian::set_k(float k)
+void Lambertian::set_k(real k)
 {
     kd = k;
 }
@@ -38,8 +38,13 @@ RGBColor Lambertian::rho(const ShadeRec &sr, const Vector &wo) const
     return kd * cd->get_color(sr);
 }
 
-RGBColor Lambertian::sample_f(const ShadeRec &sr, const Vector &wi, const Vector &wo) const
+RGBColor Lambertian::sample_f(const ShadeRec &sr, Vector &wi, const Vector &wo) const
 {
     return RGBColor();
+}
+
+real Lambertian::transparency(const ShadeRec &sr)
+{
+    return cd->get_transparency(sr);
 }
 

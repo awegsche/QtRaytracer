@@ -2,6 +2,7 @@
 #include "rgbcolor.h"
 
 Material::Material()
+    :has_transparency(false)
 {
 
 }
@@ -24,4 +25,9 @@ RGBColor Material::path_shade(ShadeRec &sr)
 RGBColor Material::noshade(ShadeRec &sr)
 {
     return RGBColor();
+}
+
+real Material::transparency(const ShadeRec &sr)
+{
+    return 1.0;
 }

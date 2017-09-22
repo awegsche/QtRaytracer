@@ -10,6 +10,7 @@ public:
     Texture();
 
     virtual RGBColor get_color(const ShadeRec& sr) = 0;
+    virtual real get_transparency(const ShadeRec& sr);
 };
 
 #endif // TEXTURE_H
