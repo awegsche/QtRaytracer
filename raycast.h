@@ -13,6 +13,8 @@ public:
     RayCast(World *w);
 
 
+
+
     // Tracer interface
 public:
     RGBColor trace_ray(const Ray &ray, const int depth) const;

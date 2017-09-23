@@ -15,6 +15,8 @@
 #include "PureRandom.h"
 #include <QFileDialog>
 
+const real HAZE_STEP = 50.0;
+const real HAZE_ATT_STEP = 1.0e6;
 
 void MainWindow::loadchunk(const QString& path, int y_, int x_)
 {
@@ -94,6 +96,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->distanceSlider->setValue(1000);
     ui->distanceValue->setText("10.0");
     ui->apertureValue->setText("1.0");
+    ui->hazeattenuationSlider->setValue(_world->haze_attenuation * HAZE_ATT_STEP);
+    ui->hazeSlider->setValue(_world->haze_distance * HAZE_STEP);
+    ui->checkBox->setChecked(_world->haze);
     ui->dial->setValue(500);
 
     _world->build();
@@ -291,4 +296,42 @@ void MainWindow::on_spinBox_width_editingFinished()
     i_width = ui->spinBox_width->value();
     resize_display();
 
+}
+
+void MainWindow::on_checkBox_toggled(bool checked)
+{
+    _world->haze = checked;
+    ui->hazeattenuationSlider->setEnabled(checked);
+    ui->hazeattenuationValue->setEnabled(checked);
+    ui->hazeSlider->setEnabled(checked);
+    ui->hazeValue->setEnabled(checked);
+
+}
+
+void MainWindow::on_hazeSlider_sliderMoved(int position)
+{
+    real dist = (real)position / HAZE_STEP;
+    ui->hazeValue->setText(QString::number(dist, 'f', 1));
+}
+
+void MainWindow::on_hazeSlider_sliderReleased()
+{
+    real dist = (real)ui->hazeSlider->value() / HAZE_STEP;
+    ui->hazeValue->setText(QString::number(dist, 'f', 1));
+    _world->haze_distance = dist;
+    render();
+}
+
+void MainWindow::on_hazeattenuationSlider_sliderMoved(int position)
+{
+    real att = (real)position / HAZE_ATT_STEP;
+    ui->hazeattenuationValue->setText(QString::number(att, 'e', 3));
+}
+
+void MainWindow::on_hazeattenuationSlider_sliderReleased()
+{
+    real att = (real)ui->hazeattenuationSlider->value() / HAZE_ATT_STEP;
+    ui->hazeattenuationValue->setText(QString::number(att, 'e', 3));
+    _world->haze_attenuation = att;
+    render();
 }

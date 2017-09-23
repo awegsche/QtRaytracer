@@ -21,7 +21,8 @@
 
 
 World::World(QObject *parent)
-    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(), max_depth(7)
+    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(),
+      max_depth(4), haze(false), haze_distance(100.0), haze_attenuation(1.0e-2)
 {
     world_grid = new MCRegionGrid();
     world_grid->setup(NREGIONS, 1, NREGIONS, BLOCKLENGTH * 16.0 * 32,

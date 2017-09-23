@@ -42,6 +42,9 @@ public:
     TextureHolder* tholder;
     QMap<int, MCBlock*> blocklist;
     int max_depth;
+    bool haze;
+    real haze_distance;
+    real haze_attenuation;
 
     void setup_blocklist(TextureHolder* th);
 

@@ -75,6 +75,16 @@ private slots:
 
     void on_spinBox_width_editingFinished();
 
+    void on_checkBox_toggled(bool checked);
+
+    void on_hazeSlider_sliderMoved(int position);
+
+    void on_hazeSlider_sliderReleased();
+
+    void on_hazeattenuationSlider_sliderMoved(int position);
+
+    void on_hazeattenuationSlider_sliderReleased();
+
 private:
     Ui::MainWindow *ui;
 
