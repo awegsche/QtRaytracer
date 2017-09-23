@@ -175,7 +175,7 @@ bool MCBlock::shadow_hit(const Ray &ray, real &tmin) const
 {
     if (air) return false;
 
-    return true;
+    if (tmin > kEpsilon) return true;
 
     return false;
 }

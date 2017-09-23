@@ -33,9 +33,9 @@ void MainWindow::update_camera_info()
     ui->camPosX->setValue(_world->camera_ptr->eye.X);
     ui->camPosY->setValue(_world->camera_ptr->eye.Y);
     ui->camPosZ->setValue(_world->camera_ptr->eye.Z);
-    ui->camDirX->setValue(_world->camera_ptr->v.X);
-    ui->camDirY->setValue(_world->camera_ptr->v.Y);
-    ui->camDirZ->setValue(_world->camera_ptr->v.Z);
+    ui->camDirX->setValue(_world->camera_ptr->u.X);
+    ui->camDirY->setValue(_world->camera_ptr->u.Y);
+    ui->camDirZ->setValue(_world->camera_ptr->u.Z);
 
 //    double d = ((Pinhole*)_world->camera_ptr)->get_zoom();
 //    ui->distanceSlider->setValue((int)(d*10));

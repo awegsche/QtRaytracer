@@ -21,7 +21,7 @@
 
 
 World::World(QObject *parent)
-    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(), max_depth(5)
+    : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(), max_depth(7)
 {
     world_grid = new MCRegionGrid();
     world_grid->setup(NREGIONS, 1, NREGIONS, BLOCKLENGTH * 16.0 * 32,
@@ -61,6 +61,12 @@ void World::setup_blocklist(TextureHolder *th)
             block->mat_top = refl;
             break;
         }
+//        case BlockID::LogOak:
+//        {
+//            Reflective *refl = new Reflective();
+//            block->mat_side = refl;
+//            break;
+//        }
         default:
         {
             Texture* sidetext = th->get_side(i);
@@ -69,8 +75,6 @@ void World::setup_blocklist(TextureHolder *th)
                 Matte* matside = new Matte(.4, .8, 0,0,0);
                 matside->set_color(sidetext);
                 block->mat_side = matside;
-                if (block->_id == BlockID::LeavesOak)
-                    block->mat_side->has_transparency = true;
             }
             else
                 block->mat_side = mat;
@@ -83,6 +87,12 @@ void World::setup_blocklist(TextureHolder *th)
             }
             else
                 block->mat_top = mat;
+            if (block->_id == BlockID::LeavesOak)
+            {
+                block->mat_side->has_transparency = true;
+                block->mat_top->has_transparency = true;
+            }
+
             break;
         }
         }

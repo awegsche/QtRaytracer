@@ -523,9 +523,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
                 t_before = tz_min_pp;
 
             }
-            if (block_ptr->shadow_hit(ray, t_before) && t_before < t) {
-                t = t_before;
-
+            if (block_ptr->shadow_hit(ray, t_before)) {
 
                 return (true);
             }
@@ -551,9 +549,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
             MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
 
-            if (block_ptr && block_ptr->shadow_hit(ray, t_before) && t_before < t) {
-                t = t_before;
-
+            if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
 
                 return (true);
             }
@@ -572,7 +568,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && tmin < t) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
                     //material_ptr = object_ptr->get_material();
                     t=t_before;
                     //t = ty_next;
@@ -595,7 +591,7 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
                 MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
                 tmin=tz_next;
                 //material_ptr = sr.material_ptr;
-                if (block_ptr && block_ptr->shadow_hit(ray, t_before) && tmin < t) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
                     //material_ptr = object_ptr->get_material();
                     //sr.material_ptr = material_ptr;
                     t=t_before;
