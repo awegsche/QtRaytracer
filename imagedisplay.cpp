@@ -17,7 +17,7 @@ void ImageDisplay::setImage(QImage *image) {
   m_image = image;
 
   //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  qDebug() << m_image->size().width() << ", " << m_image->size().width();
+//  qDebug() << m_image->size().width() << ", " << m_image->size().width();
   repaint();
 
 
@@ -32,7 +32,7 @@ void ImageDisplay::save_image(const QString &filename) const
 void ImageDisplay::paintEvent(QPaintEvent*) {
   if (!m_image) { return; }
   QPainter painter(this);
-  qDebug() << m_image->size().width() << ", " << m_image->size().width();
+//  qDebug() << m_image->size().width() << ", " << m_image->size().width();
   painter.drawImage(rect(), *m_image, m_image->rect());
 }
 
@@ -44,7 +44,7 @@ QSize ImageDisplay::sizeHint() const
 void ImageDisplay::keyPressEvent(QKeyEvent *event)
 {
 //    QKeyEvent *event = static_cast<QKeyEvent *>(e);
-    qDebug() << QString("%1 pressed").arg(event->key());
+//    qDebug() << QString("%1 pressed").arg(event->key());
 
     ThinLens* camera = static_cast<ThinLens*>(mw->_world->camera_ptr);
 

@@ -65,7 +65,7 @@ RGBColor Matte::shade(ShadeRec &sr)
             bool in_shadow = false;
             if(sr.w->lights[j]->casts_shadows())
             {
-                Ray shadowray(sr.local_hit_point + 0.001 * sr.normal, wi);
+                Ray shadowray(sr.local_hit_point + kEpsilon * sr.normal, wi);
                 in_shadow = sr.w->lights[j]->in_shadow(shadowray, sr);
             }
 
@@ -74,9 +74,10 @@ RGBColor Matte::shade(ShadeRec &sr)
         }
     }
 
-    Ray second_ray(sr.local_hit_point + kEpsilon * sr.ray.d, sr.ray.d);
 
     if (has_transparency) {
+        Ray second_ray(sr.local_hit_point + kEpsilon * sr.ray.d, sr.ray.d);
+
         real tr =  diffuse_brdf->transparency(sr);
         if (tr < 1.0)
             L = tr * L + (1.0 - tr) * sr.w->tracer_ptr->trace_ray(second_ray, sr.depth + 1);

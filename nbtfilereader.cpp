@@ -49,7 +49,7 @@ void NBTFileReader::Load(MCWorld *world)
        if (offset == 0) continue;
        //stream.skipRawData(1);
 
-        qDebug() << "\noffset["<<i<<"] = "<<offset<<"";
+//        qDebug() << "\noffset["<<i<<"] = "<<offset<<"";
 
         Chunk* c = new Chunk();
 

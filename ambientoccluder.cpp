@@ -33,7 +33,7 @@ RGBColor AmbientOccluder::L(ShadeRec &sr)
     Point sp = sampler_ptr->sample_hemisphere();
     Vector get_d = sp.X * u + sp.Y * v + sp.Z * w;
 
-    Ray shadow_ray(sr.local_hit_point + 0.001 * sr.normal, get_d);
+    Ray shadow_ray(sr.local_hit_point + kEpsilon * sr.normal, get_d);
     if (in_shadow(shadow_ray, sr))
         return min_amount * ls * color;
     else
@@ -47,7 +47,7 @@ bool AmbientOccluder::in_shadow(Ray &ray, ShadeRec &sr)
     int num_objects = sr.w->objects.size();
 
     for (int j = 0; j < num_objects; j++)
-        if (sr.w->objects[j]->shadow_hit(ray, t) && t > kEpsilon)
+        if (sr.w->objects[j]->shadow_hit(ray, t))
             return true;
 
     return false;

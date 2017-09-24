@@ -22,17 +22,12 @@ class MCBlock : public GeometricObject
 {
 public:
     MCBlock();
-    bool air;
-
-    Material* mat_top;
-    Material* mat_side;
-    BlockID _id;
 
     // GeometricObject interface
 public:
-    bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const;
-    bool block_hit(const Ray &ray, real &tx, real &ty, real &tz, real &tmin, ShadeRec &sr) const;
-    bool shadow_hit(const Ray &ray, real &tmin) const;
+//    bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const = 0;
+    virtual bool block_hit(const Ray &ray, const Point& p0, real &tmin, ShadeRec &sr) const = 0;
+//    bool shadow_hit(const Ray &ray, real &tmin) const = 0;
 
 };
 

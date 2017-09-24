@@ -17,6 +17,9 @@
 
 const real HAZE_STEP = 50.0;
 const real HAZE_ATT_STEP = 1.0e6;
+const real FOCAL_DIST_STEP = 100.0;
+const real FOCUS_STEP = 100.0;
+const real APERTURE_STEP = 1000.0;
 
 void MainWindow::loadchunk(const QString& path, int y_, int x_)
 {
@@ -110,10 +113,10 @@ MainWindow::MainWindow(QWidget *parent) :
     loadchunk(STR_REGIONSPATH, 0, -2);
     loadchunk(STR_REGIONSPATH, 0, -3);
     loadchunk(STR_REGIONSPATH, 1, 0);
-  /*  loadchunk(STR_REGIONSPATH, -1, 0);
+    loadchunk(STR_REGIONSPATH, -1, 0);
     loadchunk(STR_REGIONSPATH, 1, -1);
     loadchunk(STR_REGIONSPATH, -1, -1);
-    loadchunk(STR_REGIONSPATH, 1, -2);
+ /*   loadchunk(STR_REGIONSPATH, 1, -2);
     loadchunk(STR_REGIONSPATH, 1, -3);*/
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
@@ -241,7 +244,7 @@ void MainWindow::on_camPosZ_editingFinished()
 void MainWindow::on_distanceSlider_sliderMoved(int position)
 {
     ThinLens *p = static_cast<ThinLens*>(_world->camera_ptr);
-    double zoom = (double) position / 100.0;
+    double zoom = (double) position / FOCAL_DIST_STEP;
     p->set_zoom(zoom);
     ui->distanceValue->setText(QString::number(zoom, 'f', 1));
 }
@@ -257,7 +260,7 @@ void MainWindow::on_focusSlider_sliderReleased()
 {
     ThinLens *p = static_cast<ThinLens*>(_world->camera_ptr);
     double zalt = p->get_distance();
-    double zoom = (double) ui->focusSlider->value() / 100.0;
+    double zoom = (double) ui->focusSlider->value() / FOCUS_STEP;
     p->set_distance(zoom);
     ui->focusValue->setText(QString::number(zoom, 'f', 1));
     double q = zalt / zoom;
@@ -279,7 +282,7 @@ void MainWindow::on_distanceSlider_sliderReleased()
 
 void MainWindow::on_dial_sliderReleased()
 {
-    double ap = (double)ui->dial->value() / 500.0;
+    double ap = (double)ui->dial->value() / APERTURE_STEP;
     _aperture = ap;
     ui->apertureValue->setText(QString::number(ap, 'f', 2));
 }

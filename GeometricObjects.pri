@@ -12,7 +12,10 @@ HEADERS += \
     $$PWD/Triangle.h \
     $$PWD/mcgrid.h \
     $$PWD/mcblock.h \
-    $$PWD/mcregiongrid.h
+    $$PWD/mcregiongrid.h \
+    $$PWD/mcstandardblock.h \
+    $$PWD/mcwaterblock.h \
+    $$PWD/mcisoblock.h
 
 SOURCES += \
     $$PWD/geometricobject.cpp \
@@ -28,4 +31,7 @@ SOURCES += \
     $$PWD/Triangle.cpp \
     $$PWD/mcgrid.cpp \
     $$PWD/mcblock.cpp \
-    $$PWD/mcregiongrid.cpp
+    $$PWD/mcregiongrid.cpp \
+    $$PWD/mcstandardblock.cpp \
+    $$PWD/mcwaterblock.cpp \
+    $$PWD/mcisoblock.cpp

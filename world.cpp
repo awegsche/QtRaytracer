@@ -16,9 +16,16 @@
 #include "matte.h"
 #include "mcregiongrid.h"
 #include "reflective.h"
+#include "mcstandardblock.h"
+#include "mcwaterblock.h"
+#include "mcisoblock.h"
 //#include "simple_scene.cpp"
 
-
+#ifndef WIN64
+    const QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
+#else
+    const QString texturepath = "G:\\Games\\Minecraft\\res\\minecraft\\textures\\blocks\\";
+#endif
 
 World::World(QObject *parent)
     : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(),
@@ -37,6 +44,95 @@ World::World(QObject *parent)
 
 void World::setup_blocklist(TextureHolder *th)
 {
+    // fill blocklist with nullptr in order to prevent crashes, when an unknown block_id appears
+    MCStandardBlock* missing_block = new MCStandardBlock(new Matte(.6,.6, 1, 0, 1));
+    for (int i = 1; i < 256; i++)
+        blocklist.insert(i, missing_block);
+
+    blocklist[BlockID::Stone] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "stone.png")));
+    blocklist[BlockID::CobbleStone] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "cobblestone.png")));
+    blocklist[BlockID::OakWoodPlank] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "planks_oak.png")));
+    blocklist[BlockID::Sand] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "sand.png")));
+    blocklist[BlockID::Dirt] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "dirt.png")));
+    blocklist[BlockID::Stone] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "stone.png")));
+
+    ImageTexture *oak_leaves = new ImageTexture(texturepath + "leaves_oak.png");
+    oak_leaves->colorize(RGBColor(0, 1.0, 0));
+
+    Matte* leaves_mat = new Matte(.4, .8, oak_leaves);
+    leaves_mat->has_transparency = true;
+    blocklist[BlockID::LeavesOak] = new MCStandardBlock(leaves_mat);
+
+    ImageTexture* grass_top = new ImageTexture(texturepath + "grass_top.png");
+    grass_top->colorize(RGBColor(0, 1.0, 0));
+    blocklist[BlockID::GrassSide] = new MCIsoBlock(
+                new Matte(.5, .8, grass_top),
+                new Matte(.5, .8, new ImageTexture(texturepath + "grass_side.png")));
+    Matte* logoak_top = new Matte(.5,.8, new ImageTexture(texturepath + "log_oak_top.png"));
+    blocklist[BlockID::LogOak] = new MCIsoBlock(
+                logoak_top, logoak_top,
+                new Matte(.5, .8, new ImageTexture(texturepath + "log_oak.png")));
+
+    Reflective* refl = new Reflective();
+    ImageTexture *water_t = new ImageTexture(texturepath + "water_still.png");
+    refl->set_diffuse_color(water_t);
+    refl->set_ambient_color(water_t);
+    refl->set_kr(0.2);
+    refl->set_reflective_color(1,1,1);
+    refl->set_specular_color(water_t);
+    refl->set_ka(.4);
+    refl->set_kd(.6);
+    refl->set_ks(water_t);
+    refl->set_exp(10.0);
+    blocklist[BlockID::WaterFlow] = new MCWaterBlock(refl);
+    blocklist[BlockID::WaterStill] = new MCWaterBlock(refl);
+
+/*
+    Texture* sidetext = th->get_side(i);
+
+    if (sidetext != nullptr) {
+        Matte* matside = new Matte(.4, .8, 0,0,0);
+        matside->set_color(sidetext);
+        block->mat_side = matside;
+    }
+    else
+        block->mat_side = mat;
+
+    Texture* toptext = th->get_top(i);
+    if (toptext != nullptr) {
+        Matte* mattop = new Matte(.4,.8,0,0,0);
+        mattop->set_color(toptext);
+        block->mat_top = mattop;
+    }
+    else
+        block->mat_top = mat;
+    if (block->_id == BlockID::LeavesOak)
+    {
+        block->mat_side->has_transparency = true;
+        block->mat_top->has_transparency = true;
+    }
+
+    textures.insert(1, new ImageTexture(texturepath + "stone.png"));
+    textures.insert(2, new ImageTexture(texturepath + "grass_side.png"));
+    textures.insert(BlockID::CobbleStone, new ImageTexture(texturepath + "cobblestone.png"));
+    textures.insert(BlockID::OakWoodPlank, new ImageTexture(texturepath + "planks_oak.png"));
+    textures.insert(12, new ImageTexture(texturepath + "sand.png"));
+    textures.insert(60 + 1024, new ImageTexture(texturepath + "farmland_dry.png"));
+
+    ImageTexture* t = new ImageTexture(texturepath + "grass_top.png");
+    t->colorize(RGBColor(.0, 1.0, .0));
+    textures.insert(2 + 1024, t);
+    textures.insert(3, new ImageTexture(texturepath + "dirt.png"));
+    textures.insert(17, new ImageTexture(texturepath + "log_oak.png"));
+    textures.insert(17 + 1024, new ImageTexture(texturepath + "log_oak_top.png"));
+
+    ImageTexture* t_leaves = new ImageTexture(texturepath + "leaves_oak.png");
+    t_leaves->colorize(RGBColor(.0, 1.0, .0));
+    textures.insert(18, t_leaves);
+
+    textures.insert(37, new ImageTexture(texturepath + "flower_dandelion.png"));
+    textures.insert(8, new ImageTexture(texturepath + "water_flow.png"));
+    textures.insert(9, new ImageTexture(texturepath + "water_still.png"));
     Matte* mat = new Matte(0.4, 0.5, 1.0, .0, 1.0);
     blocklist.insert(0, nullptr);
     for (int i = 1; i < 256; i++)
@@ -98,7 +194,7 @@ void World::setup_blocklist(TextureHolder *th)
         }
         }
         blocklist.insert(i, block);
-    }
+    }*/
 }
 
 void World::add_object(GeometricObject *o)
