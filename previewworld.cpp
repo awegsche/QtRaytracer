@@ -16,7 +16,7 @@ void PreviewWorld::set_sampler(const int nsamples)
     vp.sampler_ptr = new PureRandom(num_samples);
     vp.sampler_ptr->generate_samples();
 
-    auto ao = new AmbientOccluder(1.3, .1, 1,1,1);
+    auto ao = new AmbientOccluder(1.3, .5, 1,1,1);
     ao->set_sampler(new PureRandom(num_samples));
     render_ambient = ao;
 

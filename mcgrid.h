@@ -21,6 +21,7 @@ private:
     Point position;
     Point p1;
     MCRegionGrid* parent;
+    World* _w;
     real m_unit;
 
 public:
@@ -30,7 +31,7 @@ public:
 
     void read_nbt(QString filename, World *w);
     void addblock(int x, int y, int z, int block);
-    void set_parent(MCRegionGrid *grid);
+    void set_parent(MCRegionGrid *grid, World* w);
 
     // GeometricObject interface
 public:

@@ -46,8 +46,10 @@ void World::setup_blocklist(TextureHolder *th)
 {
     // fill blocklist with nullptr in order to prevent crashes, when an unknown block_id appears
     MCStandardBlock* missing_block = new MCStandardBlock(new Matte(.6,.6, 1, 0, 1));
-    for (int i = 1; i < 256; i++)
-        blocklist.insert(i, missing_block);
+
+    for (int i = 0; i < 512; i++)
+        blocklist.push_back(missing_block);
+    blocklist[0] = nullptr; // air
 
     blocklist[BlockID::Stone] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "stone.png")));
     blocklist[BlockID::CobbleStone] = new MCStandardBlock(new Matte(.4, .8, new ImageTexture(texturepath + "cobblestone.png")));
@@ -236,16 +238,15 @@ void World::add_chunks(MCWorld* world, int x, int y)
                     for (int i = 0; i < 16; i++)
                     {
 
-                        int blockid = blocks->_content[j * 256 + k * 16 + i];
+                        int blockid = (uchar)blocks->_content[j * 256 + k * 16 + i];
 
                         chunkgrid->addblock(i, j, k, blockid);
                     }
-            chunkgrid->set_parent(grid);
+            chunkgrid->set_parent(grid, this);
             grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
         }
 
     }
-    grid->blocklist = &this->blocklist;
     world_grid->addblock(x + NREGIONS / 2, 0, y + NREGIONS / 2, grid);
 
 }

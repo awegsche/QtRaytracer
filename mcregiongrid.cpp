@@ -3,7 +3,6 @@
 #include "shaderec.h"
 
 MCRegionGrid::MCRegionGrid()
-    :blocklist(nullptr)
 {
 
 }
@@ -408,7 +407,7 @@ bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
         if (tx_next < ty_next && tx_next < tz_next) {
             //real tmin = tx_next - kEpsilon;
             //Material* mptr = sr.material_ptr;
-            if (block_ptr && block_ptr->shadow_hit(ray, t) && t < tx_next) {
+            if (block_ptr && block_ptr->shadow_hit(ray, t)) {
 
                 return (true);
             }
@@ -424,7 +423,7 @@ bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
             if (ty_next < tz_next) {
                 //Material* mptr = sr.material_ptr;
                 //real tmin = ty_next - kEpsilon;
-                if (block_ptr && block_ptr->shadow_hit(ray, t) && t < ty_next) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t)) {
                     //material_ptr = object_ptr->get_material();
 
                     return (true);
@@ -442,7 +441,7 @@ bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
                 //Material* mptr = sr.material_ptr;
                 //real tmin = tz_next - kEpsilon;
                 //material_ptr = sr.material_ptr;
-                if (block_ptr && block_ptr->shadow_hit(ray, t) && t < tz_next) {
+                if (block_ptr && block_ptr->shadow_hit(ray, t) ) {
 
                     return (true);
                 }

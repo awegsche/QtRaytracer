@@ -24,8 +24,8 @@ private:
 
     real m_unit;
 
-public:
-    QMap<int, MCBlock*>* blocklist;
+//public:
+//    std::vector<MCBlock*> blocklist;
 
 
 public:

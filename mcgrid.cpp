@@ -47,9 +47,10 @@ void MCGrid::addblock(int x, int y, int z, int block)
     cells[x + nx * y + nx * ny * z] = block;
 }
 
-void MCGrid::set_parent(MCRegionGrid *grid)
+void MCGrid::set_parent(MCRegionGrid *grid, World *w)
 {
     parent = grid;
+    _w = w;
 }
 
 bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
@@ -208,8 +209,8 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
 
         // Test if there is a block face glued to the bounding box:
-        int index = cells[ix + nx * iy + nx * ny * iz];
-        MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+        MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
         Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
         if (block_ptr) {
             real t_before = kHugeValue;
@@ -270,9 +271,9 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                 sr.material_ptr = mat_ptr;
                 return (false);
             }
-            real tmin = tx_next - kEpsilon;
 
-            MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+            MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
             Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
 
             if (block_ptr && block_ptr->block_hit(ray, block_p0, t_before, sr))  {
@@ -298,10 +299,10 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                     return (false);
                 }
 
-                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+                MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
                 Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
 
-                real tmin = ty_next;
+
                 if (block_ptr && block_ptr->block_hit(ray, block_p0, t_before, sr)) {
                     //material_ptr = object_ptr->get_material();
                     t=t_before;
@@ -324,12 +325,11 @@ bool MCGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
                     sr.material_ptr = mat_ptr;
                     return (false);
                 }
-                real tmin = tz_next - kEpsilon;
 
-                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+                MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
                 Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
 
-                tmin=tz_next;
+
                 //material_ptr = sr.material_ptr;
                 if (block_ptr && block_ptr->block_hit(ray, block_p0, t_before, sr))  {
                     //material_ptr = object_ptr->get_material();
@@ -501,8 +501,8 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
 
 
         // Test if there is a block face glued to the bounding box:
-        int index = cells[ix + nx * iy + nx * ny * iz];
-        MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+        MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
 
         if (block_ptr) {
             real t_before = 0;
@@ -550,9 +550,9 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
             if (ix == ix_stop) {
                 return (false);
             }
-            real tmin = tx_next - kEpsilon;
 
-            MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
+
+            MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
 
             if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
                 t=t_before;
@@ -571,8 +571,8 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
                     return (false);
                 }
 
-                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
-                real tmin = ty_next - kEpsilon;
+                MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
+
                 if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
                     //material_ptr = object_ptr->get_material();
                     t=t_before;
@@ -591,10 +591,10 @@ bool MCGrid::shadow_hit(const Ray &ray, real &t) const
                 if (iz == iz_stop) {
                     return (false);
                 }
-                real tmin = tz_next - kEpsilon;
 
-                MCBlock* block_ptr = (*parent->blocklist)[cells[ix + nx * iy + nx * ny * iz]];
-                tmin=tz_next;
+
+                MCBlock* block_ptr = _w->blocklist[cells[ix + nx * iy + nx * ny * iz]];
+
                 //material_ptr = sr.material_ptr;
                 if (block_ptr && block_ptr->shadow_hit(ray, t_before)) {
                     //material_ptr = object_ptr->get_material();

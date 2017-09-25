@@ -40,7 +40,7 @@ public:
     bool running;
     MCRegionGrid* world_grid;
     TextureHolder* tholder;
-    QMap<int, MCBlock*> blocklist;
+    std::vector<MCBlock*> blocklist;
     int max_depth;
     bool haze;
     real haze_distance;
