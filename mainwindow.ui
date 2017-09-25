@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>854</width>
-    <height>629</height>
+    <width>1305</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,6 +54,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>640</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -81,8 +87,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>723</width>
-            <height>470</height>
+            <width>614</width>
+            <height>491</height>
            </rect>
           </property>
           <attribute name="label">
@@ -95,8 +101,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>723</width>
-            <height>470</height>
+            <width>614</width>
+            <height>491</height>
            </rect>
           </property>
           <attribute name="label">
@@ -624,8 +630,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>723</width>
-            <height>470</height>
+            <width>614</width>
+            <height>491</height>
            </rect>
           </property>
           <attribute name="label">
@@ -783,8 +789,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>854</width>
-     <height>18</height>
+     <width>1305</width>
+     <height>19</height>
     </rect>
    </property>
   </widget>

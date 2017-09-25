@@ -63,7 +63,8 @@ void MainWindow::resize_display()
     _display->setFixedSize(wmax, hmax);
     _display->adjustSize();
     ui->frame->adjustSize();
-
+    ui->toolBox->currentWidget()->resize(minimumSizeHint());
+    resize(minimumSizeHint());
 //    ui->centralWidget->layout()->
 
 }
@@ -135,6 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
     connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
     connect(_world, SIGNAL(done()), this, SLOT(done()));
+
 }
 
 MainWindow::~MainWindow()
