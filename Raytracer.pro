@@ -108,6 +108,7 @@ HEADERS += \
     World/world.h
 
 SOURCES += \
+    main.cpp \
     BRDFs/brdf.cpp \
     BRDFs/glossyspecular.cpp \
     BRDFs/lambertian.cpp \
