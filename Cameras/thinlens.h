@@ -21,15 +21,6 @@ public:
     void render_scene(World &w) Q_DECL_OVERRIDE;
 
 
-
-
-
-    // Pinhole interface
-public:
-    Pixel render_pixel(const ConcurrentStruct &input) Q_DECL_OVERRIDE;
-
-
-    // QRunnable interface
 protected:
     void render_line(ViewPlane vp, int row, World &w);
 };

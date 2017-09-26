@@ -22,7 +22,7 @@ bool Sphere::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
     real tempsq =  temp * temp;
     real c = tempsq - r * r;
     real disc = b * b - 4.0 * a * c;
-	bfgjh
+
     if (disc < 0.0)
         return false;
     else {

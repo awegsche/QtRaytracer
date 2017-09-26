@@ -1,7 +1,7 @@
 #ifndef QRENDERCANVAS_H
 #define QRENDERCANVAS_H
 
-#include <QIma
+
 class QRenderCanvas
 {
 public:
