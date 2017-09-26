@@ -83,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _world = new PreviewWorld(i_downsampling, 4);
 
+    //_world->hit_objects_CUDA();
+
     ThinLens* ph_ptr = new ThinLens();
     ph_ptr->set_eye(250,250,200);
     ph_ptr->set_lookat(250,0,0);

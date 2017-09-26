@@ -20,6 +20,7 @@ public:
 
     void compute_uvw();
     virtual void render_scene(World &w) = 0;
+	virtual void render_scene_CUDA(World& w);
 
 
     void set_eye(real x, real y, real z);

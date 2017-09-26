@@ -192,3 +192,6 @@ SOURCES += \
     World/viewplane.cpp \
     World/world.cpp
 
+FORMS += \
+    GUI/mainwindow.ui
+

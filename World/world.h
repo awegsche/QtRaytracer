@@ -20,10 +20,14 @@
 #include "pixel.h"
 
 
+
+
 #include <vector>
 
 class Camera;
 class MCRegionGrid;
+
+extern "C" ShadeRec* hit_test();
 
 class World : public QThread
 {
@@ -68,6 +72,9 @@ public:
 
    // void open_window(const int hres, const int vres) const;
     //void display(const int row, const int column, const RGBColor& pixel_color) const;
+
+	// =============== CUDA ====================
+	ShadeRec* hit_objects_CUDA();
 
 signals:
     void display_pixel(int row, int column, int r, int g, int b);

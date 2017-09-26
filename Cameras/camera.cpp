@@ -14,6 +14,10 @@ void Camera::compute_uvw()
     v = w ^ u;
 }
 
+void Camera::render_scene_CUDA(World & w)
+{
+}
+
 void Camera::set_eye(real x, real y, real z)
 {
     eye = Vector(x,y,z);

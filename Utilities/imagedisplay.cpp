@@ -57,7 +57,13 @@ void ImageDisplay::keyPressEvent(QKeyEvent *event)
         camera->_aperture = mw->_aperture;
         mw->i_downsampling = 1;
     }
-    else
-        mw->_world->Keypressed(event->key());
-    mw->render();
+	else if (event->key() == Qt::Key_Tab)
+	{
+
+	}
+	else
+	{
+		mw->_world->Keypressed(event->key());
+		mw->render();
+	}
 }

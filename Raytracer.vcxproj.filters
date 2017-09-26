@@ -25,6 +25,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{05b19510-f886-4c00-9810-27bab58160d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeometricObjects\FlatMeshTriangle.cpp">
@@ -273,9 +276,6 @@
     <ClCompile Include="World\viewplane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="World\world.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_world.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -299,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="Release\moc_glimagedisplay.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="World\world.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -548,6 +551,9 @@
     <CustomBuild Include="World\world.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -556,5 +562,8 @@
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="World\world_kernels.cu" />
   </ItemGroup>
 </Project>

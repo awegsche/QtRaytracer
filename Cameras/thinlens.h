@@ -19,6 +19,7 @@ public:
     // Camera interface
 public:
     void render_scene(World &w) Q_DECL_OVERRIDE;
+	void render_scene_CUDA(World &w);
 
 
 protected:

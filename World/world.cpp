@@ -19,6 +19,8 @@
 #include "mcstandardblock.h"
 #include "mcwaterblock.h"
 #include "mcisoblock.h"
+
+
 //#include "simple_scene.cpp"
 
 #ifndef WIN64
@@ -26,6 +28,7 @@
 #else
     const QString texturepath = "G:\\Games\\Minecraft\\res\\minecraft\\textures\\blocks\\";
 #endif
+
 
 World::World(QObject *parent)
     : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(),
@@ -345,6 +348,14 @@ void World::dosplay_p(int r, int c, const RGBColor& pixel_color)
 
     emit display_pixel(r, c, (int)(color.r * 255.0), (int)(color.g * 255.0),(int)(color.b * 255.0));
 }
+
+ShadeRec * World::hit_objects_CUDA()
+{
+	hit_test();
+	return nullptr;
+}
+
+
 
 //Pixel World::display_p(Pixel& result, const Pixel &p)
 //{

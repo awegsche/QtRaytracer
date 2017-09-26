@@ -25,6 +25,8 @@ public:
     virtual RGBColor trace_ray(const Ray& ray) const;
     virtual RGBColor trace_ray(const Ray& ray, int depth) const;
     virtual RGBColor trace_ray(const Ray& ray, float& tmin, int depth) const;
+
+	
 };
 
 #endif // TRACER_H
