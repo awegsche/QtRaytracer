@@ -4,8 +4,18 @@
 #include <QtConcurrent/QtConcurrent>
 #include "pixel.h"
 
+
 ThinLens::ThinLens()
     :_aperture(0.0)
+{
+
+}
+
+ThinLens::ThinLens(const real eye_x, const real eye_y, const real eye_z,
+                   const real lookat_x, const real lookat_y, const real lookat_z,
+                   const real distance, const real zoom_, const real aperture)
+    : Pinhole(eye_x, eye_y, eye_z, lookat_x, lookat_y, lookat_z, distance, zoom_),
+      _aperture(aperture)
 {
 
 }
@@ -57,7 +67,7 @@ void ThinLens::render_scene(World &w)
 {
     ViewPlane vp(w.vp);
 
-    vp.s /= zoom;
+    vp.s *= zoom;
 
     QThreadPool* pool = new QThreadPool();
 
@@ -121,6 +131,7 @@ void ThinLensLineRenderer::run()
     Point2D ap;     // Sample point on aperture;
 
     uint* rgb = new uint[_vp.hres];
+
 
     for (int column = 0; column < _vp.hres && _w->running; column++) {
         int depth = 0;

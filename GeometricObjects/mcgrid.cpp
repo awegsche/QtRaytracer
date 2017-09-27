@@ -1,6 +1,7 @@
 #include "mcgrid.h"
 #include "matte.h"
 #include "shaderec.h"
+#include "mcscenerenderer.h"
 
 MCGrid::MCGrid()
     : parent(nullptr)
@@ -47,7 +48,7 @@ void MCGrid::addblock(int x, int y, int z, int block)
     cells[x + nx * y + nx * ny * z] = block;
 }
 
-void MCGrid::set_parent(MCRegionGrid *grid, World *w)
+void MCGrid::set_parent(MCRegionGrid *grid, MCSceneRenderer *w)
 {
     parent = grid;
     _w = w;

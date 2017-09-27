@@ -5,12 +5,13 @@
 #include <QKeyEvent>
 #include "thinlens.h"
 
-ImageDisplay::ImageDisplay(MainWindow *w, QWidget *parent) : QWidget(parent) {
+ImageDisplay::ImageDisplay(MCSceneRenderer *w, MainWindow *mainw, QWidget *parent) : QWidget(parent) {
   m_image = 0;
   setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   setFocusPolicy(Qt::ClickFocus);
   setMaximumSize(1280, 640);
   mw = w;
+  mainwindow = mainw;
 }
 
 void ImageDisplay::setImage(QImage *image) {
@@ -38,7 +39,9 @@ void ImageDisplay::paintEvent(QPaintEvent*) {
 
 QSize ImageDisplay::sizeHint() const
 {
-    return m_image->size();
+    if (m_image)
+        return m_image->size();
+    return QSize(640, 480);
 }
 
 void ImageDisplay::keyPressEvent(QKeyEvent *event)
@@ -46,24 +49,24 @@ void ImageDisplay::keyPressEvent(QKeyEvent *event)
 //    QKeyEvent *event = static_cast<QKeyEvent *>(e);
 //    qDebug() << QString("%1 pressed").arg(event->key());
 
-    ThinLens* camera = static_cast<ThinLens*>(mw->_world->camera_ptr);
+    mainwindow->stoprender();
 
-    mw->last_line = 0;
-    mw->i_downsampling = mw->m_downsampling;
-    camera->_aperture = 0.0;
     if (event->key() == Qt::Key_Space)
     {
-        mw->_world->preview = false;
-        camera->_aperture = mw->_aperture;
-        mw->i_downsampling = 1;
-    }
-	else if (event->key() == Qt::Key_Tab)
-	{
+        mw->switch_to_render();
 
-	}
+    }
+
 	else
 	{
-		mw->_world->Keypressed(event->key());
-		mw->render();
+        mw->switch_to_preview();
+        mw->Keypressed(event->key());
+
 	}
+    mainwindow->render();
+}
+
+QSize ImageDisplay::minimumSizeHint() const
+{
+    return QSize(32, 32);
 }

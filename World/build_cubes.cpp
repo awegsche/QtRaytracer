@@ -127,7 +127,7 @@ void World::build() {
     //add_object(floor);
 
 */
-    PointLight* l = new PointLight(1.8,
+    PointLight* l = new PointLight(2.8,
                                   1.0, 1.0, .6,
                                   1000, 5000, 2000);
     l->set_shadows(true);

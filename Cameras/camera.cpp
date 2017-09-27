@@ -5,6 +5,16 @@ Camera::Camera()
 
 }
 
+Camera::Camera(const real eye_x, const real eye_y, const real eye_z, const real lookat_x, const real lookat_y, const real lookat_z)
+    :exposure_time(1.0)
+{
+    set_eye(eye_x, eye_y, eye_z);
+    set_lookat(lookat_x, lookat_y, lookat_z);
+    set_up(0, 1.0, 0);
+
+    compute_uvw();
+}
+
 void Camera::compute_uvw()
 {
     w = eye - lookat;

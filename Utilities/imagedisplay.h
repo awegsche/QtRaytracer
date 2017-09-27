@@ -1,7 +1,7 @@
 #ifndef IMAGEDISPLAY_H
 #define IMAGEDISPLAY_H
 
-#include "previewworld.h"
+#include "mcscenerenderer.h"
 
 #include <QObject>
 #include <QWidget>
@@ -12,11 +12,12 @@ class ImageDisplay : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ImageDisplay(MainWindow *w, QWidget *parent = 0);
+    explicit ImageDisplay(MCSceneRenderer *w, MainWindow* mainw, QWidget *parent = 0);
     void setImage(QImage *image);
     void save_image(const QString& filename) const;
 
-    MainWindow* mw;
+    MCSceneRenderer* mw;
+    MainWindow* mainwindow;
 
 signals:
 
@@ -36,6 +37,10 @@ public:
     // QWidget interface
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+
+    // QWidget interface
+public:
+    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
 };
 
 #endif // IMAGEDISPLAY_H

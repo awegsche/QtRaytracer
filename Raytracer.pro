@@ -105,7 +105,8 @@ HEADERS += \
     World/previewworld.h \
     World/shaderec.h \
     World/viewplane.h \
-    World/world.h
+    World/world.h \
+    World/mcscenerenderer.h
 
 SOURCES += \
     main.cpp \
@@ -190,7 +191,8 @@ SOURCES += \
     World/previewworld.cpp \
     World/shaderec.cpp \
     World/viewplane.cpp \
-    World/world.cpp
+    World/world.cpp \
+    World/mcscenerenderer.cpp
 
 FORMS += \
     GUI/mainwindow.ui

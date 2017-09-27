@@ -42,28 +42,21 @@ public:
     Light* ambient_ptr;
     std::vector<Light*> lights;
     bool running;
-    MCRegionGrid* world_grid;
-    TextureHolder* tholder;
-    std::vector<MCBlock*> blocklist;
     int max_depth;
     bool haze;
     real haze_distance;
     real haze_attenuation;
 
-    void setup_blocklist(TextureHolder* th);
 
 public:
     World(QObject* parent = nullptr);
 
-    void build();
-    void load_MC(MCWorld* w);
+    virtual void build();
     void add_object(GeometricObject* o);
     void add_light(Light* l);
-    void add_chunks(MCWorld* world, int x, int y);
 
     void render_scene_();
     void render_camera();
-    ShadeRec hit_bare_bones_objects(const Ray &ray);
     ShadeRec hit_objects(const Ray& ray);
     void dosplay_p(int r, int c, const RGBColor &pixel_color);
     static Pixel display_p(Pixel& result, const Pixel& p);

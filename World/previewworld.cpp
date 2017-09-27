@@ -16,7 +16,7 @@ void PreviewWorld::set_sampler(const int nsamples)
     vp.sampler_ptr = new PureRandom(num_samples);
     vp.sampler_ptr->generate_samples();
 
-    auto ao = new AmbientOccluder(1.8, .3, 1,1,1);
+    auto ao = new AmbientOccluder(2, .1, 1,1,1);
     ao->set_sampler(new PureRandom(num_samples));
     render_ambient = ao;
 
@@ -26,18 +26,6 @@ void PreviewWorld::build()
 {
     World::build();
 
-    set_sampler();
-
-    auto amb = new Ambient(1.5, 1,1,1);
-
-    preview_ambient = amb;
-//    render_ambient = amb;
-
-    preview_camera = new Pinhole(*camera_ptr);
-
-    preview_camera->rescale_zoom(1.0f / (float)m_downsampling);
-
-    this->background_color = RGBColor(.8, .9, 1.0);
 }
 
 void PreviewWorld::render_preview()

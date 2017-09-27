@@ -8,7 +8,7 @@
 #include <QString>
 #include "world.h"
 #include "mcregiongrid.h"
-
+#include "mcscenerenderer.h"
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
 
@@ -21,7 +21,7 @@ private:
     Point position;
     Point p1;
     MCRegionGrid* parent;
-    World* _w;
+    MCSceneRenderer* _w;
     real m_unit;
 
 public:
@@ -31,7 +31,7 @@ public:
 
     void read_nbt(QString filename, World *w);
     void addblock(int x, int y, int z, int block);
-    void set_parent(MCRegionGrid *grid, World* w);
+    void set_parent(MCRegionGrid *grid, MCSceneRenderer *w);
 
     // GeometricObject interface
 public:

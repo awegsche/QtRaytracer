@@ -11,6 +11,7 @@
 #include <QTime>
 #include "imagedisplay.h"
 #include "previewworld.h"
+#include "mcscenerenderer.h"
 
 #ifdef WIN64
     const QString STR_REGIONSPATH = QString("C:/Users/Andreas.DESKTOP-D87O57E/AppData/Roaming/.minecraft/saves/Alkas/region");
@@ -32,7 +33,7 @@ class MainWindow : public QMainWindow
     QTime clock2;
 
 public:
-    PreviewWorld* _world;
+    MCSceneRenderer* _world;
 
     int i_width;
     int i_height;
@@ -48,6 +49,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void render();
+    void stoprender();
 
     void resize_display();
 
@@ -84,6 +86,10 @@ private slots:
     void on_hazeattenuationSlider_sliderMoved(int position);
 
     void on_hazeattenuationSlider_sliderReleased();
+
+    void on_angleSlider_sliderMoved(int position);
+
+    void on_angleSlider_sliderReleased();
 
 private:
     Ui::MainWindow *ui;

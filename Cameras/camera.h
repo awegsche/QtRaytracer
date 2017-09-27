@@ -17,6 +17,8 @@ public:
 
 public:
     Camera();
+    Camera(const real eye_x, const real eye_y, const real eye_z,
+           const real lookat_x, const real lookat_y, const real lookat_z);
 
     void compute_uvw();
     virtual void render_scene(World &w) = 0;

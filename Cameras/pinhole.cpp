@@ -35,6 +35,14 @@ Pinhole::Pinhole(const Camera &cam)
     }
 }
 
+Pinhole::Pinhole(const real eye_x, const real eye_y, const real eye_z,
+                 const real lookat_x, const real lookat_y, const real lookat_z,
+                 const real distance, const real zoom_)
+    : Camera(eye_x, eye_y, eye_z, lookat_x, lookat_y, lookat_z), d(distance), zoom(zoom_)
+{
+
+}
+
 
 Vector Pinhole::ray_direction(const Point2D &p) const
 {

@@ -14,6 +14,9 @@ public:
 
 public:
     ThinLens();
+    ThinLens(const real eye_x, const real eye_y, const real eye_z,
+             const real lookat_x, const real lookat_y, const real lookat_z,
+             const real distance, const real zoom_, const real aperture);
     void set_sampler(Sampler* sampler);
 
     // Camera interface
