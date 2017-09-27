@@ -3,3 +3,5 @@ debug/
 release/
 Raytracer.vcxproj.user
 vc140.pdb
+/.vs
+/.qmake.stash
