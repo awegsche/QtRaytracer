@@ -246,8 +246,8 @@ void MainWindow::on_distanceSlider_sliderMoved(int position)
 void MainWindow::on_supersamplingBox_editingFinished()
 {
     stoprender();
-    _world->set_sampler(ui->supersamplingBox->value());
-    render();
+    _world->set_samples(ui->supersamplingBox->value());
+    
 }
 
 void MainWindow::on_focusSlider_sliderReleased()
@@ -286,7 +286,7 @@ void MainWindow::on_dial_sliderReleased()
 {
     stoprender();
     double ap = (double)ui->dial->value() / APERTURE_STEP;
-    _aperture = ap;
+	_world->set_aperture(ap);
     ui->apertureValue->setText(QString::number(ap, 'f', 2));
     render();
 }

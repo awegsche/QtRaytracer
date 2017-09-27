@@ -51,7 +51,7 @@ public:
 public:
     World(QObject* parent = nullptr);
 
-    virtual void build();
+    virtual void build() = 0;
     void add_object(GeometricObject* o);
     void add_light(Light* l);
 

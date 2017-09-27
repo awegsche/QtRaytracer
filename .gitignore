@@ -1,1 +1,5 @@
-Raytracer.pro.user
+Raytracer.pro.user*
+debug/
+release/
+Raytracer.vcxproj.user
+vc140.pdb

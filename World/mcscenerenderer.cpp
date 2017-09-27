@@ -95,7 +95,6 @@ void MCSceneRenderer::switch_to_render()
 
 void MCSceneRenderer::switch_to_preview()
 {
-    t_nsamples = vp.num_samples;
     set_sampler(1);
     camera_ptr = m_render_camera;
     ambient_ptr = m_preview_ambient;
@@ -153,6 +152,11 @@ void MCSceneRenderer::set_sampler(const int n_samples)
     m_render_camera->set_sampler(new PureRandom(n_samples));
 }
 
+void MCSceneRenderer::set_samples(const int n_samples)
+{
+	t_nsamples = n_samples;
+}
+
 real MCSceneRenderer::get_angle() const
 {
     return atan(m_render_camera->get_zoom() / m_render_camera->get_distance() * vp.hres) / GRAD;
@@ -182,6 +186,11 @@ void MCSceneRenderer::resize_vp(const int w, const int h)
 
     vp.hres = w;
     vp.vres = h;
+}
+
+void MCSceneRenderer::set_aperture(const real aperture)
+{
+	m_render_camera->_aperture = aperture;
 }
 
 

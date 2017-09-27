@@ -66,9 +66,6 @@
     <ClCompile Include="BRDFs\brdf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="World\build_cubes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cameras\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -302,6 +299,15 @@
     </ClCompile>
     <ClCompile Include="World\world.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="World\mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,6 +566,9 @@
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="World\mcscenerenderer.h">
       <Filter>Generated Files</Filter>
     </CustomBuild>
   </ItemGroup>

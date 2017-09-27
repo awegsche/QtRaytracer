@@ -42,12 +42,14 @@ public:
     void switch_to_preview();
     void Keypressed(int key);
     void set_sampler(const int n_samples);
+	void set_samples(const int n_samples);
 
     real get_angle() const;
     real get_vp_distance() const;
     void set_angle(const real angle);
     void set_vp_distance(const real distance, const real angle);
     void resize_vp(const int w, const int h);
+	void set_aperture(const real aperture);
 
     ShadeRec hit_objects(const Ray& ray);
     ShadeRec* hit_objects_CUDA();

@@ -24,7 +24,7 @@ void PreviewWorld::set_sampler(const int nsamples)
 
 void PreviewWorld::build()
 {
-    World::build();
+    
 
 }
 

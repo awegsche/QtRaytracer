@@ -78,7 +78,7 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cudart_static.lib;cudart_static.lib$(QTDIR)\lib\qtmain.lib;shell32.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart_static.lib;$(QTDIR)\lib\qtmain.lib;shell32.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CudaToolkitLibDir);$(QTDIR)\lib;C:\utils\my_sql\my_sql\lib;C:\utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -159,6 +159,9 @@
     <ClCompile Include="Debug\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_mcscenerenderer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_world.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -170,6 +173,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_mainwindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mcscenerenderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_world.cpp">
@@ -186,7 +192,6 @@
     <ClCompile Include="GeometricObjects\bbox.cpp" />
     <ClCompile Include="NBT\bigendianreader.cpp" />
     <ClCompile Include="BRDFs\brdf.cpp" />
-    <ClCompile Include="World\build_cubes.cpp" />
     <ClCompile Include="Cameras\camera.cpp" />
     <ClCompile Include="NBT\chunk.cpp" />
     <ClCompile Include="GeometricObjects\compound.cpp" />
@@ -211,6 +216,7 @@
     <ClCompile Include="GeometricObjects\mcregiongrid.cpp" />
     <ClCompile Include="GeometricObjects\mcstandardblock.cpp" />
     <ClCompile Include="GeometricObjects\mcwaterblock.cpp" />
+    <ClCompile Include="World\mcscenerenderer.cpp" />
     <ClCompile Include="World\mcworld.cpp" />
     <ClCompile Include="GeometricObjects\mesh.cpp" />
     <ClCompile Include="GeometricObjects\meshtriangle.cpp" />
@@ -323,6 +329,16 @@
     <ClInclude Include="GeometricObjects\mcregiongrid.h" />
     <ClInclude Include="GeometricObjects\mcstandardblock.h" />
     <ClInclude Include="GeometricObjects\mcwaterblock.h" />
+    <CustomBuild Include="World\mcscenerenderer.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing mcscenerenderer.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB "-I.\GeneratedFiles" "-I." "-I.\BRDFs" "-I.\Cameras" "-I.\GeometricObjects" "-I.\GUI" "-I.\Lights" "-I.\Materials" "-I.\Maths" "-I.\NBT" "-I.\Samplers" "-I.\Textures" "-I.\Tracers" "-I.\Utilities" "-I.\World" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing mcscenerenderer.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG "-I.\GeneratedFiles" "-I." "-I.\BRDFs" "-I.\Cameras" "-I.\GeometricObjects" "-I.\GUI" "-I.\Lights" "-I.\Materials" "-I.\Maths" "-I.\NBT" "-I.\Samplers" "-I.\Textures" "-I.\Tracers" "-I.\Utilities" "-I.\World" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc"</Command>
+    </CustomBuild>
     <ClInclude Include="World\mcworld.h" />
     <ClInclude Include="GeometricObjects\mesh.h" />
     <ClInclude Include="GeometricObjects\meshtriangle.h" />

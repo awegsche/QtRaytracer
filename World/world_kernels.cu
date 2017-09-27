@@ -21,7 +21,7 @@ extern "C" ShadeRec * hit_test()
 	}
 
 	// Run kernel on 1M elements on the GPU
-	kernel_hit_objects<<<1, 1 >>> (N, x, y);
+	kernel_hit_objects<<<1, 1>>> (N, x, y);
 
 	cudaDeviceSynchronize();
 
