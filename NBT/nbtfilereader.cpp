@@ -62,8 +62,6 @@ void NBTFileReader::Load(MCWorld *world)
 
         qint32 length = readInt32(tmp, 0);
 
-        qDebug() << "length = " << length;
-
         file.seek(offset*4096+5);
 
        auto size = BigEndianReader::toByteArray(length);

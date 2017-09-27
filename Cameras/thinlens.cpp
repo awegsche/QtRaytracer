@@ -4,6 +4,12 @@
 #include <QtConcurrent/QtConcurrent>
 #include "pixel.h"
 
+#ifdef WCUDA
+#include <cuda_runtime.h>
+#include <cuda_runtime_api.h>
+#endif // WCUDA
+
+
 
 ThinLens::ThinLens()
     :_aperture(0.0)
@@ -69,9 +75,18 @@ void ThinLens::render_scene(World &w)
 
     vp.s *= zoom;
 
-    QThreadPool* pool = new QThreadPool();
+#ifdef WCUDA // ======== GPU ===============================================================
 
-    qDebug() << vp.hres;
+	float* pixels;
+
+	cudaMallocManaged(&pixels, vp.vres * vp.hres * 3 * sizeof(float));
+
+
+
+#else // =============== CPU MultiCore =====================================================
+
+	
+    QThreadPool* pool = new QThreadPool();
 
     for (int row = 0; row < vp.vres && w.running; row++) {
         //render_line(vp, row, w);
@@ -79,34 +94,12 @@ void ThinLens::render_scene(World &w)
         pool->start(lr);
     }
 
-    pool->waitForDone();
+    pool->waitForDone(); // synchronize
 
 
-    /*/
+#endif // WCUDA
 
 
-    QList<ConcurrentStruct> pixel_points;
-    pixel_points.reserve(vp.vres*vp.hres);
-
-    for (int row = 0; row < vp.vres; row++) {
-        for (int column = 0; column < vp.hres; column++) {
-            Point2D pixel_point(column, row);
-            RGBColor L;
-
-            ConcurrentStruct cs = ConcurrentStruct(ray, pp, vp, sp, depth, L, &w, pixel_point);
-            pixel_points.push_back(cs);
-
-
-//               L = render_pixel(cs);
-//               w.dosplay_p(pixel_point.Y, pixel_point.X, L);
-        }
-
-    }
-
-    QFuture<Pixel> pixels = QtConcurrent::mappedReduced(pixel_points, &ThinLens::render_pixel, &World::display_p);
-
-
-    // */
 
     emit w.done();
 }

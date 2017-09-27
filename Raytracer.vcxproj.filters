@@ -273,10 +273,40 @@
     <ClCompile Include="World\viewplane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="World\world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="World\mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseCUDA\moc_world.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCUDA\moc_world.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_world.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_world.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseCUDA\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCUDA\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mcscenerenderer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReleaseCUDA\moc_mainwindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCUDA\moc_mainwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_mainwindow.cpp">
@@ -285,28 +315,28 @@
     <ClCompile Include="Release\moc_mainwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReleaseCUDA\moc_imagedisplay.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCUDA\moc_imagedisplay.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_imagedisplay.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_imagedisplay.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReleaseCUDA\moc_glimagedisplay.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCUDA\moc_glimagedisplay.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_glimagedisplay.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_glimagedisplay.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="World\world.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="World\mcscenerenderer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_mcscenerenderer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_mcscenerenderer.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>

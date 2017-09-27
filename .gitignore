@@ -5,3 +5,6 @@ Raytracer.vcxproj.user
 vc140.pdb
 /.vs
 /.qmake.stash
+/x64
+/ReleaseCUDA
+/DebugCUDA

@@ -26,6 +26,7 @@
 #include "PureRandom.h"
 #include "raycast.h"
 #include "pointlight.h"
+#include <qDebug>
 
 #ifndef WIN64
     const QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
@@ -194,6 +195,44 @@ void MCSceneRenderer::set_aperture(const real aperture)
 }
 
 
+#ifdef WCUDA
+
+
+void MCSceneRenderer::initCUDADevice()
+{
+	int device_count;
+	cudaGetDeviceCount(&device_count);
+
+	if (device_count == 0)
+	{
+		qDebug() << "gpuDeviceInit() CUDA error: no devices supporting CUDA.\n";
+		
+	}
+
+	
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, 0);
+
+	if (deviceProp.computeMode == cudaComputeModeProhibited)
+	{
+		qDebug() << "Error: device is running in <Compute Mode Prohibited>, no threads can use ::cudaSetDevice().\n";
+		return;
+	}
+
+	if (deviceProp.major < 1)
+	{
+		qDebug() << "gpuDeviceInit(): GPU device does not support CUDA.\n";
+		exit(EXIT_FAILURE);
+	}
+
+	cudaSetDevice(0);
+	qDebug() << QString("gpuDeviceInit() CUDA Device [0]: \"%1\n").arg(deviceProp.name);
+	
+
+}
+
+
+#endif // WCUDA
 
 MCSceneRenderer::MCSceneRenderer(QObject *parent)
     : World(parent), t_nsamples(4)
@@ -205,6 +244,10 @@ MCSceneRenderer::MCSceneRenderer(QObject *parent)
 
     add_object(world_grid);
     setup_blocklist();
+
+#ifdef WCUDA
+	initCUDADevice();
+#endif
 }
 
 void MCSceneRenderer::add_chunks(MCWorld *world, int x, int y)

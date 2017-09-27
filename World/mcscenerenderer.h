@@ -1,6 +1,13 @@
 #ifndef MCSCENERENDERER_H
 #define MCSCENERENDERER_H
 
+#ifdef WCUDA
+#include <cuda_runtime.h>
+#include <cuda_runtime_api.h>
+#endif // WCUDA
+
+
+
 #include "world.h"
 
 // A grid of regoins with edge length NREGIONS will be created
@@ -27,6 +34,13 @@ private:
 
     int t_nsamples;
 
+#ifdef WCUDA
+
+	void initCUDADevice();
+
+#endif // WCUDA
+
+	
 
 public:
     std::vector<MCBlock*> blocklist;
@@ -53,6 +67,9 @@ public:
 
     ShadeRec hit_objects(const Ray& ray);
     ShadeRec* hit_objects_CUDA();
+
+signals:
+	void stdLog(const QString &message);
 
 public:
 
