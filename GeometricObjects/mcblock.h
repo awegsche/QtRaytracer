@@ -14,8 +14,11 @@ enum BlockID {
     Sand =      12,
     LogOak =    17,
     LeavesOak = 18,
+    Grass = 31,
+    Dandelion = 37,
+    Poppy = 38,
     FarmLand =  60,
-
+    SugarCanes = 83
 };
 
 class MCBlock : public GeometricObject

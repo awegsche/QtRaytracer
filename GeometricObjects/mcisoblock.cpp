@@ -86,14 +86,22 @@ bool MCIsoBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, ShadeRec
 
     switch(sr.hdir) {
     case ShadeRec::Top:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.material_ptr = top_mat;
+        if (top_mat) {
+            sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
+            sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+            sr.material_ptr = top_mat;
+        }
+        else
+            return false;
         break;
     case ShadeRec::Bottom:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.material_ptr = material_ptr;
+        if (bottom_mat) {
+            sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
+            sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+            sr.material_ptr = bottom_mat;
+        }
+        else
+            return false;
         break;
 
     case ShadeRec::East:

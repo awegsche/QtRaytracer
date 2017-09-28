@@ -26,7 +26,7 @@
 #include "PureRandom.h"
 #include "raycast.h"
 #include "pointlight.h"
-#include <qDebug>
+#include <qdebug.h>
 
 #ifndef WIN64
     const QString texturepath = "/home/awegsche/Minecraft/minecraft/textures/blocks/";
@@ -83,6 +83,11 @@ void MCSceneRenderer::setup_blocklist()
     refl->set_exp(10.0);
     blocklist[BlockID::WaterFlow] = new MCWaterBlock(refl);
     blocklist[BlockID::WaterStill] = new MCWaterBlock(refl);
+
+    blocklist[BlockID::SugarCanes] = new MCIsoBlock(nullptr, new Matte(.4, .8, new ImageTexture(texturepath + "reeds.png"), true));
+    blocklist[BlockID::Dandelion] = new MCIsoBlock(nullptr, new Matte(.4, .8, new ImageTexture(texturepath + "flower_dandelion.png"), true));
+    blocklist[BlockID::Poppy] = new MCIsoBlock(nullptr, new Matte(.4, .8, new ImageTexture(texturepath + "flower_rose.png"), true));
+    blocklist[BlockID::Grass] = new MCIsoBlock(nullptr, new Matte(.4, .8, new ImageTexture(texturepath + "tallgrass.png"), true));
 }
 
 void MCSceneRenderer::switch_to_render()

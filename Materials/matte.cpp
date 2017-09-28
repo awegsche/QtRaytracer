@@ -24,6 +24,15 @@ Matte::Matte(float ka_, float kd_, Texture *t)
     ambient_brdf->set_color(t);
     diffuse_brdf->set_color(t);
 }
+
+Matte::Matte(float ka_, float kd_, Texture *t, bool transparency_)
+    : ambient_brdf(new Lambertian), diffuse_brdf(new Lambertian){
+    ambient_brdf->set_k(ka_);
+    diffuse_brdf->set_k(kd_);
+    ambient_brdf->set_color(t);
+    diffuse_brdf->set_color(t);
+    has_transparency = transparency_;
+}
 void Matte::set_kambient(float k)
 {
     ambient_brdf->set_k(k);
