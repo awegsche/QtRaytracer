@@ -30,7 +30,7 @@ class SmoothMeshTriangle: public MeshTriangle {
 		operator= (const SmoothMeshTriangle& rhs);
 				
 		virtual	bool 
-		hit(const Ray& ray, double& tmin, ShadeRec& sr) const; 																	
+		hit(const Ray& ray, real& tmin, ShadeRec& sr) const; 																	
 
 	protected:
 	

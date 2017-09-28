@@ -17,6 +17,7 @@ public:
     RGBColor();
     RGBColor(real red, real green, real blue);
     RGBColor(real brightness);
+	//RGBColor(double brightness);
     RGBColor(const RGBColor& color);
     RGBColor(const QRgb& color);
 

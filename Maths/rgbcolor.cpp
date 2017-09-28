@@ -16,6 +16,11 @@ RGBColor::RGBColor(real brightness)
 
 }
 
+//RGBColor::RGBColor(double brightness)
+//	: r(brightness), g(brightness), b(brightness) 
+//{
+//}
+
 RGBColor::RGBColor(const RGBColor &color)
     : r(color.r), g(color.g), b(color.b) {
 

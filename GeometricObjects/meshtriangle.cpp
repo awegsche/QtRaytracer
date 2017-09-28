@@ -114,7 +114,7 @@ MeshTriangle::get_bounding_box(void) {
 // flat, smooth, flat uv, smooth uv
 
 bool 															 
-MeshTriangle::shadow_hit(const Ray& ray, double& tmin) const {	
+MeshTriangle::shadow_hit(const Ray& ray, real& tmin) const {	
     Point v0(mesh_ptr->vertices[index0]);
     Point v1(mesh_ptr->vertices[index1]);
     Point v2(mesh_ptr->vertices[index2]);

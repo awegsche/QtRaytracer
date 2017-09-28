@@ -50,10 +50,10 @@ class MeshTriangle: public GeometricObject {
 		operator= (const MeshTriangle& rhs);
 		
 		virtual bool 												 
-		hit(const Ray& ray, double& tmin, ShadeRec& sr) const = 0;
+		hit(const Ray& ray, real& tmin, ShadeRec& sr) const = 0;
 		
 		virtual	bool 																	
-		shadow_hit(const Ray& ray, double& tmin) const;
+		shadow_hit(const Ray& ray, real& tmin) const;
 		
 		void 
 		compute_normal(const bool reverse_normal);

@@ -36,10 +36,10 @@ class Triangle: public GeometricObject {
 		compute_normal(void);
 		
 		virtual bool 
-		hit(const Ray& ray, double& tmin, ShadeRec& sr) const;		 					 
+		hit(const Ray& ray, real& tmin, ShadeRec& sr) const;		 					 
 		
 		virtual bool 																						 
-		shadow_hit(const Ray& ray, double& tmin) const; 
+		shadow_hit(const Ray& ray, real& tmin) const; 
 		
 	private:
 	

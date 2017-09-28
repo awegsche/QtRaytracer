@@ -59,7 +59,7 @@ FlatMeshTriangle::~FlatMeshTriangle(void) {}
 // ---------------------------------------------------------------- hit
 
 bool 															 
-FlatMeshTriangle::hit(const Ray& ray, double& tmin, ShadeRec& sr) const {	
+FlatMeshTriangle::hit(const Ray& ray, real& tmin, ShadeRec& sr) const {	
     Point v0(mesh_ptr->vertices[index0]);
     Point v1(mesh_ptr->vertices[index1]);
     Point v2(mesh_ptr->vertices[index2]);
