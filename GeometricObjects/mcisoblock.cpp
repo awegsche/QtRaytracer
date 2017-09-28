@@ -27,37 +27,37 @@ bool MCIsoBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
     switch(sr.hdir) {
     case ShadeRec::Top:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         sr.material_ptr = top_mat;
         break;
     case ShadeRec::Bottom:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         sr.material_ptr = bottom_mat;
         break;
 
     case ShadeRec::East:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::West:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::North:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::South:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
     }
@@ -87,8 +87,8 @@ bool MCIsoBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, ShadeRec
     switch(sr.hdir) {
     case ShadeRec::Top:
         if (top_mat) {
-            sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-            sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+            sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+            sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
             sr.material_ptr = top_mat;
         }
         else
@@ -96,8 +96,8 @@ bool MCIsoBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, ShadeRec
         break;
     case ShadeRec::Bottom:
         if (bottom_mat) {
-            sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-            sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+            sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+            sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
             sr.material_ptr = bottom_mat;
         }
         else
@@ -105,26 +105,26 @@ bool MCIsoBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, ShadeRec
         break;
 
     case ShadeRec::East:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::West:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::North:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
 
     case ShadeRec::South:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         sr.material_ptr = material_ptr;
         break;
     }

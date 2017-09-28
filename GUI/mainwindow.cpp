@@ -14,6 +14,7 @@
 #include "thinlens.h"
 #include "PureRandom.h"
 #include <QFileDialog>
+#include <qfileinfo.h>
 
 const real HAZE_STEP = 50.0;
 const real HAZE_ATT_STEP = 1.0e6;
@@ -25,22 +26,25 @@ void MainWindow::loadchunk(const QString& path, int y_, int x_)
 {
     QString path_ =  path + QDir::separator() + QString("r.%1.%2.mca")
             .arg(QString::number(y_)).arg(QString::number(x_));
+	QFileInfo fi(path);
+	if (fi.exists())
+	{
+		NBTFileReader F(path_);
+		MCWorld* W = new MCWorld();
+		F.Load(W);
 
-    NBTFileReader F(path_);
-    MCWorld* W = new MCWorld();
-    F.Load(W);
-
-    _world->add_chunks(W, y_, x_);
+		_world->add_chunks(W, y_, x_);
+	}
 }
 
 void MainWindow::update_camera_info()
 {
-    ui->camPosX->setValue(_world->camera_ptr->eye.X);
-    ui->camPosY->setValue(_world->camera_ptr->eye.Y);
-    ui->camPosZ->setValue(_world->camera_ptr->eye.Z);
-    ui->camDirX->setValue(_world->camera_ptr->u.X);
-    ui->camDirY->setValue(_world->camera_ptr->u.Y);
-    ui->camDirZ->setValue(_world->camera_ptr->u.Z);
+    ui->camPosX->setValue(_world->camera_ptr->eye.X());
+    ui->camPosY->setValue(_world->camera_ptr->eye.Y());
+    ui->camPosZ->setValue(_world->camera_ptr->eye.Z());
+    ui->camDirX->setValue(_world->camera_ptr->u.X());
+    ui->camDirY->setValue(_world->camera_ptr->u.Y());
+    ui->camDirZ->setValue(_world->camera_ptr->u.Z());
 
 //    double d = ((Pinhole*)_world->camera_ptr)->get_zoom();
 //    ui->distanceSlider->setValue((int)(d*10));
@@ -49,8 +53,8 @@ void MainWindow::update_camera_info()
 
 void MainWindow::resize_display()
 {
-    _world->vp.vres = i_height;
-    _world->vp.hres = i_width;
+	i_height = _world->vp.vres;
+	i_width = _world->vp.hres;
 
     _image = QImage(_world->vp.hres, _world->vp.vres, QImage::Format_RGB32);
     _image.fill(0xA0FFFF);
@@ -58,8 +62,8 @@ void MainWindow::resize_display()
 
     _display->setImage(&_image);
 
-    int wmax = i_width < 1280 ? i_width : 1280;
-    int hmax = i_height < 640 ? i_height : 640;
+    int wmax = i_width < 1024 ? i_width : 1024;
+    int hmax = i_height < 768 ? i_height : 768;
     _display->setFixedSize(wmax, hmax);
     _display->adjustSize();
     //ui->frame->adjustSize();
@@ -92,19 +96,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox->setChecked(_world->haze);
     ui->dial->setValue(500);
 
+	
 
 
-
+#ifdef NDEBUG
+	for (int i = -5; i < 6; i++)
+		for (int j = -5; j < 6; j++)
+			if(!(j==-1 && i ==0))
+				loadchunk(STR_REGIONSPATH, i, j);
+#else
     loadchunk(STR_REGIONSPATH, 0, 0);
     //loadchunk(STR_REGIONSPATH, 0, -1);
     loadchunk(STR_REGIONSPATH, 0, -2);
     loadchunk(STR_REGIONSPATH, 0, -3);
-    loadchunk(STR_REGIONSPATH, 1, 0);
-    loadchunk(STR_REGIONSPATH, -1, 0);
-    loadchunk(STR_REGIONSPATH, 1, -1);
-    loadchunk(STR_REGIONSPATH, -1, -1);
- /*   loadchunk(STR_REGIONSPATH, 1, -2);
-    loadchunk(STR_REGIONSPATH, 1, -3);*/
+
+#endif // NDEBUG
     //_world->world_grid->setup_cells();
     //_world->add_object(_world->world_grid);
     //ui->treeView->setModel(W);
@@ -215,20 +221,20 @@ void checkPaths()
 void MainWindow::on_camPosX_editingFinished()
 {
     stoprender();
-    this->_world->camera_ptr->eye.X = ui->camPosX->value();
+    this->_world->camera_ptr->eye.data[3] = ui->camPosX->value();
     render();
 }
 
 void MainWindow::on_camPosY_editingFinished()
 {
     stoprender();
-    this->_world->camera_ptr->eye.Y = ui->camPosY->value();
+    this->_world->camera_ptr->eye.data[2] = ui->camPosY->value();
     render();
 }
 
 void MainWindow::on_camPosZ_editingFinished()
 {
-    this->_world->camera_ptr->eye.Z = ui->camPosZ->value();
+    this->_world->camera_ptr->eye.data[1] = ui->camPosZ->value();
     render();
 }
 

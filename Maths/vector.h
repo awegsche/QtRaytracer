@@ -4,16 +4,16 @@
 #include "constants.h"
 #include "normal.h"
 
+
 class Vector
 {
 public:
-    real X;
-    real Y;
-    real Z;
+	real4 data;
 public:
     Vector();
     Vector(real a);
     Vector(real x, real y, real z);
+	Vector(const real4& xyzw);
     Vector(const Vector& v);
 
     void normalize();
@@ -25,6 +25,16 @@ public:
     Vector operator+=(const Vector& v);
 
     Vector hat() const;
+
+	real X() const{
+		return data[3];
+	}
+	real Y() const{
+		return data[2];
+	}
+	real Z() const{
+		return data[1];
+	}
 
 };
 

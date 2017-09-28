@@ -8,8 +8,8 @@ BBox::BBox()
 }
 
 BBox::BBox(Point p0, Point p1)
-    :   x0(p0.X), y0(p0.Y), z0(p0.Z),
-        x1(p1.X), y1(p1.Y), z1(p1.Z)
+    :   x0(p0.X()), y0(p0.Y()), z0(p0.Z()),
+        x1(p1.X()), y1(p1.Y()), z1(p1.Z())
 
 {
 
@@ -23,13 +23,13 @@ BBox::BBox(real x0_, real y0_, real z0_, real x1_, real y1_, real z1_)
 
 bool BBox::inside(const Point &p) const
 {
-     return ((p.X > x0 && p.X < x1) && (p.Y > y0 && p.Y < y1) && (p.Z > z0 && p.Z < z1));
+     return ((p.X() > x0 && p.X() < x1) && (p.Y() > y0 && p.Y() < y1) && (p.Z() > z0 && p.Z() < z1));
 }
 
 bool BBox::hit(const Ray &ray) const
 {
-    real ox = ray.o.X; real oy = ray.o.Y; real oz = ray.o.Z;
-    real dx = ray.d.X; real dy = ray.d.Y; real dz = ray.d.Z;
+    real ox = ray.o.X(); real oy = ray.o.Y(); real oz = ray.o.Z();
+    real dx = ray.d.X(); real dy = ray.d.Y(); real dz = ray.d.Z();
 
     real tx_min, ty_min, tz_min;
     real tx_max, ty_max, tz_max;

@@ -1,8 +1,14 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <fvec.h>
+#include <dvec.h>
 
 typedef double real;
+typedef F64vec4 real4;
+
+typedef float CUDAreal;
+
 typedef unsigned char byte;
 const real kEpsilon = 1.0e-4;
 const real kHugeValue = 1.0e+12;

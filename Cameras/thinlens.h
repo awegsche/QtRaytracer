@@ -5,6 +5,8 @@
 #include "pinhole.h"
 #include "sampler.h"
 
+extern "C" void render_thinlens_CUDA();
+
 class ThinLens : public Pinhole
 {
 public:

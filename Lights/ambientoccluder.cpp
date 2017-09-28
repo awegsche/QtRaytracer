@@ -31,7 +31,7 @@ RGBColor AmbientOccluder::L(ShadeRec &sr)
     v.normalize();
     u = v ^ w;
     Point sp = sampler_ptr->sample_hemisphere();
-    Vector get_d = sp.X * u + sp.Y * v + sp.Z * w;
+	Vector get_d =  sp.X() * u + sp.Y() * v + sp.Z() * w;
 
     Ray shadow_ray(sr.local_hit_point + kEpsilon * sr.normal, get_d);
     if (in_shadow(shadow_ray, sr))

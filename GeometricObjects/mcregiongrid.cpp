@@ -36,12 +36,12 @@ void MCRegionGrid::addblock(int x, int y, int z, GeometricObject *block)
 bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 {
     Material* mat_ptr = sr.material_ptr;
-    double ox = ray.o.X;
-    double oy = ray.o.Y;
-    double oz = ray.o.Z;
-    double dx = ray.d.X;
-    double dy = ray.d.Y;
-    double dz = ray.d.Z;
+    double ox = ray.o.X();
+    double oy = ray.o.Y();
+    double oz = ray.o.Z();
+    double dx = ray.d.X();
+    double dy = ray.d.Y();
+    double dz = ray.d.Z();
     double x0 = boundingbox.x0;
     double y0 = boundingbox.y0;
     double z0 = boundingbox.z0;
@@ -115,9 +115,9 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
     }
     else {
         Point p = ray.o + t0 * ray.d;  // initial hit point with grid's bounding box
-        ix = clamp((p.X - x0) * nx / (x1 - x0), 0, nx - 1);
-        iy = clamp((p.Y - y0) * ny / (y1 - y0), 0, ny - 1);
-        iz = clamp((p.Z - z0) * nz / (z1 - z0), 0, nz - 1);
+        ix = clamp((p.X() - x0) * nx / (x1 - x0), 0, nx - 1);
+        iy = clamp((p.Y() - y0) * ny / (y1 - y0), 0, ny - 1);
+        iz = clamp((p.Z() - z0) * nz / (z1 - z0), 0, nz - 1);
     }
 
     // ray parameter increments per cell in the x, y, and z directions
@@ -249,12 +249,12 @@ bool MCRegionGrid::hit(const Ray &ray, real &t, ShadeRec &sr) const
 
 bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
 {
-    double ox = ray.o.X;
-    double oy = ray.o.Y;
-    double oz = ray.o.Z;
-    double dx = ray.d.X;
-    double dy = ray.d.Y;
-    double dz = ray.d.Z;
+    double ox = ray.o.X();
+    double oy = ray.o.Y();
+    double oz = ray.o.Z();
+    double dx = ray.d.X();
+    double dy = ray.d.Y();
+    double dz = ray.d.Z();
     double x0 = boundingbox.x0;
     double y0 = boundingbox.y0;
     double z0 = boundingbox.z0;
@@ -328,9 +328,9 @@ bool MCRegionGrid::shadow_hit(const Ray &ray, real &t) const
     }
     else {
         Point p = ray.o + t0 * ray.d;  // initial hit point with grid's bounding box
-        ix = clamp((p.X - x0) * nx / (x1 - x0), 0, nx - 1);
-        iy = clamp((p.Y - y0) * ny / (y1 - y0), 0, ny - 1);
-        iz = clamp((p.Z - z0) * nz / (z1 - z0), 0, nz - 1);
+        ix = clamp((p.X() - x0) * nx / (x1 - x0), 0, nx - 1);
+        iy = clamp((p.Y() - y0) * ny / (y1 - y0), 0, ny - 1);
+        iz = clamp((p.Z() - z0) * nz / (z1 - z0), 0, nz - 1);
     }
 
     // ray parameter increments per cell in the x, y, and z directions

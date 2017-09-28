@@ -306,17 +306,20 @@ void MCSceneRenderer::run()
 void MCSceneRenderer::build()
 {
     m_preview_ambient = new Ambient(1.5, 1, 1, 1);
-    m_render_ambient = new AmbientOccluder(2.0, 0.1, 1.0, 1.0, 1.0);
+    m_render_ambient = new AmbientOccluder(2.0, 0.1, 1.0, 1.0, .7);
     m_preview_camera = new Pinhole(250, 100, 250, 500, 0, 250, 100, 1.0);
     m_render_camera = new ThinLens(250, 100, 250, 500, 0, 250, 100, 10.0, 0.1);
 
     vp.hres = 640;
     vp.vres = 480;
 
-    add_light(new PointLight(3.0, 1.0, 1.0, 0.2, 10000, 50000, 2000));
+    add_light(new PointLight(2.5, 1.0, 1.0, 0.2, -10000, 5000, 2000));
 
+	/*Sphere* s = new Sphere(Point(500, 0, 250 ), 1);
 
-
+	Phong* p = new Phong(1, 1, 1, 1, 1, 1, 1);
+	s->set_material(p);
+	add_object(s);*/
 
     tracer_ptr = new RayCast(this);
 

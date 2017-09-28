@@ -7,14 +7,13 @@ class Vector;
 class Normal
 {
 public:
-    real X;
-    real Y;
-    real Z;
+	real4 data;
 public:
     Normal();
     Normal(real x, real y, real z);
     Normal(const Vector& v);
     Normal(const Normal& n);
+	Normal(const real4& xyzw);
 
     void normalize();
     //real operator* (const Vector& u, const Normal& n);
@@ -23,6 +22,16 @@ public:
     Normal &operator+=(const Normal& n);
 
     Normal operator-();
+
+	const real X() const {
+		return data[3];
+	}
+	const real Y() const {
+		return data[2];
+	}
+	const real Z() const {
+		return data[1];
+	}
 };
 
 real operator*(const Vector& u, const Normal& n);

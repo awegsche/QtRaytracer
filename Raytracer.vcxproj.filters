@@ -604,5 +604,6 @@
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="World\world_kernels.cu" />
+    <CudaCompile Include="Cameras\thinlens.cu" />
   </ItemGroup>
 </Project>

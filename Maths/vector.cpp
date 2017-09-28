@@ -2,23 +2,28 @@
 #include "math.h"
 
 Vector::Vector()
-    :X(0.0), Y(0.0), Z(0.0){
-
+    :data(0.0, 0.0, 0.0, 0.0)
+{
 }
 
 Vector::Vector(real a)
-    : X(a), Y(a), Z(a) {
+    : data(a, a, a, 0.0) {
 
 }
 
 Vector::Vector(real x, real y, real z)
-    : X(x), Y(y), Z(z)
+    :data(x, y, z, 0.0)
 {
 
 }
 
+Vector::Vector(const real4 & xyzw)
+	:data(xyzw)
+{
+}
+
 Vector::Vector(const Vector &v)
-    : X(v.X), Y(v.Y), Z(v.Z)
+    : data(v.data)
 {
 
 }
@@ -26,44 +31,36 @@ Vector::Vector(const Vector &v)
 void Vector::normalize()
 {
     real l = 1.0 / length();
-    X *= l;
-    Y *= l;
-    Z *= l;
+	data *= real4(l, l, l, l);
 }
 real Vector::length() const
 
 {
-    return sqrt(X * X + Y * Y + Z * Z);
+    return sqrt(add_horizontal(data * data));
 }
 
 Vector &Vector::operator=(const Vector &v)
 {
-    this->X = v.X;
-    this->Y = v.Y;
-    this->Z = v.Z;
+	data = v.data;
 
     return *this;
 }
 
 Vector &Vector::operator=(const Normal &n)
 {
-    this->X = n.X;
-    this->Y = n.Y;
-    this->Z = n.Z;
+	data = n.data;
 
     return *this;
 }
 
 Vector Vector::operator-() const
 {
-    return Vector(-X, -Y, -Z);
+    return Vector(data * real4(-1.0, -1.0, -1.0, -1.0));
 }
 
 Vector Vector::operator+=(const Vector &v)
 {
-    this->X += v.X;
-    this->Y += v.Y;
-    this->Z += v.Z;
+	data += v.data;
 
     return *this;
 }
@@ -71,42 +68,42 @@ Vector Vector::operator+=(const Vector &v)
 Vector Vector::hat() const
 {
     real one_over_l = 1.0 / this->length();
-    return Vector(X * one_over_l, Y * one_over_l, Z * one_over_l);
+    return Vector(data * real4(one_over_l, one_over_l, one_over_l, one_over_l));
 }
 
 
 const Vector operator*(const Vector &v, real a)
 {
-    return Vector(a * v.X, a * v.Y, a * v.Z);
+    return Vector(v.data * real4(a,a,a,a));
 }
 
 const Vector operator*(real a, const Vector &v)
 {
-    return Vector(a * v.X, a * v.Y, a * v.Z);
+    return Vector(v.data *  real4(a, a, a, a));
 }
 
 real operator *(const Vector &a, const Vector &b)
 {
-    return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+    return add_horizontal(a.data * b.data);
 }
 
 const Vector operator+(const Vector &a, const Vector &b)
 {
-    return Vector(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+    return Vector(a.data + b.data);
 }
 
 const Vector operator/(const Vector &v, real a)
 {
     real  b = 1.0/a;
-    return Vector(b * v.X, b * v.Y, b * v.Z);
+    return Vector(v.data *  real4(b, b, b, b));
 }
 
 const Vector operator^(const Vector &a, const Vector &b)
 {
-    return Vector(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+    return Vector(a.Y() * b.Z() - a.Z() * b.Y(), a.Z() * b.X() - a.X() * b.Z(), a.X() * b.Y() - a.Y() * b.X());
 }
 
 const Vector operator-(const Vector &a, const Vector &b)
 {
-    return Vector(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+    return Vector(a.data - b.data);
 }

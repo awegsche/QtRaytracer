@@ -54,8 +54,8 @@ bool Sphere::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
 BBox Sphere::get_bounding_box()
 {
-    return BBox(m.X - r - kEpsilon, m.Y - r - kEpsilon, m.Z - r - kEpsilon,
-                m.X + r + kEpsilon, m.Y + r+ kEpsilon, m.Z + r + kEpsilon);
+    return BBox(m.X() - r - kEpsilon, m.Y() - r - kEpsilon, m.Z() - r - kEpsilon,
+                m.X() + r + kEpsilon, m.Y() + r+ kEpsilon, m.Z() + r + kEpsilon);
 }
 
 bool Sphere::shadow_hit(const Ray &ray, real &tmin) const

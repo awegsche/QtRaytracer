@@ -26,33 +26,33 @@ bool MCStandardBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 
     switch(sr.hdir) {
     case ShadeRec::Top:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         break;
     case ShadeRec::Bottom:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         break;
 
     case ShadeRec::East:
 
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::West:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::North:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::South:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
     }
 
@@ -81,32 +81,32 @@ bool MCStandardBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, Sha
 
     switch(sr.hdir) {
     case ShadeRec::Top:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         break;
     case ShadeRec::Bottom:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
         break;
 
     case ShadeRec::East:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::West:
-        sr.u = fmod(sr.local_hit_point.X, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.X(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::North:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
 
     case ShadeRec::South:
-        sr.u = fmod(sr.local_hit_point.Z, BLOCKLENGTH);
-        sr.v = fmod(sr.local_hit_point.Y, BLOCKLENGTH);
+        sr.u = fmod(sr.local_hit_point.Z(), BLOCKLENGTH);
+        sr.v = fmod(sr.local_hit_point.Y(), BLOCKLENGTH);
         break;
     }
 

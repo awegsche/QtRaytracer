@@ -294,7 +294,6 @@
     </ClCompile>
     <ClCompile Include="DebugCUDA\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseCUDA|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DebugCUDA\moc_mcscenerenderer.cpp">
@@ -345,7 +344,6 @@
     <ClCompile Include="ReleaseCUDA\moc_mainwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugCUDA|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ReleaseCUDA\moc_mcscenerenderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugCUDA|x64'">true</ExcludedFromBuild>
@@ -664,6 +662,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="Cameras\thinlens.cu" />
     <CudaCompile Include="World\world_kernels.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>

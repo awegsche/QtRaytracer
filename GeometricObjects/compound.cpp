@@ -26,12 +26,12 @@ void Compound::calculate_bounding_box()
     {
         BBox bbox = objects[j]->get_bounding_box();
 
-        if (bbox.x0 < p0.X) p0.X = bbox.x0;
-        if (bbox.y0 < p0.Y) p0.Y = bbox.y0;
-        if (bbox.z0 < p0.Z) p0.Z = bbox.z0;
-        if (bbox.x1 > p1.X) p1.X = bbox.x1;
-        if (bbox.y1 > p1.Y) p1.Y = bbox.y1;
-        if (bbox.z1 > p1.Z) p1.Z = bbox.z1;
+        if (bbox.x0 < p0.X()) p0.data[3] = bbox.x0;
+        if (bbox.y0 < p0.Y()) p0.data[2] = bbox.y0;
+        if (bbox.z0 < p0.Z()) p0.data[1] = bbox.z0;
+        if (bbox.x1 > p1.X()) p1.data[3] = bbox.x1;
+        if (bbox.y1 > p1.Y()) p1.data[2] = bbox.y1;
+        if (bbox.z1 > p1.Z()) p1.data[1] = bbox.z1;
     }
 
     boundingbox = BBox(p0 - Vector(kEpsilon), p1 + Vector(kEpsilon));

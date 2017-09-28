@@ -87,11 +87,11 @@ Triangle::compute_normal(void) {
 
 BBox
 Triangle::get_bounding_box(void) {
-	double delta = 0.000001; 
-	
-    return (BBox(min(min(v0.X, v1.X), v2.X) - delta, max(max(v0.X, v1.X), v2.X) + delta,
-                 min(min(v0.Y, v1.Y), v2.Y) - delta, max(max(v0.Y, v1.Y), v2.Y) + delta,
-                 min(min(v0.Z, v1.Z), v2.Z) - delta, max(max(v0.Z, v1.Z), v2.Z) + delta));
+	double delta = 0.000001;  
+
+    return (BBox(min(min(v0.X(), v1.X()), v2.X()) - delta, max(max(v0.X(), v1.X()), v2.X()) + delta,
+                 min(min(v0.Y(), v1.Y()), v2.Y()) - delta, max(max(v0.Y(), v1.Y()), v2.Y()) + delta,
+                 min(min(v0.Z(), v1.Z()), v2.Z()) - delta, max(max(v0.Z(), v1.Z()), v2.Z()) + delta));
 }
 
 
@@ -99,9 +99,9 @@ Triangle::get_bounding_box(void) {
 
 bool 
 Triangle::hit(const Ray& ray, double& tmin, ShadeRec& sr) const {	
-    double a = v0.X - v1.X, b = v0.X - v2.X, c = ray.d.X, d = v0.X - ray.o.X;
-    double e = v0.Y - v1.Y, f = v0.Y - v2.Y, g = ray.d.Y, h = v0.Y - ray.o.Y;
-    double i = v0.Z - v1.Z, j = v0.Z - v2.Z, k = ray.d.Z, l = v0.Z - ray.o.Z;
+    double a = v0.X() - v1.X(), b = v0.X() - v2.X(), c = ray.d.X(), d = v0.X() - ray.o.X();
+    double e = v0.Y() - v1.Y(), f = v0.Y() - v2.Y(), g = ray.d.Y(), h = v0.Y() - ray.o.Y();
+    double i = v0.Z() - v1.Z(), j = v0.Z() - v2.Z(), k = ray.d.Z(), l = v0.Z() - ray.o.Z();
 		
 	double m = f * k - g * j, n = h * k - g * l, p = f * l - h * j;
 	double q = g * i - e * k, s = e * j - f * i;
@@ -142,9 +142,9 @@ Triangle::hit(const Ray& ray, double& tmin, ShadeRec& sr) const {
 
 bool 																						 
 Triangle::shadow_hit(const Ray& ray, double& tmin) const {	
-    double a = v0.X - v1.X, b = v0.X - v2.X, c = ray.d.X, d = v0.X - ray.o.X;
-    double e = v0.Y - v1.Y, f = v0.Y - v2.Y, g = ray.d.Y, h = v0.Y - ray.o.Y;
-    double i = v0.Z - v1.Z, j = v0.Z - v2.Z, k = ray.d.Z, l = v0.Z - ray.o.Z;
+    double a = v0.X() - v1.X(), b = v0.X() - v2.X(), c = ray.d.X(), d = v0.X() - ray.o.X();
+    double e = v0.Y() - v1.Y(), f = v0.Y() - v2.Y(), g = ray.d.Y(), h = v0.Y() - ray.o.Y();
+    double i = v0.Z() - v1.Z(), j = v0.Z() - v2.Z(), k = ray.d.Z(), l = v0.Z() - ray.o.Z();
 		
 	double m = f * k - g * j, n = h * k - g * l, p = f * l - h * j;
 	double q = g * i - e * k, s = e * j - f * i;

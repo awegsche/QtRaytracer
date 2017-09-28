@@ -76,9 +76,9 @@ SmoothMeshTriangle::hit(const Ray& ray, double& tmin, ShadeRec& sr) const {
     Point v1(mesh_ptr->vertices[index1]);
     Point v2(mesh_ptr->vertices[index2]);
 	
-    double a = v0.X - v1.X, b = v0.X - v2.X, c = ray.d.X, d = v0.X - ray.o.X;
-    double e = v0.Y - v1.Y, f = v0.Y - v2.Y, g = ray.d.Y, h = v0.Y - ray.o.Y;
-    double i = v0.Z - v1.Z, j = v0.Z - v2.Z, k = ray.d.Z, l = v0.Z - ray.o.Z;
+    double a = v0.X() - v1.X(), b = v0.X() - v2.X(), c = ray.d.X(), d = v0.X() - ray.o.X();
+    double e = v0.Y() - v1.Y(), f = v0.Y() - v2.Y(), g = ray.d.Y(), h = v0.Y() - ray.o.Y();
+    double i = v0.Z() - v1.Z(), j = v0.Z() - v2.Z(), k = ray.d.Z(), l = v0.Z() - ray.o.Z();
 		
 	double m = f * k - g * j, n = h * k - g * l, p = f * l - h * j;
 	double q = g * i - e * k, s = e * j - f * i;

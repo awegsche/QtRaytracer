@@ -104,8 +104,8 @@ MeshTriangle::get_bounding_box(void) {
     Point v2(mesh_ptr->vertices[index1]);
     Point v3(mesh_ptr->vertices[index2]);
 	
-    return(BBox(    min(min(v1.X, v2.X), v3.X) - delta, min(min(v1.Y, v2.Y), v3.Y) - delta, min(min(v1.Z, v2.Z), v3.Z) - delta,
-                    max(max(v1.X, v2.X), v3.X) + delta, max(max(v1.Y, v2.Y), v3.Y) + delta, max(max(v1.Z, v2.Z), v3.Z) + delta));
+    return(BBox(    min(min(v1.X(), v2.X()), v3.X()) - delta, min(min(v1.Y(), v2.Y()), v3.Y()) - delta, min(min(v1.Z(), v2.Z()), v3.Z()) - delta,
+                    max(max(v1.X(), v2.X()), v3.X()) + delta, max(max(v1.Y(), v2.Y()), v3.Y()) + delta, max(max(v1.Z(), v2.Z()), v3.Z()) + delta));
 }
 
 
@@ -119,9 +119,9 @@ MeshTriangle::shadow_hit(const Ray& ray, double& tmin) const {
     Point v1(mesh_ptr->vertices[index1]);
     Point v2(mesh_ptr->vertices[index2]);
 
-    double a = v0.X - v1.X, b = v0.X - v2.X, c = ray.d.X, d = v0.X - ray.o.X;
-    double e = v0.Y - v1.Y, f = v0.Y - v2.Y, g = ray.d.Y, h = v0.Y - ray.o.Y;
-    double i = v0.Z - v1.Z, j = v0.Z - v2.Z, k = ray.d.Z, l = v0.Z - ray.o.Z;
+    double a = v0.X() - v1.X(), b = v0.X() - v2.X(), c = ray.d.X(), d = v0.X() - ray.o.X();
+    double e = v0.Y() - v1.Y(), f = v0.Y() - v2.Y(), g = ray.d.Y(), h = v0.Y() - ray.o.Y();
+    double i = v0.Z() - v1.Z(), j = v0.Z() - v2.Z(), k = ray.d.Z(), l = v0.Z() - ray.o.Z();
 		
 	double m = f * k - g * j, n = h * k - g * l, p = f * l - h * j;
 	double q = g * i - e * k, s = e * j - f * i;
