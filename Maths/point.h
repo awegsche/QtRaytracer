@@ -7,24 +7,24 @@ class Vector;
 class Point
 {
 public:
-	real4 data;
+    real3 data;
 public:
     Point();
     Point(real x, real y, real z);
-	Point(const real4 &xyzw);
+    Point(const real3 &xyz);
 
     const Point& operator=(const Vector& v);
 
     Point &operator += (const Vector& v);
 
 	const real X() const {
-		return data[3];
+        return data.get_x();
 	}
 	const real Y() const {
-		return data[2];
+        return data.get_y();
 	}
 	const real Z() const {
-		return data[1];
+        return data.get_z();
 	}
 };
 

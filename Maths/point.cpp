@@ -2,19 +2,19 @@
 #include "vector.h"
 
 Point::Point()
-	:data(0.0,0.0,0.0,0.0)
+    :data(0.0,0.0,0.0)
 {
 
 }
 
 Point::Point(real x, real y, real z)
-	: data(x, y, z, 0.0)
+    : data(x, y, z)
 {
 
 }
 
-Point::Point(const real4 & xyzw)
-	:data(xyzw)
+Point::Point(const real3 &xyz)
+    :data(xyz)
 {
 }
 

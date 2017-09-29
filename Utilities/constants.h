@@ -1,11 +1,10 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+#include <vectorclass.h>
+#include "vector3d.h"
 
-#include <fvec.h>
-#include <dvec.h>
-
+typedef Vec3d real3;
 typedef double real;
-typedef F64vec4 real4;
 
 typedef float CUDAreal;
 

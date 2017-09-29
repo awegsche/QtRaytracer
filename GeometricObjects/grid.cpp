@@ -300,7 +300,7 @@ void Grid::compute_mesh_normals()
             // The following code attempts to avoid (nan, nan, nan) normalised normals when all components = 0
 
             if (normal.X() == 0.0 && normal.Y() == 0.0 && normal.Z() == 0.0)
-                normal.data[1] = 1.0;
+                normal.data.insert(2, 1.0);
             else
                 normal.normalize();
 

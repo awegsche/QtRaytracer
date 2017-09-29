@@ -8,12 +8,12 @@
 class Vector
 {
 public:
-	real4 data;
+    real3 data;
 public:
     Vector();
     Vector(real a);
     Vector(real x, real y, real z);
-	Vector(const real4& xyzw);
+    Vector(const real3& xyz);
     Vector(const Vector& v);
 
     void normalize();
@@ -27,13 +27,13 @@ public:
     Vector hat() const;
 
 	real X() const{
-		return data[3];
+        return data.get_x();
 	}
 	real Y() const{
-		return data[2];
+        return data.get_y();
 	}
 	real Z() const{
-		return data[1];
+        return data.get_z();
 	}
 
 };

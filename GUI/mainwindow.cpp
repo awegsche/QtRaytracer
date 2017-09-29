@@ -221,20 +221,21 @@ void checkPaths()
 void MainWindow::on_camPosX_editingFinished()
 {
     stoprender();
-    this->_world->camera_ptr->eye.data[3] = ui->camPosX->value();
+
+    this->_world->camera_ptr->eye.data.insert(0, ui->camPosX->value());
     render();
 }
 
 void MainWindow::on_camPosY_editingFinished()
 {
     stoprender();
-    this->_world->camera_ptr->eye.data[2] = ui->camPosY->value();
+    this->_world->camera_ptr->eye.data.insert(1, ui->camPosY->value());
     render();
 }
 
 void MainWindow::on_camPosZ_editingFinished()
 {
-    this->_world->camera_ptr->eye.data[1] = ui->camPosZ->value();
+    this->_world->camera_ptr->eye.data.insert(2,  ui->camPosZ->value());
     render();
 }
 

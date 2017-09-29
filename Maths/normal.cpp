@@ -8,36 +8,35 @@ Normal::Normal()
 }
 
 Normal::Normal(real x, real y, real z)
-    : data(x,y,z, 0.0){
+    : data(x,y,z){
 
 }
 
 Normal::Normal(const Vector &v)
-    : data(v.X(), v.Y(), v.Z(), 0.0) {
+    : data(v.X(), v.Y(), v.Z()) {
 
 }
 
 Normal::Normal(const Normal &n)
-    : data(n.X(), n.Y(), n.Z(), 0.0) {
+    : data(n.X(), n.Y(), n.Z()) {
 
 }
 
-Normal::Normal(const real4 & xyzw)
-	:data(xyzw)
+Normal::Normal(const real3 &xyz)
+    :data(xyz)
 {
 }
 
 void Normal::normalize()
 {
-    using namespace std;
-    real over_length = 1.0 / sqrt(add_horizontal(data * data));
-	data = data * real4(over_length,over_length, over_length, 1.0);
+
+    data = normalize_vector(data);
 }
 
 
 real Normal::operator*(const Vector &u)
 {
-    return add_horizontal(data * u.data);
+    return dot_product(data, u.data);
 }
 
 Normal &Normal::operator=(const Vector &v)
@@ -56,17 +55,17 @@ Normal &Normal::operator+=(const Normal &n)
 
 Normal Normal::operator-()
 {
-    return Normal(-data[3], -data[2], -data[1]);
+    return Normal(-data);
 }
 
 real operator*(const Vector &u, const Normal &n)
 {
-    return add_horizontal(u.data * n.data);
+    return dot_product(u.data, n.data);
 }
 
 Vector operator *(real a, const Normal &n)
 {
-    return Vector(n.data * real4(a, a, a, a));
+    return Vector(n.data * a);
 }
 
 Vector operator +(const Normal &n, const Normal &m)
@@ -76,10 +75,10 @@ Vector operator +(const Normal &n, const Normal &m)
 
 real operator*(const Normal &n, const Vector &u)
 {
-    return add_horizontal(n.data * u.data);
+    return dot_product(n.data, u.data);
 }
 
 Vector operator *(const Normal &n, real a)
 {
-    return Vector(n.data * real4(a,a,a,a));
+    return Vector(n.data * a);
 }

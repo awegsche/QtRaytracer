@@ -106,7 +106,24 @@ HEADERS += \
     World/shaderec.h \
     World/viewplane.h \
     World/world.h \
-    World/mcscenerenderer.h
+    World/mcscenerenderer.h \
+    Utilities/instrset.h \
+    Utilities/vectorclass.h \
+    Utilities/vectorf128.h \
+    Utilities/vectorf256.h \
+    Utilities/vectorf256e.h \
+    Utilities/vectorf512.h \
+    Utilities/vectorf512e.h \
+    Utilities/vectori128.h \
+    Utilities/vectori256.h \
+    Utilities/vectori256e.h \
+    Utilities/vectori512.h \
+    Utilities/vectori512e.h \
+    Utilities/vectormath_common.h \
+    Utilities/vectormath_exp.h \
+    Utilities/vectormath_hyp.h \
+    Utilities/vectormath_lib.h \
+    Utilities/vectormath_trig.h
 
 SOURCES += \
     main.cpp \

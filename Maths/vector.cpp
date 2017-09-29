@@ -2,23 +2,23 @@
 #include "math.h"
 
 Vector::Vector()
-    :data(0.0, 0.0, 0.0, 0.0)
+    :data(0.0, 0.0, 0.0)
 {
 }
 
 Vector::Vector(real a)
-    : data(a, a, a, 0.0) {
+    : data(a, a, a) {
 
 }
 
 Vector::Vector(real x, real y, real z)
-    :data(x, y, z, 0.0)
+    :data(x, y, z)
 {
 
 }
 
-Vector::Vector(const real4 & xyzw)
-	:data(xyzw)
+Vector::Vector(const real3 &xyz)
+    :data(xyz)
 {
 }
 
@@ -31,12 +31,12 @@ Vector::Vector(const Vector &v)
 void Vector::normalize()
 {
     real l = 1.0 / length();
-	data *= real4(l, l, l, l);
+    data *= l;
 }
 real Vector::length() const
 
 {
-    return sqrt(add_horizontal(data * data));
+    return vector_length(data);
 }
 
 Vector &Vector::operator=(const Vector &v)
@@ -55,7 +55,7 @@ Vector &Vector::operator=(const Normal &n)
 
 Vector Vector::operator-() const
 {
-    return Vector(data * real4(-1.0, -1.0, -1.0, -1.0));
+    return Vector(-data);
 }
 
 Vector Vector::operator+=(const Vector &v)
@@ -68,23 +68,23 @@ Vector Vector::operator+=(const Vector &v)
 Vector Vector::hat() const
 {
     real one_over_l = 1.0 / this->length();
-    return Vector(data * real4(one_over_l, one_over_l, one_over_l, one_over_l));
+    return Vector(data * one_over_l);
 }
 
 
 const Vector operator*(const Vector &v, real a)
 {
-    return Vector(v.data * real4(a,a,a,a));
+    return Vector(v.data * a);
 }
 
 const Vector operator*(real a, const Vector &v)
 {
-    return Vector(v.data *  real4(a, a, a, a));
+    return Vector(v.data *  a);
 }
 
 real operator *(const Vector &a, const Vector &b)
 {
-    return add_horizontal(a.data * b.data);
+    return dot_product(a.data, b.data);
 }
 
 const Vector operator+(const Vector &a, const Vector &b)
@@ -95,12 +95,12 @@ const Vector operator+(const Vector &a, const Vector &b)
 const Vector operator/(const Vector &v, real a)
 {
     real  b = 1.0/a;
-    return Vector(v.data *  real4(b, b, b, b));
+    return Vector(v.data *  b);
 }
 
 const Vector operator^(const Vector &a, const Vector &b)
 {
-    return Vector(a.Y() * b.Z() - a.Z() * b.Y(), a.Z() * b.X() - a.X() * b.Z(), a.X() * b.Y() - a.Y() * b.X());
+    return Vector(cross_product(a.data, b.data));
 }
 
 const Vector operator-(const Vector &a, const Vector &b)
