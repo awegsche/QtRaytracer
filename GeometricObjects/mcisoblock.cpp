@@ -76,6 +76,7 @@ bool MCIsoBlock::hit(const Ray &ray, real &tmin, ShadeRec &sr) const
 bool MCIsoBlock::shadow_hit(const Ray &ray, real &tmin) const
 {
     if ( tmin > kEpsilon) return true;
+	return false;
 }
 
 bool MCIsoBlock::block_hit(const Ray &ray, const Point &p0, real &tmin, ShadeRec &sr) const
