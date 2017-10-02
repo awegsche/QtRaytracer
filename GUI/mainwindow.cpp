@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 
 
-#ifdef NDEBUG
+#if defined NDEBUG || defined QT_NO_DEBUG
 	for (int i = -5; i < 6; i++)
 		for (int j = -5; j < 6; j++)
 			if(!(j==-1 && i ==0))

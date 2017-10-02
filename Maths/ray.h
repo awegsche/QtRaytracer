@@ -4,9 +4,11 @@
 #include "vector.h"
 #include "point.h"
 
+#ifdef WCUDA
 typedef struct {
 	CUDAreal3 o, d;
 } rayCU;
+#endif
 
 
 

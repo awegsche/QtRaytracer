@@ -34,10 +34,6 @@ void ThinLens::set_sampler(Sampler *sampler)
     _sampler_ptr->map_samples_to_unit_disk();
 }
 
-void ThinLens::render_scene_CUDA(World & w)
-{
-}
-
 void ThinLens::render_line(ViewPlane vp, int row, World &w)
 {
     Ray ray;

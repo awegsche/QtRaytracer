@@ -52,7 +52,7 @@ RGBColor GlossySpecular::f(const ShadeRec &sr, const Vector &wi, const Vector &w
     real rdotwo = r * wo;
 
     if (rdotwo > .0)
-        L = ks->get_color(sr).r * pow(rdotwo, exp) * cs->get_color(sr);
+        L = ks->get_color(sr).r * (real)pow(rdotwo, exp) * cs->get_color(sr);
 
     return L;
 }

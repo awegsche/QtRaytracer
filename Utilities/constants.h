@@ -5,18 +5,20 @@
 
 #ifdef WCUDA
 #include <cuda_runtime.h>
-#endif // WCUDA
-
 #include <vector_types.h>
 
-
-typedef Vec3f real3;
-typedef float real;
 
 typedef float CUDAreal;
 typedef float4 CUDAreal4;
 typedef float3 CUDAreal3;
 typedef float2 CUDAreal2;
+#endif // WCUDA
+
+
+
+typedef Vec3f real3;
+typedef float real;
+
 
 typedef unsigned char byte;
 const real kEpsilon = 1.0e-4;

@@ -6,10 +6,12 @@
 #include "sampler.h"
 #include "ray.h" 
 
+#ifdef WCUDA
 extern "C" int render_thinlens_cuda(rayCU* rays,
 	const int width, const int height, const int npixels, const CUDAreal vp_s,
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 &eye, const CUDAreal3 &u, const CUDAreal3 &v, const CUDAreal3 &w);
+#endif
 
 class ThinLens : public Pinhole
 {
@@ -28,7 +30,6 @@ public:
     // Camera interface
 public:
     void render_scene(World &w) Q_DECL_OVERRIDE;
-	void render_scene_CUDA(World &w);
 
 
 protected:
