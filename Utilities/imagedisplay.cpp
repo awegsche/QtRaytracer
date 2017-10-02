@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include <QKeyEvent>
 #include "thinlens.h"
+#include <QMenu>
 
 ImageDisplay::ImageDisplay(MCSceneRenderer *w, MainWindow *mainw, QWidget *parent) : QWidget(parent) {
   m_image = 0;
@@ -12,6 +13,7 @@ ImageDisplay::ImageDisplay(MCSceneRenderer *w, MainWindow *mainw, QWidget *paren
   setMaximumSize(1280, 640);
   mw = w;
   mainwindow = mainw;
+
 }
 
 void ImageDisplay::setImage(QImage *image) {
@@ -20,7 +22,7 @@ void ImageDisplay::setImage(QImage *image) {
   //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 //  qDebug() << m_image->size().width() << ", " << m_image->size().width();
   repaint();
-
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
   // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
@@ -28,6 +30,15 @@ void ImageDisplay::setImage(QImage *image) {
 void ImageDisplay::save_image(const QString &filename) const
 {
     m_image->save(filename, "jpeg", 80);
+}
+
+void ImageDisplay::showContextMenu(const QPointF &p)
+{
+    QMenu contextMenu(tr("title"), this);
+    contextMenu.addSection(tr("section 1"));
+
+    contextMenu.setFixedSize(100,100);
+    contextMenu.popup(mapToGlobal(QPoint((int)p.x(), (int)p.y())));
 }
 
 void ImageDisplay::paintEvent(QPaintEvent*) {
@@ -56,7 +67,6 @@ void ImageDisplay::keyPressEvent(QKeyEvent *event)
         mw->switch_to_render();
 
     }
-
 	else
 	{
         mw->switch_to_preview();
@@ -70,3 +80,12 @@ QSize ImageDisplay::minimumSizeHint() const
 {
     return QSize(32, 32);
 }
+
+void ImageDisplay::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton) {
+        showContextMenu(event->localPos());
+    }
+}
+
+

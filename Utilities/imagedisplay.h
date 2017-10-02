@@ -22,6 +22,7 @@ public:
 signals:
 
 public slots:
+    void showContextMenu(const QPointF &p);
 
     // QWidget interface
 protected:
@@ -41,6 +42,12 @@ protected:
     // QWidget interface
 public:
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+
+
+
+    // QWidget interface
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // IMAGEDISPLAY_H
