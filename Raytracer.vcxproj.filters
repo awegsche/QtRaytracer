@@ -339,6 +339,9 @@
     <ClCompile Include="Release\moc_glimagedisplay.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="CUDAhelpers.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeometricObjects\FlatMeshTriangle.h">
@@ -590,6 +593,10 @@
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Maths\ray.cuh" />
+    <ClInclude Include="CUDAhelpers.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -605,5 +612,7 @@
   <ItemGroup>
     <CudaCompile Include="World\world_kernels.cu" />
     <CudaCompile Include="Cameras\thinlens.cu" />
+    <CudaCompile Include="Tracers\raycast.cu" />
+    <CudaCompile Include="GeometricObjects\mcgrid.cu" />
   </ItemGroup>
 </Project>

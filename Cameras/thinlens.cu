@@ -1,36 +1,97 @@
-#include "thinlens.h"
+
 #include <cuda_runtime.h>
+#include "ray.cuh"
+#include "ray.h"
+#include <curand_kernel.h>
+#include "CUDAhelpers.h"
 
-__device__ void render_thinlens_cuda()
+const int CUDABLOCK = 16;
+
+static __global__ void thinlens_kernel(
+	rayCU* rays,
+	const int width, const int height, const int npixels, const CUDAreal vp_s, 
+	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
+	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 eye, const CUDAreal3 u, const CUDAreal3 v, const CUDAreal3 w) {
+
+	int column = threadIdx.x + blockIdx.x * blockDim.x;
+	int row = threadIdx.y + blockIdx.y * blockDim.y;
+
+	int index = row * width + column;
+		
+	for (int i = 0; i < nsamples; i++) {
+		float2 pp;
+		float2 sp = square_samples[i + threadIdx.x + threadIdx.y]; // not really random
+		pp.x = vp_s * (column - 0.5 * width + sp.x);
+		pp.y = vp_s * (row - 0.5 * height + sp.y);
+
+		float2 ap = disk_samples[i + threadIdx.x + threadIdx.y];
+
+		int index_ray = index + i * npixels;
+		rays[index_ray].o = eye + (aperture * ap.x) * u + (aperture * ap.y) * v;
+		CUDAreal3 dir = (pp.x - aperture * ap.x) * u + (pp.y - aperture * ap.y)  * v - distance * w;
+		rays[index_ray].d = normalize(dir);
+
+
+	}
+}
+
+static __global__ void thinlens_trace_kernel(
+	rayCU* rays, 
+	const int width, const int height, const int npixels, const CUDAreal vp_s,
+	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
+	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 eye, const CUDAreal3 u, const CUDAreal3 v, const CUDAreal3 w)
 {
-	//Ray ray;
+}
 
-	//Point2D sp;      // Sample point in [0,1]x[0,1]
-	//Point2D pp;      // Sample point on a pixel
-	//Point2D ap;     // Sample point on aperture;
+// Setup the array of primary rays to render
+extern "C" int render_thinlens_cuda(rayCU* rays,
+	const int width, const int height, const int npixels, const CUDAreal vp_s,
+	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
+	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 &eye, const CUDAreal3 &u, const CUDAreal3 &v, const CUDAreal3 &w)
+{
+	dim3 blockSize(CUDABLOCK, CUDABLOCK);
+	dim3 numBlocks(width / CUDABLOCK, height / CUDABLOCK);
 
-	//uint* rgb = new uint[_vp.hres];
+	cudaDeviceProp p;
+
+	cudaGetDeviceProperties(&p, 0);
+	
+	thinlens_kernel<<<numBlocks, blockSize>>>(
+		rays,
+		width, height, npixels,  vp_s,
+		nsamples, square_samples, disk_samples,
+		aperture, distance, eye, u, v, w);
+
+	return cudaDeviceSynchronize();
 
 
-	//for (int column = 0; column < _vp.hres && _w->running; column++) {
-	//	int depth = 0;
-	//	RGBColor L;
-	//	Point2D pixel_point(column, _line);
-	//	for (int j = 0; j < _vp.num_samples; j++) {
-			//sp = _vp.sampler_ptr->sample_unit_square();
-	//		pp.X = _vp.s * (pixel_point.X - 0.5 * _vp.hres + sp.X);
-	//		pp.Y = _vp.s * (pixel_point.Y - 0.5 * _vp.vres + sp.Y);
 
-	//		ap = _camera->_sampler_ptr->sample_unit_disk();
-	//		ray.o = _camera->eye + (_camera->_aperture * ap.X) * _camera->u + (_camera->_aperture * ap.Y) * _camera->v;
-	//		Vector dir = (pp.X - _camera->_aperture * ap.X) * _camera->u + (pp.Y - _camera->_aperture * ap.Y) * _camera->v - _camera->d * _camera->w;
-	//		ray.d = dir.hat();
-	//		//ray.d = Vector(30, 0.001, -5).hat();
-	//		L += _w->tracer_ptr->trace_ray(ray, depth);
-	//	}
-	//	L /= _vp.num_samples;
-	//	L *= _camera->exposure_time;
-	//	rgb[column] = L.truncate().to_uint();
-	//}
-	//emit _w->display_line(_line, rgb);
+
+	/*RGBColor RayCast::trace_ray(const Ray &ray, const int depth) const
+	{
+		if (depth > this->world_ptr->max_depth) return RGBColor();
+		ShadeRec sr(world_ptr->hit_objects(ray));
+
+		if (sr.hit_an_object) {
+			sr.depth = depth;
+			sr.ray = ray;
+			if (sr.material_ptr == nullptr) sr.material_ptr = missing_mat;
+			RGBColor L = world_ptr->background_color;
+			if (noshade)
+				L = sr.material_ptr->noshade(sr);
+			else
+				L = sr.material_ptr->shade(sr);
+			if (sr.w->haze && sr.t > sr.w->haze_distance)
+			{
+				real damping = (sr.t - sr.w->haze_distance) * sr.w->haze_attenuation;
+				damping = damping > 1.0 ? 1.0 : damping;
+				return damping * sr.w->background_color + ((real)1.0 - damping) * L;
+			}
+
+			return L;
+		}
+		else
+			return world_ptr->background_color;
+	}*/
+
 }

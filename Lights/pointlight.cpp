@@ -5,7 +5,7 @@
 #include "world.h"
 
 PointLight::PointLight()
-    :ls(1.0), color(0.0), location(){
+    :ls(1.0), color((real)0.0), location(){
 
 }
 

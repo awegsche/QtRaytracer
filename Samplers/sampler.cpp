@@ -9,13 +9,24 @@
 #include "sampler.h"
 #include <random>
 
+#ifdef WCUDA
+#include <cuda_runtime.h>
+#include "CUDAhelpers.h"
+#endif // WCUDA
+
+
 // ------------------------------------------------------------------ default constructor
 
 Sampler::Sampler(void)
     : 	num_samples(1),
         num_sets(83),
         count(0),
-        jump(0) {
+        jump(0)
+#ifdef WCUDA
+	, samplesCUDA(nullptr), hemisphere_samplesCUDA(nullptr), disk_samplesCUDA(nullptr)
+#endif // WCUDA
+
+{
     samples.reserve(num_samples * num_sets);
     setup_shuffled_indices();
 }
@@ -27,7 +38,11 @@ Sampler::Sampler(const int ns)
     : 	num_samples(ns),
         num_sets(83),
         count(0),
-        jump(0) {
+        jump(0)
+#ifdef WCUDA
+	, samplesCUDA(nullptr), hemisphere_samplesCUDA(nullptr), disk_samplesCUDA(nullptr)
+#endif // WCUDA
+{
     samples.reserve(num_samples * num_sets);
     setup_shuffled_indices();
 }
@@ -39,7 +54,11 @@ Sampler::Sampler(const int ns, const int n_sets)
     : 	num_samples(ns),
         num_sets(n_sets),
         count(0),
-        jump(0) {
+        jump(0) 
+#ifdef WCUDA
+	, samplesCUDA(nullptr), hemisphere_samplesCUDA(nullptr), disk_samplesCUDA(nullptr)
+#endif // WCUDA
+{
     samples.reserve(num_samples * num_sets);
     setup_shuffled_indices();
 }
@@ -57,6 +76,9 @@ Sampler::Sampler(const Sampler& s)
         sphere_samples(s.sphere_samples),
         count(s.count),
         jump(s.jump)
+#ifdef WCUDA
+	, samplesCUDA(nullptr), hemisphere_samplesCUDA(nullptr), disk_samplesCUDA(nullptr)
+#endif // WCUDA
 {}
 
 
@@ -162,6 +184,12 @@ Sampler::map_samples_to_unit_disk(void) {
 
     disk_samples.resize(size);
 
+#ifdef WCUDA
+	size_t memsize = sizeof(CUDAreal2) * size;
+	cudaMalloc(&disk_samplesCUDA, memsize);
+	CUDAreal2* temp_samples = (CUDAreal2*)malloc(memsize);
+#endif // WCUDA
+
     for (int j = 0; j < size; j++) {
          // map sample point to [-1, 1] X [-1,1]
 
@@ -196,9 +224,17 @@ Sampler::map_samples_to_unit_disk(void) {
 
         disk_samples[j].X = r * cos(phi);
         disk_samples[j].Y = r * sin(phi);
+
+#ifdef WCUDA
+		temp_samples[j] = __make_CUDAreal2(disk_samples[j].X, disk_samples[j].Y);
+#endif // WCUDA
     }
 
-    samples.erase(samples.begin(), samples.end());
+#ifdef WCUDA
+	cudaMemcpy(disk_samplesCUDA, temp_samples, memsize, cudaMemcpyKind::cudaMemcpyHostToDevice);
+#endif // WCUDA
+
+    //samples.erase(samples.begin(), samples.end());
 }
 
 
@@ -212,6 +248,13 @@ Sampler::map_samples_to_hemisphere(const float exp) {
     int size = samples.size();
     hemisphere_samples.reserve(num_samples * num_sets);
 
+#ifdef WCUDA
+	size_t memsize = sizeof(CUDAreal3) * size;
+	cudaMalloc(&hemisphere_samplesCUDA, memsize);
+	CUDAreal3* temp_samples = (CUDAreal3*)malloc(memsize);
+#endif // WCUDA
+
+
     for (int j = 0; j < size; j++) {
         float cos_phi = cos(2.0 * Pi * samples[j].X);
         float sin_phi = sin(2.0 * Pi * samples[j].X);
@@ -221,7 +264,18 @@ Sampler::map_samples_to_hemisphere(const float exp) {
         float pv = sin_theta * sin_phi;
         float pw = cos_theta;
         hemisphere_samples.push_back(Point(pu, pv, pw));
+
+#ifdef WCUDA
+		temp_samples[j] = __make_CUDAreal3(pu, pv, pw);
+#endif // WCUDA
+
     }
+
+#ifdef WCUDA
+	cudaMemcpy(hemisphere_samplesCUDA, temp_samples, memsize, cudaMemcpyKind::cudaMemcpyHostToDevice);
+#endif // WCUDA
+
+
 }
 
 

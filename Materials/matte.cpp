@@ -89,7 +89,7 @@ RGBColor Matte::shade(ShadeRec &sr)
 
         real tr =  diffuse_brdf->transparency(sr);
         if (tr < 1.0)
-            L = tr * L + (1.0 - tr) * sr.w->tracer_ptr->trace_ray(second_ray, sr.depth + 1);
+            L = tr * L + ((real)1.0 - tr) * sr.w->tracer_ptr->trace_ray(second_ray, sr.depth + 1);
     }
 
     return L;

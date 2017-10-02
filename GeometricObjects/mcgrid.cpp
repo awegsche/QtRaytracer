@@ -615,3 +615,30 @@ BBox MCGrid::get_bounding_box()
 {
     return boundingbox;
 }
+
+#ifdef WCUDA
+
+MCGridCUDA* MCGrid::get_grid_cuda()
+{
+	MCGridCUDA gr;
+
+	gr.nx = nx;
+	gr.ny = ny;
+	gr.nz = nz;
+
+	size_t numcells = cells.size();
+	gr.cells = (int*)malloc(sizeof(int) * numcells);
+	for (int j = 0; j < numcells; j++)
+		gr.cells[j] = cells[j];
+	gr.p0 = __make_CUDAreal3(position.X(), position.Y(), position.Z());
+	gr.p1 = __make_CUDAreal3(p1.X(), p1.Y(), p1.Z());
+	
+	MCGridCUDA* device_grid;
+	size_t memsize = (3 + numcells) * sizeof(int) + 2 * sizeof(CUDAreal3);
+	cudaMalloc(&device_grid, memsize);
+	cudaMemcpy(device_grid, &gr, memsize, cudaMemcpyKind::cudaMemcpyHostToDevice);
+
+	return device_grid;
+}
+
+#endif

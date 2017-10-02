@@ -3,9 +3,9 @@
 #include "constantcolor.h"
 
 Phong::Phong()
-    : ambient_brdf(new Lambertian(1.0, RGBColor(.5))),
-      diffuse_brdf(new Lambertian(1.0, RGBColor(.5))),
-      specular_brdf(new GlossySpecular(1.0, 1.0, RGBColor(.5)))
+    : ambient_brdf(new Lambertian((real)1.0, RGBColor((real).5))),
+      diffuse_brdf(new Lambertian((real)1.0, RGBColor((real).5))),
+      specular_brdf(new GlossySpecular((real)1.0, (real)1.0, RGBColor((real).5)))
 {
 
 }

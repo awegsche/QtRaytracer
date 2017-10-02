@@ -23,13 +23,13 @@ public:
 
     Normal operator-();
 
-	const real X() const {
+	real X() const {
         return data.get_x();
 	}
-	const real Y() const {
+	real Y() const {
         return data.get_y();
 	}
-	const real Z() const {
+	real Z() const {
         return data.get_z();
 	}
 };

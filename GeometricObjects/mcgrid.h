@@ -9,9 +9,23 @@
 #include "world.h"
 #include "mcregiongrid.h"
 #include "mcscenerenderer.h"
+
+#include "constants.h"
+
+
+#ifdef WCUDA
+#include "CUDAhelpers.h"
+
+struct MCGridCUDA {
+	int* cells;
+	int nx, ny, nz;
+	CUDAreal3 p0, p1;
+
+};
+#endif // WCUDA
+
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
-
 class MCGrid : public Compound
 {
 private:
@@ -38,6 +52,11 @@ public:
     bool hit(const Ray &ray, real &t, ShadeRec &sr) const;
     bool shadow_hit(const Ray &ray, real &tmin) const;
     BBox get_bounding_box();
+
+#ifdef WCUDA
+	MCGridCUDA* get_grid_cuda();
+#endif // WCUDA
+
 };
 
 #endif // MCGRID_H

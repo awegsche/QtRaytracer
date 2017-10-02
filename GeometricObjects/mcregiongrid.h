@@ -12,7 +12,6 @@
 
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
-
 class MCRegionGrid : public Compound
 {
 private:

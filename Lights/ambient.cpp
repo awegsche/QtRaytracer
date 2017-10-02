@@ -4,7 +4,7 @@
 #include "vector.h"
 
 Ambient::Ambient()
-    :ls(1.0), color(1.0)
+    :ls(1.0), color((real)1.0)
 {
     shadows = false;
 }

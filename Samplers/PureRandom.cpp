@@ -5,6 +5,11 @@
 
 #include "PureRandom.h"
 
+#ifdef WCUDA
+#include "CUDAhelpers.h"
+#endif // WCUDA
+
+
 // ---------------------------------------------------------------- default constructor
 	
 PureRandom::PureRandom(void)							
@@ -55,9 +60,28 @@ PureRandom::~PureRandom(void) {}
 
 void
 PureRandom::generate_samples(void) {
+
+#ifdef WCUDA
+	size_t memsize = sizeof(CUDAreal2) * num_samples * num_sets;
+	cudaMalloc(&samplesCUDA, memsize);
+	CUDAreal2* temp_samples = (CUDAreal2*)malloc(memsize);
+#endif // WCUDA
+
+	int j = 0;
 	for (int p = 0; p < num_sets; p++)         
 		for (int q = 0; q < num_samples; q++)
+		{
 			samples.push_back(Point2D(rand_float(), rand_float()));
+
+#ifdef WCUDA
+			temp_samples[j++] = __make_CUDAreal2(samples[j].X, samples[j].Y);
+#endif // WCUDA
+		}
+
+
+#ifdef WCUDA
+	cudaMemcpy(samplesCUDA, temp_samples, memsize, cudaMemcpyKind::cudaMemcpyHostToDevice);
+#endif // WCUDA
 }
 
 

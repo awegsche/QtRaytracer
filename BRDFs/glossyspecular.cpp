@@ -8,13 +8,13 @@
 GlossySpecular::GlossySpecular()
     : ks(new ConstantColor(1.0, 1.0, 1.0)), exp(1.0)
 {
-    cs = new ConstantColor(RGBColor(1.0));
+    cs = new ConstantColor(RGBColor((real)1.0));
 }
 
 GlossySpecular::GlossySpecular(real kspecular, real exponent)
     : ks(new ConstantColor(kspecular, kspecular, kspecular)), exp(exponent)
 {
-     cs = new ConstantColor(RGBColor(1.0));
+     cs = new ConstantColor(RGBColor((real)1.0));
 }
 
 GlossySpecular::GlossySpecular(real kspecular, real exponent, const RGBColor &color)
@@ -66,5 +66,5 @@ RGBColor GlossySpecular::sample_f(const ShadeRec &sr, Vector &wi, const Vector &
 
 RGBColor GlossySpecular::rho(const ShadeRec &sr, const Vector &wo) const
 {
-    return RGBColor(.0);
+    return RGBColor((real).0);
 }

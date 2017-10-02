@@ -105,10 +105,11 @@ MainWindow::MainWindow(QWidget *parent) :
 			if(!(j==-1 && i ==0))
 				loadchunk(STR_REGIONSPATH, i, j);
 #else
-    loadchunk(STR_REGIONSPATH, 0, 0);
-    //loadchunk(STR_REGIONSPATH, 0, -1);
-    loadchunk(STR_REGIONSPATH, 0, -2);
-    loadchunk(STR_REGIONSPATH, 0, -3);
+	
+    //loadchunk(STR_REGIONSPATH, 0, 0);
+    ////loadchunk(STR_REGIONSPATH, 0, -1);
+    //loadchunk(STR_REGIONSPATH, 0, -2);
+    //loadchunk(STR_REGIONSPATH, 0, -3);
 
 #endif // NDEBUG
     //_world->world_grid->setup_cells();

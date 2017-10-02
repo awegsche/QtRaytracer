@@ -34,7 +34,7 @@ RGBColor RayCast::trace_ray(const Ray &ray, const int depth) const
         {
             real damping = (sr.t - sr.w->haze_distance) * sr.w->haze_attenuation;
             damping = damping > 1.0 ? 1.0 : damping;
-            return damping * sr.w->background_color + (1.0 - damping) * L;
+            return damping * sr.w->background_color + ((real)1.0 - damping) * L;
         }
 
         return L;
@@ -42,3 +42,13 @@ RGBColor RayCast::trace_ray(const Ray &ray, const int depth) const
     else
         return world_ptr->background_color;
 }
+
+#ifdef WCUDA
+
+
+
+cudaError_t RayCast::trace_ray(rayCU * rays, CUDAreal3 * colours)
+{
+	
+}
+#endif // WCDUA

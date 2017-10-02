@@ -4,6 +4,12 @@
 #include "vector.h"
 #include "point.h"
 
+typedef struct {
+	CUDAreal3 o, d;
+} rayCU;
+
+
+
 class Ray
 {
 public:

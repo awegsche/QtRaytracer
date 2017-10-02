@@ -306,7 +306,7 @@ void MCSceneRenderer::run()
 void MCSceneRenderer::build()
 {
     m_preview_ambient = new Ambient(1.5, 1, 1, 1);
-    m_render_ambient = new AmbientOccluder(2.0, 0.1, 1.0, 1.0, .7);
+    m_render_ambient = new AmbientOccluder(2.0, 0.1, 1.0, 1.0, 1.0);
     m_preview_camera = new Pinhole(250, 100, 250, 500, 0, 250, 100, 1.0);
     m_render_camera = new ThinLens(250, 100, 250, 500, 0, 250, 100, 10.0, 0.1);
 
@@ -324,6 +324,7 @@ void MCSceneRenderer::build()
     tracer_ptr = new RayCast(this);
 
     set_sampler(4);
+	
 
     //preview_camera->rescale_zoom(1.0f / (float)m_downsampling);
 

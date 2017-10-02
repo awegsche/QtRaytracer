@@ -7,6 +7,7 @@
 #ifdef WCUDA
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
+#include "CUDAhelpers.h"
 #endif // WCUDA
 
 
@@ -29,6 +30,7 @@ ThinLens::ThinLens(const real eye_x, const real eye_y, const real eye_z,
 void ThinLens::set_sampler(Sampler *sampler)
 {
     _sampler_ptr = sampler;
+	_sampler_ptr->generate_samples();
     _sampler_ptr->map_samples_to_unit_disk();
 }
 
@@ -69,28 +71,63 @@ void ThinLens::render_line(ViewPlane vp, int row, World &w)
     emit w.display_line(row, rgb);
 }
 
-void ThinLens::render_scene(World &w)
+void ThinLens::render_scene(World &world)
 {
-    ViewPlane vp(w.vp);
+    ViewPlane vp(world.vp);
 
     vp.s *= zoom;
 
 #ifdef WCUDA // ======== GPU ===============================================================
 
-	float* pixels;
+	rayCU* rays = new rayCU[vp.num_samples * vp.vres * vp.hres];
+	rayCU* d_rays;
 
-	cudaMallocManaged(&pixels, vp.vres * vp.hres * 3 * sizeof(float));
+	int scr = sizeof(CUDAreal3);
+
+	int devId = -1;
+
+	cudaGetDevice(&devId);
+
+	int memsize = vp.num_samples * vp.vres * vp.hres * 2 * scr;
+
+	auto error = cudaMalloc(&d_rays, memsize);
+
+	
+
+	error = render_thinlens_cuda(
+		d_rays,
+		vp.hres, vp.vres, vp.hres * vp.vres, vp.s, 
+		vp.num_samples, _sampler_ptr->disk_samplesCUDA, _sampler_ptr->samplesCUDA,
+		_aperture, d, 
+		__make_CUDAreal3(eye.X(), eye.Y(), eye.Z()),
+		__make_CUDAreal3(u.X(), u.Y(), u.Z()),
+		__make_CUDAreal3(v.X(), v.Y(), v.Z()),
+		__make_CUDAreal3(w.X(), w.Y(), w.Z()));
 
 
+	
+	error = cudaMemcpy(rays, d_rays, memsize, cudaMemcpyDeviceToHost);
+
+	for(int row = 0; row < vp.vres; row++)
+	{
+		uint* line = new uint[vp.hres];
+		for(int column=0;column< vp.hres; column++)
+		{
+			CUDAreal3 d = rays[row*vp.hres + column].d;
+			line[column] = RGBColor(d.x,d.y,d.z).to_uint();
+		}
+		emit world.display_line(row, line);
+	}
+	
 
 #else // =============== CPU MultiCore =====================================================
 
 	
     QThreadPool* pool = new QThreadPool();
 
-    for (int row = 0; row < vp.vres && w.running; row++) {
+    for (int row = 0; row < vp.vres && world.running; row++) {
         //render_line(vp, row, w);
-        ThinLensLineRenderer *lr = new ThinLensLineRenderer(row, &w, vp, this);
+        ThinLensLineRenderer *lr = new ThinLensLineRenderer(row, &world, vp, this);
         pool->start(lr);
     }
 
@@ -101,7 +138,7 @@ void ThinLens::render_scene(World &w)
 
 
 
-    emit w.done();
+    emit world.done();
 }
 
 
@@ -131,7 +168,7 @@ void ThinLensLineRenderer::run()
         RGBColor L;
         Point2D pixel_point(column, _line);
         for (int j = 0; j < _vp.num_samples; j++) {
-            sp = _vp.sampler_ptr->sample_unit_square();
+            sp = _camera->_sampler_ptr->sample_unit_square();
             pp.X = _vp.s * (pixel_point.X - 0.5 * _vp.hres + sp.X);
             pp.Y = _vp.s * (pixel_point.Y - 0.5 * _vp.vres + sp.Y);
 
