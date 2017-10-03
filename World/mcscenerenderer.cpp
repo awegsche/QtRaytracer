@@ -26,6 +26,8 @@
 #include "PureRandom.h"
 #include "raycast.h"
 #include "pointlight.h"
+#include "mcregiongrid.h"
+#include "mcgrid.h"
 #include <qdebug.h>
 
 #ifndef WIN64
@@ -290,8 +292,10 @@ void MCSceneRenderer::add_chunks(MCWorld *world, int x, int y)
                     }
             chunkgrid->set_parent(grid, this);
             grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
+#ifdef WCUDA
 			if (mcgrid == nullptr)
 				mcgrid = chunkgrid->get_grid_cuda();
+#endif
         }
 
     }

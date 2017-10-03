@@ -6,18 +6,18 @@
 #include <cuda_runtime_api.h>
 #endif // WCUDA
 
-
-
 #include "world.h"
-
-// A grid of regoins with edge length NREGIONS will be created
-const int NREGIONS = 32;
-
 
 class Pinhole;
 class ThinLens;
 class Ambient;
 class AmbientOccluder;
+
+
+// A grid of regoins with edge length NREGIONS will be created
+const int NREGIONS = 32;
+
+
 
 class MCSceneRenderer : public World
 {

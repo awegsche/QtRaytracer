@@ -55,8 +55,10 @@ public:
     void add_object(GeometricObject* o);
     void add_light(Light* l);
 
-#if !defined NDEBUG && defined WCUDA
+#if !defined NDEBUG && !defined QT_NO_DEBUG && defined WCUDA
+
 	MCGridCUDA *mcgrid;
+
 #endif
 
     void render_scene_();

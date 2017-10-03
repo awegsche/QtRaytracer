@@ -6,11 +6,10 @@
 #include "mesh.h"
 #include "mcblock.h"
 #include <QString>
-#include "world.h"
-#include "mcregiongrid.h"
-#include "mcscenerenderer.h"
+
 
 #include "constants.h"
+
 
 
 #ifdef WCUDA
@@ -23,6 +22,10 @@ struct MCGridCUDA {
 
 };
 #endif // WCUDA
+
+class MCSceneRenderer;
+class MCRegionGrid;
+class World;
 
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid

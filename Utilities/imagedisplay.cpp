@@ -35,10 +35,14 @@ void ImageDisplay::save_image(const QString &filename) const
 void ImageDisplay::showContextMenu(const QPointF &p)
 {
     QMenu contextMenu(tr("title"), this);
-    contextMenu.addSection(tr("section 1"));
+    auto qA = contextMenu.addSection(tr("section 1"));
+    contextMenu.addAction("hellpo");
 
-    contextMenu.setFixedSize(100,100);
-    contextMenu.popup(mapToGlobal(QPoint((int)p.x(), (int)p.y())));
+    auto glPoint = mapToGlobal(QPoint((int)p.x(), (int)p.y()));
+    //contextMenu.resize(100,100);
+
+    contextMenu.popup(QPoint((int)p.x(), (int)p.y()), qA);
+    //contextMenu.adjustSize();
 }
 
 void ImageDisplay::paintEvent(QPaintEvent*) {

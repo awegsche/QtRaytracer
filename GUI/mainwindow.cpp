@@ -106,7 +106,7 @@ MainWindow::MainWindow(QWidget *parent) :
 				loadchunk(STR_REGIONSPATH, i, j);
 #else
 	
-    //loadchunk(STR_REGIONSPATH, 0, 0);
+    loadchunk(STR_REGIONSPATH, 0, 0);
     ////loadchunk(STR_REGIONSPATH, 0, -1);
     //loadchunk(STR_REGIONSPATH, 0, -2);
     //loadchunk(STR_REGIONSPATH, 0, -3);
