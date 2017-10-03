@@ -627,18 +627,18 @@ MCGridCUDA* MCGrid::get_grid_cuda()
 	gr.nz = nz;
 
 	size_t numcells = cells.size();
-	gr.cells = (int*)malloc(sizeof(int) * numcells);
+	int* t_cells = (int*)malloc(sizeof(int) * numcells);
 	for (int j = 0; j < numcells; j++)
-		gr.cells[j] = cells[j];
+		t_cells[j] = cells[j];
 	gr.p0 = __make_CUDAreal3(position.X(), position.Y(), position.Z());
 	gr.p1 = __make_CUDAreal3(p1.X(), p1.Y(), p1.Z());
 	
-	MCGridCUDA* device_grid;
+	
 	size_t memsize = (3 + numcells) * sizeof(int) + 2 * sizeof(CUDAreal3);
-	cudaMalloc(&device_grid, memsize);
-	cudaMemcpy(device_grid, &gr, memsize, cudaMemcpyKind::cudaMemcpyHostToDevice);
+	auto error = cudaMalloc(&gr.cells, sizeof(int) * numcells);
+	error = cudaMemcpy(gr.cells, t_cells, sizeof(int) * numcells, cudaMemcpyKind::cudaMemcpyHostToDevice);
 
-	return device_grid;
+	return &gr;
 }
 
 #endif

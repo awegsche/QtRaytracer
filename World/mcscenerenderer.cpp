@@ -293,8 +293,8 @@ void MCSceneRenderer::add_chunks(MCWorld *world, int x, int y)
             chunkgrid->set_parent(grid, this);
             grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
 #ifdef WCUDA
-			if (mcgrid == nullptr)
-				mcgrid = chunkgrid->get_grid_cuda();
+			if (Y == 4)
+				mcgrid = *chunkgrid->get_grid_cuda();
 #endif
         }
 
@@ -313,8 +313,8 @@ void MCSceneRenderer::build()
 {
     m_preview_ambient = new Ambient(1.5, 1, 1, 1);
     m_render_ambient = new AmbientOccluder(2.0, 0.1, 1.0, 1.0, 1.0);
-    m_preview_camera = new Pinhole(250, 100, 250, 500, 0, 250, 100, 1.0);
-    m_render_camera = new ThinLens(250, 100, 250, 500, 0, 250, 100, 10.0, 0.1);
+    m_preview_camera = new Pinhole(250, 100, 250, 0, 0, 0, 100, 1.0);
+    m_render_camera = new ThinLens(250, 100, 250, 0, 0, 0, 0, 10.0, 0.1);
 
     vp.hres = 640;
     vp.vres = 480;

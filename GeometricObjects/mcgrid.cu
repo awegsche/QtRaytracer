@@ -1,3 +1,4 @@
+#ifdef WCUDA
 
 #include <cuda_runtime.h>
 #include "ray.cuh"
@@ -5,21 +6,22 @@
 #include <curand_kernel.h>
 #include "CUDAhelpers.h"
 #include "mcgrid.h"
+#include "shaderec.h"
 
-static __global__ bool inside_bb(CUDAreal3 &p0, CUDAreal3 &p1, CUDAreal3 &point) {
+static __device__ bool inside_bb(CUDAreal3 &p0, CUDAreal3 &p1, CUDAreal3 &point) {
 	return
 		point.x > p0.x && point.x < p1.x &&
 		point.y > p0.y && point.y < p1.x &&
 		point.z > p0.z && point.z < p1.z;
 }
 
-static __global__ CUDAreal clamp(CUDAreal value, CUDAreal a, CUDAreal b) {
+static __device__ CUDAreal clamp(CUDAreal value, CUDAreal a, CUDAreal b) {
 	if (value < a) return a;
 	if (value > b) return b;
 	return value;
 }
 
-static __global__ bool mcgrid_hit_kernel(
+static __device__ bool mcgrid_hit_kernel(
 	rayCU& ray, MCGridCUDA* gr, ShadeRecCUDA *sr, CUDAreal *t
 	)
 {
@@ -149,7 +151,7 @@ static __global__ bool mcgrid_hit_kernel(
 	}
 
 	if (dx == 0.0) {
-		tx_next = kHugeValue;
+		tx_next = kHugeValueCUDA;
 		ix_step = -1;
 		ix_stop = -1;
 	}
@@ -167,7 +169,7 @@ static __global__ bool mcgrid_hit_kernel(
 	}
 
 	if (dy == 0.0) {
-		ty_next = kHugeValue;
+		ty_next = kHugeValueCUDA;
 		iy_step = -1;
 		iy_stop = -1;
 	}
@@ -184,31 +186,31 @@ static __global__ bool mcgrid_hit_kernel(
 	}
 
 	if (dz == 0.0) {
-		tz_next = kHugeValue;
+		tz_next = kHugeValueCUDA;
 		iz_step = -1;
 		iz_stop = -1;
 	}
 
-	//    if (tx_next < 0) tx_next = kHugeValue;
-	//    if (ty_next < 0) ty_next = kHugeValue;
-	//    if (tz_next < 0) tz_next = kHugeValue;
+	//    if (tx_next < 0) tx_next = kHugeValueCUDA;
+	//    if (ty_next < 0) ty_next = kHugeValueCUDA;
+	//    if (tz_next < 0) tz_next = kHugeValueCUDA;
 
 
 
 	// Test if there is a block face glued to the bounding box:
 
 	int block_id = grid.cells[ix + nx * iy + nx * ny * iz];
-	Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
+	CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 	if (block_id != 0) {
-		real t_before = kHugeValue;
+		real t_before = kHugeValueCUDA;
 
 		real tx_min_pp = tx_next - dtx;
 		real ty_min_pp = ty_next - dty;
 		real tz_min_pp = tz_next - dtz;
 
-		if (ix != 0 && ix != (nx - 1)) tx_min_pp = -kHugeValue;
-		if (iy != 0 && iy != (ny - 1)) ty_min_pp = -kHugeValue;
-		if (iz != 0 && iz != (nz - 1)) tz_min_pp = -kHugeValue;
+		if (ix != 0 && ix != (nx - 1)) tx_min_pp = -kHugeValueCUDA;
+		if (iy != 0 && iy != (ny - 1)) ty_min_pp = -kHugeValueCUDA;
+		if (iz != 0 && iz != (nz - 1)) tz_min_pp = -kHugeValueCUDA;
 
 
 		if (tx_min_pp > ty_min_pp && tx_min_pp > tz_min_pp) {
@@ -239,14 +241,14 @@ static __global__ bool mcgrid_hit_kernel(
 
 
 	// traverse the grid
-	*t = kHugeValue;
-	real t_before = kHugeValue;
+	*t = kHugeValueCUDA;
+	real t_before = kHugeValueCUDA;
 
 	while (true) {
 		//        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
 
 		if (tx_next < ty_next && tx_next < tz_next) {
-			//real tmin = tx_next - kEpsilon;
+			//real tmin = tx_next - kEpsilonCUDACUDA;
 			//Material* mptr = sr.material_ptr;
 			(*sr).normal = __make_CUDAreal3(-(CUDAreal)ix_step, 0, 0);
 			//sr.hdir = ix_step > 0 ? ShadeRec::South : ShadeRec::North;
@@ -261,7 +263,7 @@ static __global__ bool mcgrid_hit_kernel(
 
 
 			int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
-			Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
+			CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 			if (block_ptr /* && block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
 				*t = t_before;
@@ -287,7 +289,7 @@ static __global__ bool mcgrid_hit_kernel(
 				}
 
 				int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
-				Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
+				CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 
 				if (block_ptr /*&& block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
@@ -314,7 +316,7 @@ static __global__ bool mcgrid_hit_kernel(
 				}
 
 				int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
-				Point block_p0 = Point(x0 + nx * BLOCKLENGTH, y0 + ny * BLOCKLENGTH, z0 + nz * BLOCKLENGTH);
+				CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 
 				//material_ptr = sr.material_ptr;
@@ -331,3 +333,6 @@ static __global__ bool mcgrid_hit_kernel(
 		}
 	}
 }
+
+
+#endif // WCUDA

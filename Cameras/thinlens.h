@@ -31,6 +31,7 @@ public:
 public:
     void render_scene(World &w) Q_DECL_OVERRIDE;
 
+	Ray get_click_ray(const real vpx, const real vpy, const ViewPlane& vp) Q_DECL_OVERRIDE;
 
 protected:
     void render_line(ViewPlane vp, int row, World &w);

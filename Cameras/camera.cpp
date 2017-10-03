@@ -28,6 +28,11 @@ void Camera::render_scene_CUDA(World & w)
 {
 }
 
+Ray Camera::get_click_ray(const real vpx, const real vpy, const ViewPlane& vp)
+{
+	return Ray();
+}
+
 void Camera::set_eye(real x, real y, real z)
 {
     eye = Vector(x,y,z);

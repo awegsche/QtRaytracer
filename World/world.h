@@ -57,7 +57,7 @@ public:
 
 #if !defined NDEBUG && !defined QT_NO_DEBUG && defined WCUDA
 
-	MCGridCUDA *mcgrid;
+	MCGridCUDA mcgrid;
 
 #endif
 

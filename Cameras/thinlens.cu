@@ -1,14 +1,18 @@
+#ifdef WCUDA
+
+
 
 #include <cuda_runtime.h>
 #include "ray.cuh"
 #include "ray.h"
 #include <curand_kernel.h>
 #include "CUDAhelpers.h"
+#include "shaderec.h"
 
 // at this point we suppose that there are only MC blocks
 #include "mcgrid.cu"
 
-const int CUDABLOCK = 16;
+const int CUDABLOCK = 8;
 
 static __global__ void thinlens_kernel(
 	rayCU* rays, MCGridCUDA* mcgrid,
@@ -35,11 +39,13 @@ static __global__ void thinlens_kernel(
 		rays[index_ray].d = normalize(dir);
 
 		ShadeRecCUDA sr;
-		CUDAreal t = kHugeValue;
+		CUDAreal t = kHugeValueCUDA;
 
 		if (mcgrid_hit_kernel(rays[index_ray], mcgrid, &sr, &t)) {
 			rays[index_ray].d = sr.normal;
 		}
+		else
+			rays[index_ray].d = __make_CUDAreal3(-3.14, 0,0);
 		
 
 
@@ -70,7 +76,7 @@ extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
 	cudaGetDeviceProperties(&p, 0);
 	
 	thinlens_kernel<<<numBlocks, blockSize>>>(
-		rays, mcgrid, mcgrid,
+		rays, mcgrid,
 		width, height, npixels,  vp_s,
 		nsamples, square_samples, disk_samples,
 		aperture, distance, eye, u, v, w);
@@ -108,3 +114,4 @@ extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
 	}*/
 
 }
+#endif // WCUDA

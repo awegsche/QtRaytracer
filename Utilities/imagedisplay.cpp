@@ -5,6 +5,8 @@
 #include <QKeyEvent>
 #include "thinlens.h"
 #include <QMenu>
+#include "mcscenerenderer.h"
+#include "world.h"
 
 ImageDisplay::ImageDisplay(MCSceneRenderer *w, MainWindow *mainw, QWidget *parent) : QWidget(parent) {
   m_image = 0;
@@ -35,13 +37,23 @@ void ImageDisplay::save_image(const QString &filename) const
 void ImageDisplay::showContextMenu(const QPointF &p)
 {
     QMenu contextMenu(tr("title"), this);
-    auto qA = contextMenu.addSection(tr("section 1"));
-    contextMenu.addAction("hellpo");
+	auto qA = contextMenu.addAction(tr("%0, %1").arg(QString::number(p.x()), QString::number(p.y())));
+	qA->setEnabled(false);
+
+	Ray click_ray = mw->camera_ptr->get_click_ray(p.x(), (real)mw->vp.vres - p.y(), mw->vp);
+	ShadeRec sr = mw->hit_objects(click_ray);
+
+	auto hit_point_info = contextMenu.addAction(tr("Hit Point at (%0, %1, %2), t = %3")
+		.arg(QString::number(sr.local_hit_point.X(), 'f', 1),
+			QString::number(sr.local_hit_point.Y(), 'f', 1),
+			QString::number(sr.local_hit_point.Z(), 'f', 1),
+			QString::number(sr.t, 'f', 1)));
+	hit_point_info->setDisabled(true);
 
     auto glPoint = mapToGlobal(QPoint((int)p.x(), (int)p.y()));
     //contextMenu.resize(100,100);
 
-    contextMenu.popup(QPoint((int)p.x(), (int)p.y()), qA);
+    contextMenu.exec(glPoint, qA);
     //contextMenu.adjustSize();
 }
 

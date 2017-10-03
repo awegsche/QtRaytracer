@@ -49,6 +49,6 @@ RGBColor RayCast::trace_ray(const Ray &ray, const int depth) const
 
 cudaError_t RayCast::trace_ray(rayCU * rays, CUDAreal3 * colours)
 {
-	
+	return cudaError_t::cudaErrorNotYetImplemented;
 }
 #endif // WCDUA

@@ -35,6 +35,19 @@ void ThinLens::set_sampler(Sampler *sampler)
 }
 
 
+Ray ThinLens::get_click_ray(const real vpx, const real vpy, const ViewPlane& vp)
+{
+	Point2D pp;
+	
+	pp.X = vp.s * (vpx - 0.5 * vp.hres);
+	pp.Y = vp.s * (vpy - 0.5 * vp.vres);
+
+	
+	
+	Vector dir = pp.X * u + pp.Y * v - d * this->w;
+	return Ray(eye, dir.hat());
+}
+
 void ThinLens::render_line(ViewPlane vp, int row, World &w)
 {
     Ray ray;
@@ -89,10 +102,13 @@ void ThinLens::render_scene(World &world)
 
 	auto error = cudaMalloc(&d_rays, memsize);
 
-	
+	MCGridCUDA* device_grid;
 
-	error = render_thinlens_cuda(
-		d_rays, world.mcgrid,
+	error = cudaMalloc(&device_grid, 3 * sizeof(int) + sizeof(int*) + 2 * sizeof(CUDAreal3));
+	error = cudaMemcpy(device_grid, &world.mcgrid, 3 * sizeof(int) + sizeof(int*) + 2 * sizeof(CUDAreal3), cudaMemcpyKind::cudaMemcpyHostToDevice);
+
+	error = (cudaError_t)render_thinlens_cuda(
+		d_rays, device_grid,
 		vp.hres, vp.vres, vp.hres * vp.vres, vp.s, 
 		vp.num_samples, _sampler_ptr->disk_samplesCUDA, _sampler_ptr->samplesCUDA,
 		_aperture, d, 

@@ -65,8 +65,7 @@ public:
     void resize_vp(const int w, const int h);
 	void set_aperture(const real aperture);
 
-    ShadeRec hit_objects(const Ray& ray);
-    ShadeRec* hit_objects_CUDA();
+
 
 signals:
 	void stdLog(const QString &message);

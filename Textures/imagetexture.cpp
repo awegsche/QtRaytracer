@@ -49,8 +49,8 @@ void ImageTexture::colorize(const RGBColor &color_)
 
 RGBColor ImageTexture::get_color(const ShadeRec &sr)
 {
-    int iu = sr.u * width;
-    int iv = sr.v * height;
+    int iu = (sr.u - kEpsilon) * width;
+    int iv = (sr.v - kEpsilon) * height;
 
 //    float cx = sr.t /60.0;
 //    float cy = 0.0f;
