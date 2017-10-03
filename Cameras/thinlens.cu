@@ -5,10 +5,13 @@
 #include <curand_kernel.h>
 #include "CUDAhelpers.h"
 
+// at this point we suppose that there are only MC blocks
+#include "mcgrid.cu"
+
 const int CUDABLOCK = 16;
 
 static __global__ void thinlens_kernel(
-	rayCU* rays,
+	rayCU* rays, MCGridCUDA* mcgrid,
 	const int width, const int height, const int npixels, const CUDAreal vp_s, 
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 eye, const CUDAreal3 u, const CUDAreal3 v, const CUDAreal3 w) {
@@ -31,6 +34,16 @@ static __global__ void thinlens_kernel(
 		CUDAreal3 dir = (pp.x - aperture * ap.x) * u + (pp.y - aperture * ap.y)  * v - distance * w;
 		rays[index_ray].d = normalize(dir);
 
+		ShadeRecCUDA sr;
+		CUDAreal t = kHugeValue;
+
+		if (mcgrid_hit_kernel(rays[index_ray], mcgrid, &sr, &t)) {
+			rays[index_ray].d = sr.normal;
+		}
+		
+
+
+
 
 	}
 }
@@ -44,7 +57,7 @@ static __global__ void thinlens_trace_kernel(
 }
 
 // Setup the array of primary rays to render
-extern "C" int render_thinlens_cuda(rayCU* rays,
+extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
 	const int width, const int height, const int npixels, const CUDAreal vp_s,
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 &eye, const CUDAreal3 &u, const CUDAreal3 &v, const CUDAreal3 &w)
@@ -57,7 +70,7 @@ extern "C" int render_thinlens_cuda(rayCU* rays,
 	cudaGetDeviceProperties(&p, 0);
 	
 	thinlens_kernel<<<numBlocks, blockSize>>>(
-		rays,
+		rays, mcgrid, mcgrid,
 		width, height, npixels,  vp_s,
 		nsamples, square_samples, disk_samples,
 		aperture, distance, eye, u, v, w);

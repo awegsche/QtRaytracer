@@ -1,5 +1,8 @@
 #pragma once
 
+#ifdef WCUDA
+
+
 #include "constants.h"
 
 #include <vector_functions.h>
@@ -43,3 +46,6 @@ static __inline__ __host__ __device__ CUDAreal3 normalize(const CUDAreal3& v) {
 	CUDAreal over_l = 1.0 / sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	return __make_CUDAreal3(v.x * over_l, v.y * over_l, v.z * over_l);
 }
+
+
+#endif // WCUDA

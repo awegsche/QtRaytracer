@@ -3,6 +3,16 @@
 
 #include "sampler.h"
 
+#ifdef WCUDA
+#include "constants.h"
+struct ViewPlaneCUDA {
+	int hres, vres;
+	CUDAreal s, gamma, inv_gamma;
+	int num_samples;
+};
+#endif // WCUDA
+
+
 class ViewPlane
 {
 public:

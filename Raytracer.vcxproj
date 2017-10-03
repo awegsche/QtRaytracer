@@ -308,7 +308,6 @@
     </ClCompile>
     <ClCompile Include="DebugCUDA\moc_world.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseCUDA|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Debug\moc_glimagedisplay.cpp">
@@ -358,7 +357,6 @@
     <ClCompile Include="ReleaseCUDA\moc_world.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugCUDA|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_glimagedisplay.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseCUDA|x64'">true</ExcludedFromBuild>

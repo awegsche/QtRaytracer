@@ -27,6 +27,9 @@
 World::World(QObject *parent)
     : QThread(parent), camera_ptr(nullptr), ambient_ptr(new Ambient), running(true), objects(),
       max_depth(4), haze(false), haze_distance(100.0), haze_attenuation(1.0e-2)
+#if !defined NDEBUG && defined WCUDA
+	, mcgrid(nullptr)
+#endif
 {
 
 }

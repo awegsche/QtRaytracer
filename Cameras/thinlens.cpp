@@ -34,6 +34,7 @@ void ThinLens::set_sampler(Sampler *sampler)
     _sampler_ptr->map_samples_to_unit_disk();
 }
 
+
 void ThinLens::render_line(ViewPlane vp, int row, World &w)
 {
     Ray ray;
@@ -91,7 +92,7 @@ void ThinLens::render_scene(World &world)
 	
 
 	error = render_thinlens_cuda(
-		d_rays,
+		d_rays, world.mcgrid,
 		vp.hres, vp.vres, vp.hres * vp.vres, vp.s, 
 		vp.num_samples, _sampler_ptr->disk_samplesCUDA, _sampler_ptr->samplesCUDA,
 		_aperture, d, 

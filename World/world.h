@@ -19,7 +19,7 @@
 #include <QMap>
 #include "pixel.h"
 
-
+#include "mcgrid.h"
 
 
 #include <vector>
@@ -54,6 +54,10 @@ public:
     virtual void build() = 0;
     void add_object(GeometricObject* o);
     void add_light(Light* l);
+
+#if !defined NDEBUG && defined WCUDA
+	MCGridCUDA *mcgrid;
+#endif
 
     void render_scene_();
     void render_camera();
