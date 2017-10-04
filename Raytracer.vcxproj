@@ -668,8 +668,9 @@
   <ItemGroup>
     <CudaCompile Include="Cameras\thinlens.cu" />
     <CudaCompile Include="GeometricObjects\mcgrid.cu" />
+    <CudaCompile Include="GeometricObjects\mcregiongrid.cu" />
     <CudaCompile Include="Tracers\raycast.cu" />
-    <CudaCompile Include="World\world_kernels.cu">
+    <CudaCompile Include="World\world.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
   </ItemGroup>

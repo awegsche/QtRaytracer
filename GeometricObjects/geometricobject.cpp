@@ -27,3 +27,6 @@ void GeometricObject::set_material(Material *mat)
 {
     material_ptr = mat;
 }
+
+
+

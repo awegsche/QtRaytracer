@@ -46,6 +46,30 @@ void World::add_light(Light *l)
     lights.push_back(l);
 }
 
+#ifdef WCUDA
+
+WorldCUDA * World::get_device_world() const
+{
+	return dev_ptr;
+}
+WorldCUDA * World::setup_device_world()
+{
+	
+	int size = this->objects.size();
+
+	cudaMallocManaged(&dev_ptr, sizeof(int) + sizeof(GeometricObjectCUDA*));
+	cudaMallocManaged(&dev_ptr->objects, size * sizeof(GeometricObjectCUDA**));
+
+	dev_ptr->num_objects = size;
+
+	for (int i = 0; i < size; i++)
+		dev_ptr->objects[i] = objects[i]->get_device_ptr();
+
+	return dev_ptr;
+}
+#endif // WCUDA
+
+
 // obsolete
 void World::render_scene_()
 {

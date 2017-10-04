@@ -10,6 +10,22 @@
 #include "textureholder.h"
 #include <QMap>
 
+#ifdef WCUDA
+class MCRegionGridCUDA : public GeometricObjectCUDA {
+public:
+	GeometricObjectCUDA** cells;
+	int nx, ny, nz;
+	size_t num_cells;
+	CUDAreal3 position, p1;
+	CUDAreal m_unit;
+
+	// Inherited via GeometricObjectCUDA
+	virtual __device__ bool hit(const rayCU & ray, CUDAreal & tmin, ShadeRecCUDA & sr) const override;
+	virtual __device__ bool shadow_hit(const rayCU & ray, CUDAreal & tmin) const override;
+};
+#endif // WCUDA
+
+
 // MCGrid only contains Blocks. To create a hierarchical Grid, use
 // MCRegionsGrid
 class MCRegionGrid : public Compound
@@ -41,6 +57,9 @@ public:
     bool hit(const Ray &ray, real &t, ShadeRec &sr) const;
     bool shadow_hit(const Ray &ray, real &tmin) const;
     BBox get_bounding_box();
+
+	// Inherited via Compound
+	virtual MCRegionGridCUDA * get_device_ptr() const override;
 };
 
 #endif // MCGRID_H

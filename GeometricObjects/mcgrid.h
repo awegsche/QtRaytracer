@@ -9,17 +9,22 @@
 
 
 #include "constants.h"
+#include "shaderec.h"
 
 
 
 #ifdef WCUDA
 #include "CUDAhelpers.h"
 
-struct MCGridCUDA {
-	int* cells;
+class MCGridCUDA : public GeometricObjectCUDA {
+public:
 	int nx, ny, nz;
 	CUDAreal3 p0, p1;
+	int* cells;
+	int num_cells;
 
+	__device__ bool hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& sr) const;
+	__device__ bool shadow_hit(const rayCU& ray, CUDAreal& tmin) const;
 };
 #endif // WCUDA
 
@@ -33,13 +38,17 @@ class MCGrid : public Compound
 {
 private:
     std::vector<int> cells;
-    int nx, ny, nz;
-    real multiplier;
-    Point position;
-    Point p1;
-    MCRegionGrid* parent;
-    MCSceneRenderer* _w;
+	Point position;
+	Point p1;
+	MCRegionGrid* parent;
+	MCSceneRenderer* _w;
+
+
     real m_unit;
+	int nx, ny, nz;
+	real multiplier;
+
+
 
 public:
     MCGrid();
@@ -56,8 +65,10 @@ public:
     bool shadow_hit(const Ray &ray, real &tmin) const;
     BBox get_bounding_box();
 
+	//bool __device__ hitCUDA(rayCU& ray, CUDAreal& t, ShadeRecCUDA &sr) const;
+
 #ifdef WCUDA
-	MCGridCUDA* get_grid_cuda();
+	virtual MCGridCUDA* get_device_ptr() const;
 #endif // WCUDA
 
 };

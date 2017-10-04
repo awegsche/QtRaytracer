@@ -8,7 +8,7 @@
 #include "mcgrid.h"
 #include "shaderec.h"
 
-static __device__ bool inside_bb(CUDAreal3 &p0, CUDAreal3 &p1, CUDAreal3 &point) {
+static __device__ bool inside_bb(const CUDAreal3 &p0, const CUDAreal3 &p1, const CUDAreal3 &point) {
 	return
 		point.x > p0.x && point.x < p1.x &&
 		point.y > p0.y && point.y < p1.x &&
@@ -21,9 +21,12 @@ static __device__ CUDAreal clamp(CUDAreal value, CUDAreal a, CUDAreal b) {
 	return value;
 }
 
-static __device__ bool mcgrid_hit_kernel(
-	rayCU& ray, MCGridCUDA* gr, ShadeRecCUDA *sr, CUDAreal *t
-	)
+__device__ bool MCGridCUDA::shadow_hit(const rayCU& ray, CUDAreal& tmin) const
+{
+	return false;
+}
+
+__device__ bool MCGridCUDA::hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& sr) const
 {
 	//Material* mat_ptr = sr.material_ptr;
 
@@ -38,11 +41,11 @@ static __device__ bool mcgrid_hit_kernel(
 
 
 
-	MCGridCUDA grid = *gr;
+	//MCGridCUDA grid = *gr;
 
-	int nx = grid.nx;
-	int ny = grid.ny;
-	int nz = grid.nz;
+	//int nx = grid.nx;
+	//int ny = grid.ny;
+	//int nz = grid.nz;
 
 
 	CUDAreal ox = ray.o.x;
@@ -51,12 +54,12 @@ static __device__ bool mcgrid_hit_kernel(
 	CUDAreal dx = ray.d.x;
 	CUDAreal dy = ray.d.y;
 	CUDAreal dz = ray.d.z;
-	CUDAreal x0 = grid.p0.x;
-	CUDAreal y0 = grid.p0.y;
-	CUDAreal z0 = grid.p0.z;
-	CUDAreal x1 = grid.p1.x;
-	CUDAreal y1 = grid.p1.y;
-	CUDAreal z1 = grid.p1.z;
+	CUDAreal x0 = p0.x;
+	CUDAreal y0 = p0.y;
+	CUDAreal z0 = p0.z;
+	CUDAreal x1 = p1.x;
+	CUDAreal y1 = p1.y;
+	CUDAreal z1 = p1.z;
 	CUDAreal tx_min, ty_min, tz_min;
 	CUDAreal tx_max, ty_max, tz_max;
 	// the following code includes modifications from Shirley and Morley (2003)
@@ -117,7 +120,7 @@ static __device__ bool mcgrid_hit_kernel(
 
 	int ix, iy, iz;
 
-	if (inside_bb(grid.p0, grid.p1, ray.o)) {  			// does the ray start inside the grid?
+	if (inside_bb(p0, p1, ray.o)) {  			// does the ray start inside the grid?
 		ix = clamp((ox - x0) * nx / (x1 - x0), 0, nx - 1);
 		iy = clamp((oy - y0) * ny / (y1 - y0), 0, ny - 1);
 		iz = clamp((oz - z0) * nz / (z1 - z0), 0, nz - 1);
@@ -199,7 +202,7 @@ static __device__ bool mcgrid_hit_kernel(
 
 	// Test if there is a block face glued to the bounding box:
 
-	int block_id = grid.cells[ix + nx * iy + nx * ny * iz];
+	int block_id = cells[ix + nx * iy + nx * ny * iz];
 	CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 	if (block_id != 0) {
 		real t_before = kHugeValueCUDA;
@@ -214,24 +217,24 @@ static __device__ bool mcgrid_hit_kernel(
 
 
 		if (tx_min_pp > ty_min_pp && tx_min_pp > tz_min_pp) {
-			(*sr).normal = __make_CUDAreal3(-(CUDAreal)ix_step, 0, 0);
+			(sr).normal = __make_CUDAreal3(-(CUDAreal)ix_step, 0, 0);
 			//sr.hdir = ix_step > 0 ? ShadeRec::South : ShadeRec::North;
 			t_before = tx_min_pp;
 		}
 		else if (ty_min_pp > tz_min_pp) {
-			(*sr).normal = __make_CUDAreal3(0, -(CUDAreal)iy_step, 0);
+			(sr).normal = __make_CUDAreal3(0, -(CUDAreal)iy_step, 0);
 			//sr.hdir = iy_step > 0 ? ShadeRec::Bottom : ShadeRec::Top;
 			t_before = ty_min_pp;
 
 		}
 		else {
-			(*sr).normal = __make_CUDAreal3(0, 0, -(CUDAreal)iz_step);
+			(sr).normal = __make_CUDAreal3(0, 0, -(CUDAreal)iz_step);
 			//sr.hdir = iz_step > 0 ? ShadeRec::West : ShadeRec::East;
 			t_before = tz_min_pp;
 
 		}
 		if (true /*block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
-			*t = t_before;
+			tmin = t_before;
 
 
 			return (true);
@@ -241,8 +244,8 @@ static __device__ bool mcgrid_hit_kernel(
 
 
 	// traverse the grid
-	*t = kHugeValueCUDA;
-	real t_before = kHugeValueCUDA;
+	tmin = kHugeValueCUDA;
+	CUDAreal t_before = kHugeValueCUDA;
 
 	while (true) {
 		//        MCBlock* block_ptr = cells[ix + nx * iy + nx * ny * iz];
@@ -250,23 +253,23 @@ static __device__ bool mcgrid_hit_kernel(
 		if (tx_next < ty_next && tx_next < tz_next) {
 			//real tmin = tx_next - kEpsilonCUDACUDA;
 			//Material* mptr = sr.material_ptr;
-			(*sr).normal = __make_CUDAreal3(-(CUDAreal)ix_step, 0, 0);
+			(sr).normal = __make_CUDAreal3(-(CUDAreal)ix_step, 0, 0);
 			//sr.hdir = ix_step > 0 ? ShadeRec::South : ShadeRec::North;
 			//sr.t_Before = t_before;
 			t_before = tx_next;
 			tx_next += dtx;
 			ix += ix_step;
 			if (ix == ix_stop) {
-				sr->material = 0;
+				(sr).material = 0;
 				return (false);
 			}
 
 
-			int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
+			int block_ptr = cells[ix + nx * iy + nx * ny * iz];
 			CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 			if (block_ptr /* && block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
-				*t = t_before;
+				tmin = t_before;
 
 
 				return (true);
@@ -277,7 +280,7 @@ static __device__ bool mcgrid_hit_kernel(
 		else {
 			if (ty_next < tz_next) {
 				//Material* mptr = sr.material_ptr;
-				(*sr).normal = __make_CUDAreal3(0.0, -(CUDAreal)iy_step, 0);
+				(sr).normal = __make_CUDAreal3(0.0, -(CUDAreal)iy_step, 0);
 				//sr.hdir = iy_step > 0 ? ShadeRec::Bottom : ShadeRec::Top;
 				//sr.t_Before = t_before;
 				t_before = ty_next;
@@ -288,13 +291,13 @@ static __device__ bool mcgrid_hit_kernel(
 					return (false);
 				}
 
-				int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
+				int block_ptr = cells[ix + nx * iy + nx * ny * iz];
 				CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 
 				if (block_ptr /*&& block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
 					//material_ptr = object_ptr->get_material();
-					*t = t_before;
+					tmin = t_before;
 					//t = ty_next;
 					return (true);
 				}
@@ -304,7 +307,7 @@ static __device__ bool mcgrid_hit_kernel(
 			}
 			else {
 				//Material* mptr = sr.material_ptr;
-				(*sr).normal = __make_CUDAreal3(0.0, 0.0, -(CUDAreal)iz_step);
+				(sr).normal = __make_CUDAreal3(0.0, 0.0, -(CUDAreal)iz_step);
 				//sr.hdir = iz_step > 0 ? ShadeRec::West : ShadeRec::East;
 				//sr.t_Before = t_before;
 				t_before = tz_next;
@@ -315,7 +318,7 @@ static __device__ bool mcgrid_hit_kernel(
 					return (false);
 				}
 
-				int block_ptr = grid.cells[ix + nx * iy + nx * ny * iz];
+				int block_ptr = cells[ix + nx * iy + nx * ny * iz];
 				CUDAreal3 block_p0 = __make_CUDAreal3(x0 + nx * BLOCKLENGTH_CUDA, y0 + ny * BLOCKLENGTH_CUDA, z0 + nz * BLOCKLENGTH_CUDA);
 
 
@@ -323,7 +326,7 @@ static __device__ bool mcgrid_hit_kernel(
 				if (block_ptr/* && block_ptr->block_hit(ray, block_p0, t_before, sr)*/) {
 					//material_ptr = object_ptr->get_material();
 					//sr.material_ptr = material_ptr;
-					*t = t_before;
+					tmin = t_before;
 					// t = tz_next;
 					return (true);
 				}

@@ -108,7 +108,7 @@ void ThinLens::render_scene(World &world)
 	error = cudaMemcpy(device_grid, &world.mcgrid, 3 * sizeof(int) + sizeof(int*) + 2 * sizeof(CUDAreal3), cudaMemcpyKind::cudaMemcpyHostToDevice);
 
 	error = (cudaError_t)render_thinlens_cuda(
-		d_rays, device_grid,
+		d_rays, nullptr,
 		vp.hres, vp.vres, vp.hres * vp.vres, vp.s, 
 		vp.num_samples, _sampler_ptr->disk_samplesCUDA, _sampler_ptr->samplesCUDA,
 		_aperture, d, 

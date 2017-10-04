@@ -27,7 +27,17 @@
 class Camera;
 class MCRegionGrid;
 
-extern "C" ShadeRec* hit_test();
+#ifdef WCUDA
+class WorldCUDA {
+public:
+	GeometricObjectCUDA** objects;
+	int num_objects;
+
+	__device__ ShadeRecCUDA hit_objects(const rayCU& ray);
+
+};
+#endif // WCUDA
+
 
 class World : public QThread
 {
@@ -55,25 +65,31 @@ public:
     void add_object(GeometricObject* o);
     void add_light(Light* l);
 
-#if !defined NDEBUG && !defined QT_NO_DEBUG && defined WCUDA
+#if defined WCUDA
 
-	MCGridCUDA mcgrid;
+	MCGridCUDA mcgrid; // for debugging only
+
+	///<summary>
+	/// Returns the device pointer to the WorldCUDA objects.
+	///</summary>
+	WorldCUDA* get_device_world() const;
+
+	///<summary>
+	/// Sets up the world with all its objects on the device.
+	/// not const because it changes the instance's dev_ptr;
+	///</summary>
+	WorldCUDA* setup_device_world();
+
+private:
+	WorldCUDA* dev_ptr;
 
 #endif
-
+public:
     void render_scene_();
     void render_camera();
     ShadeRec hit_objects(const Ray& ray);
     void dosplay_p(int r, int c, const RGBColor &pixel_color);
     static Pixel display_p(Pixel& result, const Pixel& p);
-
-//    void set_line(const int line, const RGBColor *line_colors);
-
-   // void open_window(const int hres, const int vres) const;
-    //void display(const int row, const int column, const RGBColor& pixel_color) const;
-
-	// =============== CUDA ====================
-	ShadeRec* hit_objects_CUDA();
 
 signals:
     void display_pixel(int row, int column, int r, int g, int b);

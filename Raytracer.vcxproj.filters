@@ -610,9 +610,10 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="World\world_kernels.cu" />
     <CudaCompile Include="Cameras\thinlens.cu" />
     <CudaCompile Include="Tracers\raycast.cu" />
     <CudaCompile Include="GeometricObjects\mcgrid.cu" />
+    <CudaCompile Include="World\world.cu" />
+    <CudaCompile Include="GeometricObjects\mcregiongrid.cu" />
   </ItemGroup>
 </Project>

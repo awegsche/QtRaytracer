@@ -461,3 +461,23 @@ BBox MCRegionGrid::get_bounding_box()
 {
     return boundingbox;
 }
+
+MCRegionGridCUDA * MCRegionGrid::get_device_ptr() const
+{
+	MCRegionGridCUDA* grid;
+	size_t num_cells = cells.size();
+	
+	cudaMallocManaged(&grid, sizeof(GeometricObjectCUDA**) + 3 * sizeof(int) + sizeof(size_t) + 2 * sizeof(CUDAreal3) + sizeof(CUDAreal));
+	cudaMallocManaged(&grid->cells, sizeof(GeometricObjectCUDA*) * num_cells);
+
+	grid->nx = nx;
+	grid->ny = ny;
+	grid->nz = nz;
+
+	grid->num_cells = num_cells;
+
+	for (int j = 0; j < num_cells; j++)
+		grid->cells[j] = cells[j]->get_device_ptr();
+
+	return grid;
+}

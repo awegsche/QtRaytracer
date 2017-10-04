@@ -292,10 +292,7 @@ void MCSceneRenderer::add_chunks(MCWorld *world, int x, int y)
                     }
             chunkgrid->set_parent(grid, this);
             grid->addblock(chunk->x, Y, chunk->y, chunkgrid);
-#ifdef WCUDA
-			if (Y == 4)
-				mcgrid = *chunkgrid->get_grid_cuda();
-#endif
+
         }
 
     }

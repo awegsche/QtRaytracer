@@ -8,14 +8,12 @@
 #include <curand_kernel.h>
 #include "CUDAhelpers.h"
 #include "shaderec.h"
-
-// at this point we suppose that there are only MC blocks
-#include "mcgrid.cu"
+#include "world.h"
 
 const int CUDABLOCK = 8;
 
 static __global__ void thinlens_kernel(
-	rayCU* rays, MCGridCUDA* mcgrid,
+	rayCU* rays, WorldCUDA* world,
 	const int width, const int height, const int npixels, const CUDAreal vp_s, 
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 eye, const CUDAreal3 u, const CUDAreal3 v, const CUDAreal3 w) {
@@ -41,10 +39,10 @@ static __global__ void thinlens_kernel(
 		ShadeRecCUDA sr;
 		CUDAreal t = kHugeValueCUDA;
 
-		if (mcgrid_hit_kernel(rays[index_ray], mcgrid, &sr, &t)) {
+		/*if (mcgrid_hit_kernel(rays[index_ray], mcgrid, &sr, &t)) {
 			rays[index_ray].d = sr.normal;
 		}
-		else
+		else*/
 			rays[index_ray].d = __make_CUDAreal3(-3.14, 0,0);
 		
 

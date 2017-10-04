@@ -618,27 +618,28 @@ BBox MCGrid::get_bounding_box()
 
 #ifdef WCUDA
 
-MCGridCUDA* MCGrid::get_grid_cuda()
+MCGridCUDA * MCGrid::get_device_ptr() const
 {
-	MCGridCUDA gr;
-
-	gr.nx = nx;
-	gr.ny = ny;
-	gr.nz = nz;
-
+	
+	MCGridCUDA *gr;
 	size_t numcells = cells.size();
-	int* t_cells = (int*)malloc(sizeof(int) * numcells);
-	for (int j = 0; j < numcells; j++)
-		t_cells[j] = cells[j];
-	gr.p0 = __make_CUDAreal3(position.X(), position.Y(), position.Z());
-	gr.p1 = __make_CUDAreal3(p1.X(), p1.Y(), p1.Z());
-	
-	
-	size_t memsize = (3 + numcells) * sizeof(int) + 2 * sizeof(CUDAreal3);
-	auto error = cudaMalloc(&gr.cells, sizeof(int) * numcells);
-	error = cudaMemcpy(gr.cells, t_cells, sizeof(int) * numcells, cudaMemcpyKind::cudaMemcpyHostToDevice);
+	size_t memsize = sizeof(int*) + 2 * sizeof(CUDAreal3) + sizeof(int);
 
-	return &gr;
+	cudaMallocManaged(&gr, memsize);
+	cudaMallocManaged(&gr->cells, sizeof(int) * numcells);
+
+	gr->nx = nx;
+	gr->ny = ny;
+	gr->nz = nz;
+	gr->num_cells = numcells;
+
+	for (int j = 0; j < numcells; j++)
+		gr->cells[j] = cells[j];
+
+	gr->p0 = __make_CUDAreal3(position.X(), position.Y(), position.Z());
+	gr->p1 = __make_CUDAreal3(p1.X(), p1.Y(), p1.Z());
+	
+	return gr;
 }
 
 #endif

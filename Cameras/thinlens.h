@@ -7,7 +7,7 @@
 #include "ray.h" 
 
 #ifdef WCUDA
-extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
+extern "C" int render_thinlens_cuda(rayCU* rays, WorldCUDA* world,
 	const int width, const int height, const int npixels, const CUDAreal vp_s,
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 &eye, const CUDAreal3 &u, const CUDAreal3 &v, const CUDAreal3 &w);
@@ -16,8 +16,8 @@ extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
 class ThinLens : public Pinhole
 {
 public:
-    double _aperture;
-    double _focus_distance;
+    real _aperture;
+   
     Sampler* _sampler_ptr;
 
 public:

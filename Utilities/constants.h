@@ -20,7 +20,9 @@ static CUDAreal  TWO_PI_CUDA = 2 * PiCUDA;
 static CUDAreal  GRAD_CUDA = PiCUDA / 180.0;
 static CUDAreal __constant__ BLOCKLENGTH_CUDA = 1.0;
 #else
-#define __BOTH__ __host__
+// defining empty macros to be able to use __host__ and __device__ even in non-CUDA builds
+#define __host__ 
+#define __device__
 #endif // WCUDA
 
 
