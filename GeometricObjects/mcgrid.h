@@ -68,7 +68,7 @@ public:
 	//bool __device__ hitCUDA(rayCU& ray, CUDAreal& t, ShadeRecCUDA &sr) const;
 
 #ifdef WCUDA
-	virtual MCGridCUDA* get_device_ptr() const;
+	virtual MCGridCUDA* get_device_ptr() override;
 #endif // WCUDA
 
 };

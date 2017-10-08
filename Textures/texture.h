@@ -4,8 +4,16 @@
 #include "rgbcolor.h"
 #include "shaderec.h"
 
+#ifdef WCUDA
+class TextureCUDA {
+	virtual __device__ CUDAreal3 get_color(const ShadeRecCUDA& sr) = 0;
+};
+#endif // WCUDA
+
+
 class Texture
 {
+
 public:
     Texture();
 

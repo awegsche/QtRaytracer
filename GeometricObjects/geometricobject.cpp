@@ -3,7 +3,21 @@
 #include "material.h"
 
 GeometricObject::GeometricObject()
-    : material_ptr(nullptr), casts_shadow(true) {
+    : material_ptr(nullptr), casts_shadow(true)
+#ifdef WCUDA
+	, device_ptr(nullptr)
+#endif // WCUDA
+{
+
+}
+
+GeometricObject::~GeometricObject()
+{
+#ifdef WCUDA
+	if (device_ptr)
+		cudaFree(device_ptr);
+
+#endif // WCUDA
 
 }
 
@@ -26,6 +40,11 @@ Material *GeometricObject::get_material()
 void GeometricObject::set_material(Material *mat)
 {
     material_ptr = mat;
+}
+
+GeometricObjectCUDA * GeometricObject::get_device_ptr()
+{
+	return device_ptr;
 }
 
 

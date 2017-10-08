@@ -342,6 +342,9 @@
     <ClCompile Include="CUDAhelpers.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="CUDADeviceObject.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeometricObjects\FlatMeshTriangle.h">
@@ -597,6 +600,9 @@
     <ClInclude Include="CUDAhelpers.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="CUDADeviceObject.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -615,5 +621,10 @@
     <CudaCompile Include="GeometricObjects\mcgrid.cu" />
     <CudaCompile Include="World\world.cu" />
     <CudaCompile Include="GeometricObjects\mcregiongrid.cu" />
+    <CudaCompile Include="GeometricObjects\mcblock.cu" />
+    <CudaCompile Include="Materials\material.cu" />
+    <CudaCompile Include="Textures\constantcolor.cu" />
+    <CudaCompile Include="Textures\imagetexture.cu" />
+    <CudaCompile Include="Materials\matte.cu" />
   </ItemGroup>
 </Project>

@@ -5,9 +5,22 @@
 #include "point.h"
 
 #ifdef WCUDA
-typedef struct {
+
+struct rayCU {
 	CUDAreal3 o, d;
-} rayCU;
+};
+
+///<summary>
+/// initializes a new Ray on the device.
+///</summary>
+static __inline__ __host__ __device__ rayCU __make_CUDARay(const CUDAreal3 &o, const CUDAreal3 &d) {
+	rayCU ray;
+	ray.o = o;
+	ray.d = d;
+	return ray;
+}
+
+
 #endif
 
 

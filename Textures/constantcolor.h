@@ -4,6 +4,14 @@
 #include "texture.h"
 #include "rgbcolor.h"
 
+#ifdef WCUDA
+class ConstantColorCUDA : public TextureCUDA {
+	CUDAreal3 color;
+	virtual __device__ CUDAreal3 get_color(const ShadeRecCUDA& sr) override;
+};
+#endif // WCUDA
+
+
 class ConstantColor : public Texture
 {
 private:

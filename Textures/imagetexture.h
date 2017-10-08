@@ -7,6 +7,18 @@
 #include <vector>
 #include <QString>
 
+#ifdef WCUDA
+class ImageTextureCUDA : public TextureCUDA {
+	CUDAreal3* texels;
+	CUDAreal* transparency;
+
+	int width, height;
+
+	virtual __device__ CUDAreal3 get_color(const ShadeRecCUDA& sr) override;
+};
+#endif // WCUDA
+
+
 class ImageTexture : public Texture
 {
 private:

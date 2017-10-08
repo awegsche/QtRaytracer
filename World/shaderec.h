@@ -14,13 +14,22 @@
 
 #include "ray.h"
 #include "vector.h"
+//#include "world.h"
+
 
 #ifdef WCUDA
+
+class WorldCUDA;
+
 struct ShadeRecCUDA {
 	CUDAreal3 hit_point;
-	void* material;
+	rayCU ray;
+	void* material_ptr;
 	CUDAreal3 normal;
 	CUDAreal t;
+	CUDAreal u, v;
+
+	WorldCUDA *w;
 };
 #endif // WCUDA
 

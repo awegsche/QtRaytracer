@@ -116,6 +116,21 @@ RGBColor Matte::noshade(ShadeRec &sr)
     return L;
 }
 
+MatteCUDA * Matte::get_device_ptr()
+{
+	if (device_ptr)
+		return (MatteCUDA*)device_ptr;
+
+	MatteCUDA* ptr = (MatteCUDA*)device_ptr;
+
+	cudaMallocManaged(&device_ptr, sizeof(MatteCUDA));
+
+	ptr->ka = ambient_brdf->kd;
+	ptr->kd = diffuse_brdf->kd;
+
+	ptr->texture = diffuse_brdf->cd.
+}
+
 real Matte::transparency(const ShadeRec &sr)
 {
     return diffuse_brdf->transparency(sr);

@@ -21,6 +21,12 @@ enum BlockID {
     SugarCanes = 83
 };
 
+class MCBlockCUDA : public GeometricObjectCUDA {
+	// Inherited via GeometricObjectCUDA
+	virtual __device__ bool hit(const rayCU & ray, CUDAreal & tmin, ShadeRecCUDA & sr) const override;
+	virtual __device__ bool shadow_hit(const rayCU & ray, CUDAreal & tmin) const override;
+};
+
 class MCBlock : public GeometricObject
 {
 public:
@@ -31,6 +37,8 @@ public:
 //    bool hit(const Ray &ray, real &tmin, ShadeRec &sr) const = 0;
     virtual bool block_hit(const Ray &ray, const Point& p0, real &tmin, ShadeRec &sr) const = 0;
 //    bool shadow_hit(const Ray &ray, real &tmin) const = 0;
+
+	virtual MCBlockCUDA* get_device_ptr() override;
 
 };
 

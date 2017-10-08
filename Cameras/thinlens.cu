@@ -22,28 +22,29 @@ static __global__ void thinlens_kernel(
 	int row = threadIdx.y + blockIdx.y * blockDim.y;
 
 	int index = row * width + column;
+
+	float2 pp;
+	float2 ap;
+	float2 sp;
+	rayCU ray;
 		
 	for (int i = 0; i < nsamples; i++) {
-		float2 pp;
-		float2 sp = square_samples[i + threadIdx.x + threadIdx.y]; // not really random
+		
+		sp = square_samples[i + threadIdx.x + threadIdx.y]; // not really random
 		pp.x = vp_s * (column - 0.5 * width + sp.x);
 		pp.y = vp_s * (row - 0.5 * height + sp.y);
 
-		float2 ap = disk_samples[i + threadIdx.x + threadIdx.y];
+		ap = disk_samples[i + threadIdx.x + threadIdx.y];
 
 		int index_ray = index + i * npixels;
-		rays[index_ray].o = eye + (aperture * ap.x) * u + (aperture * ap.y) * v;
+		ray.o = eye + (aperture * ap.x) * u + (aperture * ap.y) * v;
 		CUDAreal3 dir = (pp.x - aperture * ap.x) * u + (pp.y - aperture * ap.y)  * v - distance * w;
-		rays[index_ray].d = normalize(dir);
+		ray.d = normalize(dir);
 
-		ShadeRecCUDA sr;
+		
 		CUDAreal t = kHugeValueCUDA;
 
-		/*if (mcgrid_hit_kernel(rays[index_ray], mcgrid, &sr, &t)) {
-			rays[index_ray].d = sr.normal;
-		}
-		else*/
-			rays[index_ray].d = __make_CUDAreal3(-3.14, 0,0);
+		ShadeRecCUDA sr = world->hit_objects(ray);
 		
 
 
@@ -61,7 +62,7 @@ static __global__ void thinlens_trace_kernel(
 }
 
 // Setup the array of primary rays to render
-extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
+extern "C" int render_thinlens_cuda(rayCU* rays, WorldCUDA* world,
 	const int width, const int height, const int npixels, const CUDAreal vp_s,
 	const int nsamples, const CUDAreal2 *disk_samples, const CUDAreal2 *square_samples,
 	const CUDAreal aperture, const CUDAreal distance, const CUDAreal3 &eye, const CUDAreal3 &u, const CUDAreal3 &v, const CUDAreal3 &w)
@@ -74,7 +75,7 @@ extern "C" int render_thinlens_cuda(rayCU* rays, MCGridCUDA* mcgrid,
 	cudaGetDeviceProperties(&p, 0);
 	
 	thinlens_kernel<<<numBlocks, blockSize>>>(
-		rays, mcgrid,
+		rays, world,
 		width, height, npixels,  vp_s,
 		nsamples, square_samples, disk_samples,
 		aperture, distance, eye, u, v, w);

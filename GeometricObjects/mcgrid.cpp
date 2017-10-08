@@ -618,12 +618,15 @@ BBox MCGrid::get_bounding_box()
 
 #ifdef WCUDA
 
-MCGridCUDA * MCGrid::get_device_ptr() const
+MCGridCUDA * MCGrid::get_device_ptr() 
 {
 	
-	MCGridCUDA *gr;
+	if (device_ptr)
+		return (MCGridCUDA*)device_ptr;
+
 	size_t numcells = cells.size();
-	size_t memsize = sizeof(int*) + 2 * sizeof(CUDAreal3) + sizeof(int);
+	size_t memsize =sizeof(MCGridCUDA);
+	MCGridCUDA* gr = (MCGridCUDA*)device_ptr;
 
 	cudaMallocManaged(&gr, memsize);
 	cudaMallocManaged(&gr->cells, sizeof(int) * numcells);

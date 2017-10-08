@@ -59,7 +59,7 @@ public:
     BBox get_bounding_box();
 
 	// Inherited via Compound
-	virtual MCRegionGridCUDA * get_device_ptr() const override;
+	virtual MCRegionGridCUDA * get_device_ptr() override;
 };
 
 #endif // MCGRID_H

@@ -6,6 +6,18 @@
 
 class Lambertian;
 
+#ifdef WCUDA
+class MatteCUDA : public MaterialCUDA {
+	// no BRDFs for now
+public:
+	CUDAreal ka, kd;
+	TextureCUDA* texture;
+
+	virtual __device__ CUDAreal3 shade(ShadeRecCUDA& sr) override;
+};
+#endif // WCUDA
+
+
 class Matte : public Material
 {
 protected:
@@ -34,6 +46,8 @@ public:
     // Material interface
 public:
     real transparency(const ShadeRec &sr) Q_DECL_OVERRIDE;
+
+	MatteCUDA* get_device_ptr() override;
 };
 
 #endif // MATTE_H

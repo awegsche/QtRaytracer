@@ -8,18 +8,6 @@
 #include "mcgrid.h"
 #include "shaderec.h"
 
-static __device__ bool inside_bb(const CUDAreal3 &p0, const CUDAreal3 &p1, const CUDAreal3 &point) {
-	return
-		point.x > p0.x && point.x < p1.x &&
-		point.y > p0.y && point.y < p1.x &&
-		point.z > p0.z && point.z < p1.z;
-}
-
-static __device__ CUDAreal clamp(CUDAreal value, CUDAreal a, CUDAreal b) {
-	if (value < a) return a;
-	if (value > b) return b;
-	return value;
-}
 
 __device__ bool MCGridCUDA::shadow_hit(const rayCU& ray, CUDAreal& tmin) const
 {
@@ -260,7 +248,7 @@ __device__ bool MCGridCUDA::hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& 
 			tx_next += dtx;
 			ix += ix_step;
 			if (ix == ix_stop) {
-				(sr).material = 0;
+				(sr).material_ptr = 0;
 				return (false);
 			}
 

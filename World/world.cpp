@@ -57,8 +57,8 @@ WorldCUDA * World::setup_device_world()
 	
 	int size = this->objects.size();
 
-	cudaMallocManaged(&dev_ptr, sizeof(int) + sizeof(GeometricObjectCUDA*));
-	cudaMallocManaged(&dev_ptr->objects, size * sizeof(GeometricObjectCUDA**));
+	cudaMallocManaged(&dev_ptr, sizeof(WorldCUDA));
+	cudaMallocManaged(&dev_ptr->objects, size * sizeof(GeometricObjectCUDA*));
 
 	dev_ptr->num_objects = size;
 

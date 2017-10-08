@@ -6,19 +6,21 @@
 #include "bbox.h"
 #include "shaderec.h"
 
+
 class Ray;
 class ShadeRec;
 class Material;
 
-
 #ifdef WCUDA
+class rayCU;
+
 class GeometricObjectCUDA
 {
-public:
-	virtual __device__ bool hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& sr) const = 0;
+	virtual __device__ bool hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA &sr) const = 0;
 	virtual __device__ bool shadow_hit(const rayCU& ray, CUDAreal& tmin) const = 0;
 };
 #endif // WCUDA
+
 
 
 // Host Class
@@ -29,6 +31,7 @@ protected:
     bool casts_shadow;
 public:
     GeometricObject();
+	~GeometricObject();
 
     virtual bool hit(const Ray& ray, real& tmin, ShadeRec &sr) const = 0;
     virtual bool shadow_hit(const Ray& ray, real& tmin) const = 0;
@@ -41,9 +44,13 @@ public:
     virtual void set_material(Material* mat);
 
 #ifdef WCUDA
-	virtual GeometricObjectCUDA* get_device_ptr() const = 0; 
+protected:
+	GeometricObjectCUDA* device_ptr;
+public:
+	virtual GeometricObjectCUDA* get_device_ptr();
 
 #endif // WCUDA
+
 
 };
 

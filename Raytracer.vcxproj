@@ -287,6 +287,7 @@
     </CudaLink>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CUDADeviceObject.cpp" />
     <ClCompile Include="CUDAhelpers.cpp" />
     <ClCompile Include="DebugCUDA\moc_glimagedisplay.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseCUDA|x64'">true</ExcludedFromBuild>
@@ -465,6 +466,7 @@
     <ClCompile Include="World\world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CUDADeviceObject.h" />
     <ClInclude Include="CUDAhelpers.h" />
     <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="GeometricObjects\FlatMeshTriangle.h" />
@@ -667,8 +669,13 @@
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="Cameras\thinlens.cu" />
+    <CudaCompile Include="GeometricObjects\mcblock.cu" />
     <CudaCompile Include="GeometricObjects\mcgrid.cu" />
     <CudaCompile Include="GeometricObjects\mcregiongrid.cu" />
+    <CudaCompile Include="Materials\material.cu" />
+    <CudaCompile Include="Materials\matte.cu" />
+    <CudaCompile Include="Textures\constantcolor.cu" />
+    <CudaCompile Include="Textures\imagetexture.cu" />
     <CudaCompile Include="Tracers\raycast.cu" />
     <CudaCompile Include="World\world.cu">
       <FileType>CppCode</FileType>

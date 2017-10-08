@@ -31,3 +31,8 @@ real Material::transparency(const ShadeRec &sr)
 {
     return 1.0;
 }
+
+MaterialCUDA * Material::get_device_ptr()
+{
+	return nullptr;
+}

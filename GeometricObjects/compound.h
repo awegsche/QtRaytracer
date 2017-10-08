@@ -4,6 +4,8 @@
 #include "geometricobject.h"
 #include "bbox.h"
 
+
+
 class Compound : public GeometricObject
 {
 protected:

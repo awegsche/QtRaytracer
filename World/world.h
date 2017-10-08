@@ -30,9 +30,18 @@ class MCRegionGrid;
 #ifdef WCUDA
 class WorldCUDA {
 public:
+	// The objects in the scene.
 	GeometricObjectCUDA** objects;
 	int num_objects;
 
+	// The lights
+	LightCUDA** lights;
+	int num_lights;
+
+	// The ambient light will be separated because it brightens the ambient BRDF of the material.
+	LightCUDA* ambient_ptr;
+
+	// Hit all the objects in the scene and return the ShadeRec.
 	__device__ ShadeRecCUDA hit_objects(const rayCU& ray);
 
 };
