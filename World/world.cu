@@ -1,3 +1,5 @@
+#ifdef WCUDA
+
 #include "world.h"
 #include "shaderec.h"
 #include "cuda_runtime.h"
@@ -15,3 +17,5 @@ __device__ ShadeRecCUDA WorldCUDA::hit_objects(const rayCU& ray) {
 
 	return sr;
 }
+
+#endif

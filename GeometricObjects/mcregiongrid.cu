@@ -1,5 +1,8 @@
 #include "mcregiongrid.h"
 
+#ifdef WCUDA
+
+
 
 
 __device__ bool MCRegionGridCUDA::hit(const rayCU & ray, CUDAreal & tmin, ShadeRecCUDA & sr) const
@@ -11,3 +14,4 @@ __device__ bool MCRegionGridCUDA::shadow_hit(const rayCU & ray, CUDAreal & tmin)
 {
 	return false;
 }
+#endif // WCUDA

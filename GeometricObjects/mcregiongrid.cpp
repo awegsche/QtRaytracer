@@ -462,6 +462,9 @@ BBox MCRegionGrid::get_bounding_box()
     return boundingbox;
 }
 
+#ifdef WCUDA
+
+
 MCRegionGridCUDA * MCRegionGrid::get_device_ptr() const
 {
 	MCRegionGridCUDA* grid;
@@ -481,3 +484,5 @@ MCRegionGridCUDA * MCRegionGrid::get_device_ptr() const
 
 	return grid;
 }
+
+#endif // WCUDA
