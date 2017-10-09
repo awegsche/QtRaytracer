@@ -58,8 +58,11 @@ public:
     bool shadow_hit(const Ray &ray, real &tmin) const;
     BBox get_bounding_box();
 
+#ifdef WCUDA
+
 	// Inherited via Compound
 	virtual MCRegionGridCUDA * get_device_ptr() override;
+#endif // WCUDA
 };
 
 #endif // MCGRID_H

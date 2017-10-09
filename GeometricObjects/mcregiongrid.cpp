@@ -489,5 +489,4 @@ MCRegionGridCUDA * MCRegionGrid::get_device_ptr()
 	return grid;
 }
 
-
 #endif // WCUDA
