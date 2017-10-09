@@ -57,7 +57,7 @@ protected:
 	LightCUDA* device_ptr;
 
 public:
-	LightCUDA* get_device_ptr();
+    virtual LightCUDA* get_device_ptr();
 #endif // WCUDA
 
 };

@@ -123,7 +123,9 @@ HEADERS += \
     Utilities/vectormath_exp.h \
     Utilities/vectormath_hyp.h \
     Utilities/vectormath_lib.h \
-    Utilities/vectormath_trig.h
+    Utilities/vectormath_trig.h \
+    World/mcworldcuda.h \
+    Cameras/thinlenscuda.h
 
 SOURCES += \
     main.cpp \
@@ -209,7 +211,9 @@ SOURCES += \
     World/shaderec.cpp \
     World/viewplane.cpp \
     World/world.cpp \
-    World/mcscenerenderer.cpp
+    World/mcscenerenderer.cpp \
+    World/mcworldcuda.cpp \
+    Cameras/thinlenscuda.cpp
 
 FORMS += \
     GUI/mainwindow.ui

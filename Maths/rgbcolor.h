@@ -32,6 +32,13 @@ public:
     RGBColor& operator*= (const RGBColor& c);
 
     uint to_uint() const;
+
+#ifdef WCUDA
+
+    // returns the color as CUDAreal3 in order to use it on the device.
+    CUDAreal3 to_cudareal() const;
+
+#endif
 };
 
 RGBColor operator/ (const RGBColor& c, real f);
@@ -40,5 +47,6 @@ RGBColor operator* (const RGBColor& a, const RGBColor& b);
 real clamp(real x, real min, real max);
 
 Q_DECLARE_METATYPE(RGBColor)
+
 
 #endif // RGBCOLOR_H

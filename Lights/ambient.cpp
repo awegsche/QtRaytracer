@@ -29,3 +29,18 @@ bool Ambient::in_shadow(Ray& ray, ShadeRec& sr)
 {
     return false;
 }
+
+#ifdef WCUDA
+
+AmbientCUDA *Ambient::get_device_ptr()
+{
+    if (device_ptr)
+        return (AmbientCUDA*) device_ptr;
+
+    auto ambient_ptr = (AmbientCUDA*)device_ptr;
+
+    cudaMalloc(&ambient_ptr, sizeof(AmbientCUDA));
+    ambient_ptr->color =
+}
+
+#endif

@@ -11,7 +11,8 @@
 #include <QMap>
 
 #ifdef WCUDA
-class MCRegionGridCUDA : public GeometricObjectCUDA {
+class MCRegionGridCUDA  // removed inheritance
+{
 public:
 	GeometricObjectCUDA** cells;
 	int nx, ny, nz;
@@ -19,9 +20,9 @@ public:
 	CUDAreal3 position, p1;
 	CUDAreal m_unit;
 
-	// Inherited via GeometricObjectCUDA
-	virtual __device__ bool hit(const rayCU & ray, CUDAreal & tmin, ShadeRecCUDA & sr) const override;
-	virtual __device__ bool shadow_hit(const rayCU & ray, CUDAreal & tmin) const override;
+
+    __device__ bool hit(const rayCU & ray, CUDAreal & tmin, ShadeRecCUDA & sr) const;
+    __device__ bool shadow_hit(const rayCU & ray, CUDAreal & tmin) const;
 };
 #endif // WCUDA
 

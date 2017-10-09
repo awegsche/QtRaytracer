@@ -1,5 +1,9 @@
 #include "rgbcolor.h"
 
+#ifdef WCUDA
+#include "CUDAhelpers.h"
+#endif
+
 RGBColor::RGBColor()
     :r(.0f), g(.0f), b(.0f)
 {
@@ -103,6 +107,14 @@ uint RGBColor::to_uint() const
     return (uint)((int)(r * 255) << 16 | (int)(g * 255) << 8 | (int)(b * 255));
 }
 
+#ifdef WCUDA
+CUDAreal3 RGBColor::to_cudareal() const
+{
+    return __make_CUDAreal3((CUDAreal)r, (CUDAreal)g, (CUDAreal)b);
+}
+
+
+#endif
 
 
 RGBColor operator/(const RGBColor &c, real f)
