@@ -18,10 +18,10 @@ class AmbientOccluder;
 const int NREGIONS = 32;
 
 
-
-class MCSceneRenderer : public World
+// Data oriented Minecraft Scene Renderer
+// Does not inherit from World
+class MCSceneRenderer
 {
-    Q_OBJECT
 private:
 
     MCRegionGrid* world_grid;
@@ -31,6 +31,10 @@ private:
 
     Ambient* m_preview_ambient;
     AmbientOccluder* m_render_ambient;
+
+    CUDAreal3 background_color;
+    PointLight *sun;
+    
 
     int t_nsamples;
 
@@ -75,10 +79,6 @@ public:
     void add_chunks(MCWorld* world, int x, int y);
 
 
-//signals:
-//    void display_pixel(int row, int column, int r, int g, int b);
-//    void display_line(const int row, const uint* rgb);
-//    void done();
 
     // QThread interface
 protected:
