@@ -13,20 +13,6 @@
 
 
 
-#ifdef WCUDA
-#include "CUDAhelpers.h"
-
-class MCGridCUDA : public GeometricObjectCUDA {
-public:
-	int nx, ny, nz;
-	CUDAreal3 p0, p1;
-	int* cells;
-	int num_cells;
-
-	__device__ bool hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& sr) const;
-	__device__ bool shadow_hit(const rayCU& ray, CUDAreal& tmin) const;
-};
-#endif // WCUDA
 
 class MCSceneRenderer;
 class MCRegionGrid;
@@ -67,9 +53,6 @@ public:
 
 	//bool __device__ hitCUDA(rayCU& ray, CUDAreal& t, ShadeRecCUDA &sr) const;
 
-#ifdef WCUDA
-	virtual MCGridCUDA* get_device_ptr() const;
-#endif // WCUDA
 
 };
 

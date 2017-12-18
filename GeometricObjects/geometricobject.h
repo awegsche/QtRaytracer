@@ -11,14 +11,6 @@ class ShadeRec;
 class Material;
 
 
-#ifdef WCUDA
-class GeometricObjectCUDA
-{
-public:
-	virtual __device__ bool hit(const rayCU& ray, CUDAreal& tmin, ShadeRecCUDA& sr) const = 0;
-	virtual __device__ bool shadow_hit(const rayCU& ray, CUDAreal& tmin) const = 0;
-};
-#endif // WCUDA
 
 
 // Host Class
@@ -40,10 +32,6 @@ public:
 
     virtual void set_material(Material* mat);
 
-#ifdef WCUDA
-	virtual GeometricObjectCUDA* get_device_ptr() const = 0; 
-
-#endif // WCUDA
 
 };
 

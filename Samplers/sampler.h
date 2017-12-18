@@ -100,17 +100,7 @@ protected:
     unsigned long 			count;					// the current number of sample points used
     int 					jump;					// random index jump
 
-#ifdef WCUDA
 
-public:
-	// This should be on the device, bt I can't specify __device__
-	CUDAreal2* samplesCUDA;
-	CUDAreal2* disk_samplesCUDA;
-	CUDAreal3* hemisphere_samplesCUDA;
-
-	//CUDAreal3* sphere_samplesCUDA; // not needed for now
-
-#endif // WCUDA
 
 };
 

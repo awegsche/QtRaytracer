@@ -3,30 +3,6 @@
 #include <vectorclass.h>
 #include "vector3d.h"
 
-#ifdef WCUDA
-#include <cuda_runtime.h>
-#include <vector_types.h>
-#define __BOTH__ __device__ __host__
-
-typedef float CUDAreal;
-typedef float4 CUDAreal4;
-typedef float3 CUDAreal3;
-typedef float2 CUDAreal2;
-
-static CUDAreal __constant__ kHugeValueCUDA = 1.0e+12;
-static CUDAreal __constant__ PiCUDA = 3.141592653589793238462643383279502;
-static CUDAreal  invPiCUDA = 1.0 / PiCUDA;
-static CUDAreal  TWO_PI_CUDA = 2 * PiCUDA;
-static CUDAreal  GRAD_CUDA = PiCUDA / 180.0;
-static CUDAreal __constant__ BLOCKLENGTH_CUDA = 1.0;
-#else
-// defining empty macros to be able to use __host__ and __device__ even in non-CUDA builds
-#define __host__ 
-#define __device__
-#endif // WCUDA
-
-
-
 typedef Vec3f real3;
 typedef float real;
 

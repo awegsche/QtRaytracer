@@ -1,10 +1,6 @@
 #ifndef MCSCENERENDERER_H
 #define MCSCENERENDERER_H
 
-#ifdef WCUDA
-#include <cuda_runtime.h>
-#include <cuda_runtime_api.h>
-#endif // WCUDA
 
 #include "world.h"
 
@@ -34,11 +30,6 @@ private:
 
     int t_nsamples;
 
-#ifdef WCUDA
-
-	void initCUDADevice();
-
-#endif // WCUDA
 
 	
 

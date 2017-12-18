@@ -4,12 +4,6 @@
 #include <QtConcurrent/QtConcurrent>
 #include "pixel.h"
 
-#ifdef WCUDA
-#include <cuda_runtime.h>
-#include <cuda_runtime_api.h>
-#include "CUDAhelpers.h"
-#endif // WCUDA
-
 
 
 ThinLens::ThinLens()
@@ -87,53 +81,7 @@ void ThinLens::render_scene(World &world)
 
     vp.s *= zoom;
 
-#ifdef WCUDA // ======== GPU ===============================================================
 
-	rayCU* rays = new rayCU[vp.num_samples * vp.vres * vp.hres];
-	rayCU* d_rays;
-
-	int scr = sizeof(CUDAreal3);
-
-	int devId = -1;
-
-	cudaGetDevice(&devId);
-
-	int memsize = vp.num_samples * vp.vres * vp.hres * 2 * scr;
-
-	auto error = cudaMalloc(&d_rays, memsize);
-
-	MCGridCUDA* device_grid;
-
-	error = cudaMalloc(&device_grid, 3 * sizeof(int) + sizeof(int*) + 2 * sizeof(CUDAreal3));
-	error = cudaMemcpy(device_grid, &world.mcgrid, 3 * sizeof(int) + sizeof(int*) + 2 * sizeof(CUDAreal3), cudaMemcpyKind::cudaMemcpyHostToDevice);
-
-	error = (cudaError_t)render_thinlens_cuda(
-		d_rays, nullptr,
-		vp.hres, vp.vres, vp.hres * vp.vres, vp.s, 
-		vp.num_samples, _sampler_ptr->disk_samplesCUDA, _sampler_ptr->samplesCUDA,
-		_aperture, d, 
-		__make_CUDAreal3(eye.X(), eye.Y(), eye.Z()),
-		__make_CUDAreal3(u.X(), u.Y(), u.Z()),
-		__make_CUDAreal3(v.X(), v.Y(), v.Z()),
-		__make_CUDAreal3(w.X(), w.Y(), w.Z()));
-
-
-	
-	error = cudaMemcpy(rays, d_rays, memsize, cudaMemcpyDeviceToHost);
-
-	for(int row = 0; row < vp.vres; row++)
-	{
-		uint* line = new uint[vp.hres];
-		for(int column=0;column< vp.hres; column++)
-		{
-			CUDAreal3 d = rays[row*vp.hres + column].d;
-			line[column] = RGBColor(d.x,d.y,d.z).to_uint();
-		}
-		emit world.display_line(row, line);
-	}
-	
-
-#else // =============== CPU MultiCore =====================================================
 
 	
     QThreadPool* pool = new QThreadPool();
@@ -145,9 +93,6 @@ void ThinLens::render_scene(World &world)
     }
 
     pool->waitForDone(); // synchronize
-
-
-#endif // WCUDA
 
 
 

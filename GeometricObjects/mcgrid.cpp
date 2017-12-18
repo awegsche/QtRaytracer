@@ -615,31 +615,3 @@ BBox MCGrid::get_bounding_box()
 {
     return boundingbox;
 }
-
-#ifdef WCUDA
-
-MCGridCUDA * MCGrid::get_device_ptr() const
-{
-	
-	MCGridCUDA *gr;
-	size_t numcells = cells.size();
-	size_t memsize = sizeof(int*) + 2 * sizeof(CUDAreal3) + sizeof(int);
-
-	cudaMallocManaged(&gr, memsize);
-	cudaMallocManaged(&gr->cells, sizeof(int) * numcells);
-
-	gr->nx = nx;
-	gr->ny = ny;
-	gr->nz = nz;
-	gr->num_cells = numcells;
-
-	for (int j = 0; j < numcells; j++)
-		gr->cells[j] = cells[j];
-
-	gr->p0 = __make_CUDAreal3(position.X(), position.Y(), position.Z());
-	gr->p1 = __make_CUDAreal3(p1.X(), p1.Y(), p1.Z());
-	
-	return gr;
-}
-
-#endif

@@ -15,16 +15,6 @@
 #include "ray.h"
 #include "vector.h"
 
-#ifdef WCUDA
-struct ShadeRecCUDA {
-	CUDAreal3 hit_point;
-	void* material;
-	CUDAreal3 normal;
-	CUDAreal t;
-};
-#endif // WCUDA
-
-
 class World;
 
 class ShadeRec
