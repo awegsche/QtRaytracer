@@ -806,6 +806,13 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuWorld">
+    <property name="title">
+     <string>World</string>
+    </property>
+    <addaction name="actionLoad_regions"/>
+   </widget>
+   <addaction name="menuWorld"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -816,6 +823,11 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionLoad_regions">
+   <property name="text">
+    <string>Load regions</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

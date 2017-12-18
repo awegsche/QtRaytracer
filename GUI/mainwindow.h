@@ -91,6 +91,8 @@ private slots:
 
     void on_angleSlider_sliderReleased();
 
+    void on_actionLoad_regions_triggered();
+
 private:
     Ui::MainWindow *ui;
 

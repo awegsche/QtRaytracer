@@ -378,3 +378,57 @@ void MainWindow::on_angleSlider_sliderReleased()
 
     render();
 }
+
+void MainWindow::on_actionLoad_regions_triggered()
+{
+    QFileDialog D;
+
+    D.setFileMode(QFileDialog::Directory);
+
+    QString filename;
+
+    if(D.exec()){
+        filename = D.selectedFiles()[0];
+
+        delete _world;
+
+        _world = new MCSceneRenderer();
+
+        //_world->hit_objects_CUDA();
+
+        _world->build();
+
+
+
+        QString local_regionspath = filename + QDir::separator() + "region";
+
+
+    #if defined NDEBUG || defined QT_NO_DEBUG
+        for (int i = -5; i < 6; i++)
+            for (int j = -5; j < 6; j++)
+                loadchunk(local_regionspath, i, j);
+    #else
+
+        loadchunk(local_regionspath, 0, 0);
+        ////loadchunk(STR_REGIONSPATH, 0, -1);
+        //loadchunk(STR_REGIONSPATH, 0, -2);
+        //loadchunk(STR_REGIONSPATH, 0, -3);
+
+    #endif // NDEBUG
+        //_world->world_grid->setup_cells();
+        //_world->add_object(_world->world_grid);
+        //ui->treeView->setModel(W);
+
+        _world->resize_vp(640, 480);
+
+
+        resize_display();
+
+    //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
+        connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
+        connect(_world, SIGNAL(done()), this, SLOT(done()));
+
+    }
+
+
+}
