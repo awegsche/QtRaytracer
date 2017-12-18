@@ -81,8 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _world = new MCSceneRenderer();
 
-    //_world->hit_objects_CUDA();
-
     _world->build();
 
 
@@ -99,24 +97,24 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 
 
-#if defined NDEBUG || defined QT_NO_DEBUG
-	for (int i = -5; i < 6; i++)
-		for (int j = -5; j < 6; j++)
-			if(!(j==-1 && i ==0))
-				loadchunk(STR_REGIONSPATH, i, j);
-#else
+//#if defined NDEBUG || defined QT_NO_DEBUG
+//	for (int i = -5; i < 6; i++)
+//		for (int j = -5; j < 6; j++)
+//			if(!(j==-1 && i ==0))
+//				loadchunk(STR_REGIONSPATH, i, j);
+//#else
 	
-    loadchunk(STR_REGIONSPATH, 0, 0);
-    ////loadchunk(STR_REGIONSPATH, 0, -1);
-    //loadchunk(STR_REGIONSPATH, 0, -2);
-    //loadchunk(STR_REGIONSPATH, 0, -3);
+//    loadchunk(STR_REGIONSPATH, 0, 0);
+//    ////loadchunk(STR_REGIONSPATH, 0, -1);
+//    //loadchunk(STR_REGIONSPATH, 0, -2);
+//    //loadchunk(STR_REGIONSPATH, 0, -3);
 
-#endif // NDEBUG
-    //_world->world_grid->setup_cells();
-    //_world->add_object(_world->world_grid);
-    //ui->treeView->setModel(W);
+//#endif // NDEBUG
+//    //_world->world_grid->setup_cells();
+//    //_world->add_object(_world->world_grid);
+//    //ui->treeView->setModel(W);
 
-    _world->resize_vp(640, 480);
+//    _world->resize_vp(640, 480);
 
     _display = new ImageDisplay(_world, this);
 
@@ -126,8 +124,8 @@ MainWindow::MainWindow(QWidget *parent) :
     resize_display();
 
 //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
-    connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
-    connect(_world, SIGNAL(done()), this, SLOT(done()));
+//    connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
+//    connect(_world, SIGNAL(done()), this, SLOT(done()));
 
 }
 
@@ -421,10 +419,17 @@ void MainWindow::on_actionLoad_regions_triggered()
 
         _world->resize_vp(640, 480);
 
+        ((QVBoxLayout*)ui->frame->layout())->removeWidget(_display);
+
+        _display = new ImageDisplay(_world, this);
+
+
+        ((QVBoxLayout*)ui->frame->layout())->insertWidget(0, _display);
+        qDebug() <<((QVBoxLayout*)ui->frame->layout())->setAlignment(_display, Qt::AlignHCenter);
 
         resize_display();
 
-    //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
+        //    connect(_world, SIGNAL(display_pixel(int,int,int, int, int)), this, SLOT(display_pixel(int,int,int,int,int)));
         connect(_world, SIGNAL(display_line(int,const uint*)), this, SLOT(display_line(int,const uint*)));
         connect(_world, SIGNAL(done()), this, SLOT(done()));
 
