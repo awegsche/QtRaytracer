@@ -189,6 +189,11 @@ void MainWindow::done()
                             .arg((float)(_world->vp.hres * _world->vp.vres) / elapsed * 1000.0));
 }
 
+void MainWindow::big_picture_done()
+{
+
+}
+
 void MainWindow::render()
 {
     clock.start();
@@ -407,10 +412,9 @@ void MainWindow::on_actionLoad_regions_triggered()
                 loadchunk(local_regionspath, i, j);
     #else
 
-        loadchunk(local_regionspath, 0, 0);
-        ////loadchunk(STR_REGIONSPATH, 0, -1);
-        //loadchunk(STR_REGIONSPATH, 0, -2);
-        //loadchunk(STR_REGIONSPATH, 0, -3);
+        for (int i = -3; i < 4; i++)
+            for (int j = -3; j < 4; j++)
+                loadchunk(local_regionspath, i, j);
 
     #endif // NDEBUG
         //_world->world_grid->setup_cells();
@@ -434,6 +438,13 @@ void MainWindow::on_actionLoad_regions_triggered()
         connect(_world, SIGNAL(done()), this, SLOT(done()));
 
     }
+
+
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    disconnect(_world, 0, 0, 0);
 
 
 }

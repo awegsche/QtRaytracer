@@ -93,16 +93,22 @@ private slots:
 
     void on_actionLoad_regions_triggered();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     void loadchunk(const QString& path, int y_, int x_);
     void update_camera_info();
+
+    QString m_bigpicture_path;
+
     
 public slots:
     void display_pixel(int x, int y, int r, int g, int b);
     void display_line(const int line, const uint *rgb);
     void done();
+    void big_picture_done();
 
     // QWidget interface
 protected:
